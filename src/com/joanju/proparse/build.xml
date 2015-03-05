@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="proparse" default="all" basedir=".">
+
+	<target name="all" depends="proparse_g,proeval_g">
+	</target>
+
+	<target name="touch_proparse.g">
+		<touch file="proparse.g"/>
+	</target>
+
+	<target name="proparse_g" description="Invoke Antlr" >
+		<antlr target="proparse.g" traceparser="false" >
+			<classpath path="../../../../lib/antlr.jar" />
+		</antlr>
+	</target>
+
+	<target name="proeval_g" description="Invoke Antlr">
+		<antlr target="proeval.g" >
+			<classpath path="../../../../lib/antlr.jar" />
+		</antlr>
+	</target>
+
+	<target name="proparse_g_traceparser" description="Invoke Antlr" >
+		<antlr target="proparse.g" traceparser="true" >
+			<classpath path="../../../../lib/antlr.jar" />
+		</antlr>
+	</target>
+
+</project>

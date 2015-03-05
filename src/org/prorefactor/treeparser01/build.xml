@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="treeparser01" default="antlr" basedir=".">
+
+	<property name="grammarfile" value="treeparser01.g"/>
+	<property name="outputfile" value="TreeParser01.java"/>
+	
+	<target name="antlr" description="Invoke Antlr">
+		<antlr target="${grammarfile}" glib="JPTreeParser.g">
+		</antlr>
+		<echo>Classpath: ${java.class.path}</echo>
+		<echo>Calling PostProcessor...</echo>
+		<java classname="org.prorefactor.treeparserbase.PostProcessor">
+			<classpath path="../../../../bin" />
+			<arg value="${outputfile}"/>
+		</java>
+	</target>
+
+</project>

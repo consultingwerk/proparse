@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Tue Jul 03 17:00:30 PDT 2007
+onejar.license.required=true
+manifest.classpath=
+manifest.removesigners=true
+onejar.checkbox=false
+jarname=C\:\\work\\com.joanju.cgserver\\WebContent\\WEB-INF\\lib\\prorefactor.jar
+manifest.mergeall=false
+manifest.mainclass=org.prorefactor.Console
+manifest.file=<createnew>
+jarname.isextern=true
+onejar.expand=
+excludes=<cl|C\:\\work\\prorefactor\\org.prorefactor.lib>;<jar|org.eclipse.swt.win32.win32.x86_3.3.0.v3346.jar>
+includes=

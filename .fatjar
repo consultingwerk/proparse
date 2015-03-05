@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Fri Apr 13 09:05:44 PDT 2007
+onejar.license.required=true
+manifest.classpath=
+manifest.removesigners=true
+onejar.checkbox=false
+jarname=C\:\\apache\\htdocs\\prorefactor.oehive.org\\new.prorefactor.jar
+manifest.mergeall=true
+manifest.mainclass=
+manifest.file=<createnew>
+jarname.isextern=false
+onejar.expand=
+excludes=
+includes=

@@ -1,0 +1,75 @@
+<?xml version="1.0" ?>
+<project name="jars" default="main">
+
+	<property name="message" value="Building proparse..."/>
+	<property name="core_xclds" value="**/*.g,**/*.smap,**/*.SF,**/*.launch,**/*.testsuite,**/*.deploy,**/*.location,**/*.execution,**/*.datapool,**/*.artifact,**/*.html,**/*.svg,**/*.groovy" />
+
+	<target name="main" depends="makeproparsejar, makeproparsezip, make_dotnet">
+		<echo>
+			${message}
+		</echo>
+	</target>
+
+
+	<target name="makeproparsejar">
+
+		<tstamp/>
+		<buildnumber/>
+		
+		<path id="build-classpath">
+		   <fileset dir="lib">
+		      <include name="*.jar"/>
+		   </fileset>
+		</path>
+
+		<manifestclasspath property="lib.list" jarfile="proparse.jar">
+		   <classpath refid="build-classpath" />
+		</manifestclasspath>
+
+		<jar jarfile="proparse.jar" >
+
+			<manifest>
+				<attribute name="Author" value="Joanju Software"/>
+				<attribute name="Class-Path" value=". ${lib.list}"/>
+				<section name="Proparse">
+					<attribute name="Author" value="Joanju Software" />
+					<attribute name="Home" value="joanju.com, oehive.org"/>
+					<attribute name="Build" value="${build.number}"/>
+					<attribute name="Date" value="${TODAY}"/>
+				</section>
+				<section name="Copyright">
+					<attribute name="Copy" value="(C) Joanju Software 2002-2011"/>
+					<attribute name="License" value="Eclipse Public License version 1.0"/>
+				</section>
+			</manifest>
+
+			<zipfileset dir="bin" excludes="${core_xclds}" />
+
+		</jar>
+	</target>
+	
+
+	<target name="makeproparsezip">
+		<delete dir="prorefactor/projects/unittest/pubs" />
+		<zip destfile="proparse.java.zip">
+			<zipfileset dir="lib" prefix="proparse.java/lib" />
+			<zipfileset file="proparse.jar" prefix="proparse.java" />
+			<zipfileset file="build.number" prefix="proparse.java" />
+		</zip>
+	</target>	
+
+
+	<target name="make_dotnet">
+		<exec executable="ikvmbin/ikvmc" dir="." failonerror="true">
+			<arg line="-out:proparse.net.dll -version:4.0.1.${build.number} -keyfile:proparse.snk proparse.jar lib\*.jar"/>
+		</exec>
+		<delete dir="prorefactor/projects/unittest/pubs" />
+		<zip destfile="proparse.assemblies.zip">
+			<zipfileset file="proparse.net.dll" prefix="proparse.assemblies" />
+			<zipfileset file="ikvmbin/IKVM.OpenJDK.Core.dll" prefix="proparse.assemblies" />
+			<zipfileset file="ikvmbin/IKVM.Runtime.dll" prefix="proparse.assemblies" />
+		</zip>
+	</target>	
+
+
+</project>
