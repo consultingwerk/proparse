@@ -29,6 +29,7 @@ public class Lexer implements ProParserTokenTypes {
 	private IntegerIndex<String> filenameList;
 	private Preprocessor prepro;
 
+	private boolean gettingAmpIfDefArg = false;
 	private boolean preserve = false;
 	private int preserveFile;
 	private int preserveLine;
@@ -88,6 +89,12 @@ public class Lexer implements ProParserTokenTypes {
 			textStartSource = prepro.getSourceNum();
 			currText.setLength(1);
 			currText.setCharAt(0, (char)currInt);
+			
+			if (gettingAmpIfDefArg) {
+				getChar();
+				gettingAmpIfDefArg = false;
+				return ampIfDefArg();
+			}
 
 			switch (currChar) {
 
@@ -242,6 +249,64 @@ public class Lexer implements ProParserTokenTypes {
 
 			}
 		}
+	}
+	
+	
+	/** Get argument for &IF DEFINED(...).
+	 * The nextToken function is necessarily the main entry point. This is just
+	 * a wrapper around that.
+	 */
+	ProToken getAmpIfDefArg() throws IOException {
+		gettingAmpIfDefArg = true;
+		return nextToken();
+	}
+	
+	
+	/** Get the text between the parens for &IF DEFINED(...).
+	 * The compiler seems to allow any number of tokens between the parens,
+	 * and like with an &Name reference, it allows embedded comments.
+	 * Here, I'm allowing for the embedded comments and just gathering all the text
+	 * up to the closing paren. Hopefully that will do it.
+	 * 
+	 * The compiler doesn't seem to ignore extra tokens. For example, &if defined(ab cd)
+	 * does not match a macro named "ab". It doesn't match "abcd" either, so all I can guess
+	 * is that they are combining the text of all the tokens between the parens.
+	 * I haven't found any macro name that matches &if defined(ab"cd").
+	 * 
+	 * The compiler works different here than it does for a typical ID token.
+	 * An ID token (like a procedure name) may contain arbitrary quotation marks.
+	 * Within an &if defined() function, the quotation marks must match.
+	 * I don't know if that really makes a difference, because the quoted string
+	 * can't contain a paren ')' anyway, so as far as I can tell we can ignore quotation
+	 * marks and just watch for the closing paren.
+	 * A macro name can't contain any quotation marks anyway, so for all I know
+	 * the compiler's handling of quotes within defined() may just be an artifact of its lexer.
+	 * I don't think there's any way to get whitespace into a macro name either.
+	 */
+	private ProToken ampIfDefArg() throws IOException {
+		loop:
+		for (;;) {
+			if (currChar == ')') {
+				break loop;
+			}
+			// Watch for comments.
+			if (currChar=='/') {
+				getChar();
+				if (currChar != '*') {
+					append('/');
+					continue loop;
+				}
+				else {
+					String s = currText.toString();
+					comment();
+					currText.replace(0, currText.length(), s);
+					continue loop;
+				}
+			}
+			append();
+			getChar();
+		}
+		return makeToken(ID);
 	}
 
 

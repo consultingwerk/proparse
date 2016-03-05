@@ -4,7 +4,7 @@ JPTreeParser.g - Primary tree parser.
 
 Joanju Proparse Syntax Tree Structure Specification
 
-Copyright (c) 2001-2011 Joanju Software.
+Copyright (c) 2001-2015 Joanju Software.
 All rights reserved. This program and the accompanying materials 
 are made available under the terms of the Eclipse Public License v1.0
 which accompanies this distribution, and is available at
@@ -32,7 +32,7 @@ Notes:
 
 
 header {
-	package org.prorefactor.treeparser01;
+	package org.prorefactor.treeparserbase;
 
 	import org.prorefactor.core.IJPNode;
 	import org.prorefactor.treeparser.IJPTreeParser;
@@ -413,7 +413,7 @@ functioncall
 	|	#(PAGENUMBER (LEFTPAREN ID RIGHTPAREN)? )
 	|	#(PAGESIZE_KW (LEFTPAREN ID RIGHTPAREN)? )
 	|	rawfunc // is also a pseudfn.
-	|	#(SEEK LEFTPAREN (INPUT|OUTPUT|ID) RIGHTPAREN )
+	|	#(SEEK LEFTPAREN (INPUT|OUTPUT|ID|STREAMHANDLE expression) RIGHTPAREN )
 	|	substringfunc // is also a pseudfn.
 	|	#(SUPER (parameterlist)? )
 	|	#(TIMEZONE (funargs)? )
@@ -519,6 +519,7 @@ argfunc
 	|	#(MAXIMUM funargs )
 	|	#(MD5DIGEST funargs )
 	|	#(MEMBER funargs )
+	|	#(MESSAGEDIGEST funargs )
 	|	#(MINIMUM funargs )
 	|	#(MONTH funargs )
 	|	#(NORMALIZE funargs )
@@ -554,7 +555,7 @@ argfunc
 	|	#(WEEKDAY funargs )
 	|	#(WIDGETHANDLE funargs )
 	|	#(YEAR funargs )
-	| #(GETCLASS funargs )
+
 	;
 
 recordfunc
@@ -983,7 +984,7 @@ classstate
 			|	USEWIDGETPOOL
 			|	ABSTRACT
 			|	FINAL
-			|   SERIALIZABLE
+			| SERIALIZABLE
 			)*
 			block_colon
 			code_block
@@ -1408,6 +1409,7 @@ definedatasetstate
 			(REFERENCEONLY)?
 			FOR RECORD_NAME (COMMA RECORD_NAME)*
 			( data_relation ( (COMMA)? data_relation)* )?
+			( parent_id_relation ( (COMMA)? parent_id_relation)* )?
 			state_end
 		)
 	;
@@ -1420,6 +1422,14 @@ data_relation
 			|	NOTACTIVE
 			|	RECURSIVE
 			)*
+		)
+	;
+parent_id_relation
+	:	#(	PARENTIDRELATION (ID)?
+			FOR RECORD_NAME COMMA RECORD_NAME
+			PARENTIDFIELD field
+			( PARENTFIELDSBEFORE LEFTPAREN field (COMMA field)* RIGHTPAREN)?
+			( PARENTFIELDSAFTER  LEFTPAREN field (COMMA field)* RIGHTPAREN)?
 		)
 	;
 field_mapping_phrase
@@ -1958,7 +1968,9 @@ function_param_arg
 	:	TABLE (FOR)? RECORD_NAME (APPEND)? (BIND)?
 	|	TABLEHANDLE (FOR)? ID (APPEND)? (BIND)?
 	|	(DATASET|DATASETHANDLE) (FOR)? ID (APPEND)? (BIND)?
-	|	(ID AS)? datatype (extentphrase)?
+	|	(ID AS)=> ID AS datatype (extentphrase)?
+	|	(ID LIKE)=> ID #(LIKE field (VALIDATE)?) (extentphrase)?
+	|	datatype (extentphrase)?
 	;
 
 getstate
@@ -2044,9 +2056,9 @@ insertstate
 	;
 	
 interfacestate
-    :   #(INTERFACE TYPE_NAME (interface_inherits)? block_colon code_block #(END (INTERFACE)?) state_end )
-    ;
-    
+	:	#(INTERFACE TYPE_NAME (interface_inherits)? block_colon code_block #(END (INTERFACE)?) state_end )
+	;
+	
 interface_inherits: #(INHERITS TYPE_NAME (COMMA TYPE_NAME)*);
 	
 io_phrase
@@ -2419,6 +2431,7 @@ recordphrase
 			|	NOWAIT
 			|	NOPREFETCH
 			|	NOERROR_KW
+			|	TABLESCAN
 			)*
 		)
 	;
@@ -2625,6 +2638,7 @@ systemdialoggetdirstate
 			(	#(INITIALDIR expression)
 			|	RETURNTOSTARTDIR
 			|	#(TITLE expression)
+			|	#(UPDATE field)
 			)*
 			state_end
 		)

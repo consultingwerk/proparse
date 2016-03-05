@@ -11,19 +11,19 @@
 
 	<target name="proparse_g" description="Invoke Antlr" >
 		<antlr target="proparse.g" traceparser="false" >
-			<classpath path="../../../../lib/antlr.jar" />
+			<classpath path="../../../../lib/antlr-2.7.7.jar" />
 		</antlr>
 	</target>
 
 	<target name="proeval_g" description="Invoke Antlr">
 		<antlr target="proeval.g" >
-			<classpath path="../../../../lib/antlr.jar" />
+			<classpath path="../../../../lib/antlr-2.7.7.jar" />
 		</antlr>
 	</target>
 
 	<target name="proparse_g_traceparser" description="Invoke Antlr" >
 		<antlr target="proparse.g" traceparser="true" >
-			<classpath path="../../../../lib/antlr.jar" />
+			<classpath path="../../../../lib/antlr-2.7.7.jar" />
 		</antlr>
 	</target>
 

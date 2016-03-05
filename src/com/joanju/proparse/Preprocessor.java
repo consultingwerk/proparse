@@ -821,7 +821,10 @@ public class Preprocessor {
 				.append(" ")
 				.append(refPos.col)
 				.append(" macroref ")
-				.append(macroName);
+				// Using this trick: {{&undefined-argument}{&*}}
+				// it is possible to get line breaks into what we
+				// get here as the macroName. See test data bug15.p and bug15.i.
+				.append(escapeLineBreaks(macroName));
 			listingStream.write(bldr.toString());
 			listingStream.newLine();
 		}

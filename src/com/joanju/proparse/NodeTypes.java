@@ -402,6 +402,7 @@ public class NodeTypes implements ProParserTokenTypes, TokenTypesI, Xferable {
 		add(BLANK, 5, "blank", TI.KEYWORD | TI.RESERVED);
 		add(BLOB, 4, "blob", TI.KEYWORD);
 		add(BLOCK_LABEL, 0, "", TI.NO_FLAGS);
+		add(BLOCKLEVEL, 11, "block-level", TI.KEYWORD);
 		add(BOTH, 4, "both", TI.KEYWORD);
 		add(BOTTOM, 6, "bottom", TI.KEYWORD);
 		add(BOX, 3, "box", TI.KEYWORD | TI.MAY_BE_REGULAR_FUNC);
@@ -744,6 +745,7 @@ public class NodeTypes implements ProParserTokenTypes, TokenTypesI, Xferable {
 		add(GETCGILIST, 12, "get-cgi-list", TI.KEYWORD);
 		add(GETCGILONGVALUE, 18, "get-cgi-long-value", TI.KEYWORD);
 		add(GETCGIVALUE, 13, "get-cgi-value", TI.KEYWORD);
+		add(GETCLASS, 9, "get-class", TI.KEYWORD | TI.MAY_BE_REGULAR_FUNC);
 		add(GETCODEPAGES, 12, "get-codepages", TI.KEYWORD | TI.RESERVED | TI.MAY_BE_NO_ARG_FUNC | TI.MAY_BE_REGULAR_FUNC);
 		add(GETCOLLATIONS, 8, "get-collations", TI.KEYWORD | TI.RESERVED | TI.MAY_BE_REGULAR_FUNC);
 		add(GETCONFIGVALUE, 16, "get-config-value", TI.KEYWORD);
@@ -942,6 +944,7 @@ public class NodeTypes implements ProParserTokenTypes, TokenTypesI, Xferable {
 		add(MENUITEM, 9, "menu-item", TI.KEYWORD);
 		add(MERGEBYFIELD, 14, "merge-by-field", TI.KEYWORD);
 		add(MESSAGE, 7, "message", TI.KEYWORD | TI.RESERVED);
+		add(MESSAGEDIGEST, 14, "message-digest", TI.KEYWORD);
 		add(MESSAGELINE, 12, "message-line", TI.KEYWORD);
 		add(MESSAGELINES, 13, "message-lines", TI.KEYWORD | TI.RESERVED | TI.MAY_BE_NO_ARG_FUNC);
 		add(METHOD, 6, "method", TI.KEYWORD);
@@ -1079,6 +1082,10 @@ public class NodeTypes implements ProParserTokenTypes, TokenTypesI, Xferable {
 		add(PAGEWIDTH, 8, "page-width", TI.KEYWORD);
 		add(PARAMETER, 5, "parameter", TI.KEYWORD | TI.RESERVED);
 		add(PARENT, 6, "parent", TI.KEYWORD);
+		add(PARENTFIELDSAFTER, 19, "parent-fields-after", TI.KEYWORD);
+		add(PARENTFIELDSBEFORE, 20, "parent-fields-before", TI.KEYWORD);
+		add(PARENTIDFIELD, 15, "parent-id-field", TI.KEYWORD);
+		add(PARENTIDRELATION, 18, "parent-id-relation", TI.KEYWORD);
 		add(PARTIALKEY, 11, "partial-key", TI.KEYWORD);
 		add(PASCAL_KW, 6, "pascal", TI.KEYWORD);
 		add(PASSWORDFIELD, 14, "password-field", TI.KEYWORD | TI.RESERVED);
@@ -1376,6 +1383,7 @@ public class NodeTypes implements ProParserTokenTypes, TokenTypesI, Xferable {
 		add(TABLE, 5, "table", TI.KEYWORD | TI.RESERVED);
 		add(TABLEHANDLE, 12, "table-handle", TI.KEYWORD | TI.RESERVED);
 		add(TABLENUMBER, 12, "table-number", TI.KEYWORD | TI.RESERVED);
+		add(TABLESCAN, 10, "table-scan", TI.KEYWORD);
 		add(TARGET, 6, "target", TI.KEYWORD);
 		add(TARGETPROCEDURE, 16, "target-procedure", TI.KEYWORD | TI.SYSHDL);
 		add(TEMPTABLE, 10, "temp-table", TI.KEYWORD);
@@ -1519,11 +1527,6 @@ public class NodeTypes implements ProParserTokenTypes, TokenTypesI, Xferable {
 		add(YESNO, 6, "yes-no", TI.KEYWORD);
 		add(YESNOCANCEL, 13, "yes-no-cancel", TI.KEYWORD);
 		add(YOF, 4, "y-of", TI.KEYWORD);
-		
-// added by Mike Fechner / Consultingwerk Ltd.
-		add(BLOCKLEVEL, 11, "block-level", TI.KEYWORD);
-		add(GETCLASS, 9, "get-class", TI.KEYWORD | TI.MAY_BE_REGULAR_FUNC);
-		
 	}
 
 

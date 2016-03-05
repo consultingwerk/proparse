@@ -578,6 +578,7 @@ public class TokenTypes implements JPTreeParserTokenTypes, TokenTypesI {
 		allTokens[MENUITEM].keywordText = "MENU-ITEM";
 		allTokens[MENUBAR].keywordText = "MENU-BAR";
 		allTokens[MESSAGE].keywordText = "MESSAGE";
+		allTokens[MESSAGEDIGEST].keywordText = "MESSAGE-DIGEST";
 		allTokens[MESSAGELINE].keywordText = "MESSAGE-LINE";
 		allTokens[MESSAGELINES].keywordText = "MESSAGE-LINES";
 		allTokens[MINSIZE].keywordText = "MIN-SIZE";
@@ -693,6 +694,10 @@ public class TokenTypes implements JPTreeParserTokenTypes, TokenTypesI {
 		allTokens[PAGED].keywordText = "PAGED";
 		allTokens[PARAMETER].keywordText = "PARAMETER";
 		allTokens[PARENT].keywordText = "PARENT";
+		allTokens[PARENTFIELDSAFTER].keywordText = "PARENT-FIELDS-AFTER";
+		allTokens[PARENTFIELDSBEFORE].keywordText = "PARENT-FIELDS-BEFORE";
+		allTokens[PARENTIDFIELD].keywordText = "PARENT-ID-FIELD";
+		allTokens[PARENTIDRELATION].keywordText = "PARENT-ID-RELATION";
 		allTokens[PARTIALKEY].keywordText = "PARTIAL-KEY";
 		allTokens[PASCAL_KW].keywordText = "PASCAL";
 		allTokens[PAUSE].keywordText = "PAUSE";
@@ -891,6 +896,7 @@ public class TokenTypes implements JPTreeParserTokenTypes, TokenTypesI {
 		allTokens[TABLE].keywordText = "TABLE";
 		allTokens[TABLEHANDLE].keywordText = "TABLE-HANDLE";
 		allTokens[TABLENUMBER].keywordText = "TABLE-NUMBER";
+		allTokens[TABLESCAN].keywordText = "TABLE-SCAN";
 		allTokens[TARGET].keywordText = "TARGET";
 		allTokens[TARGETPROCEDURE].keywordText = "TARGET-PROCEDURE";
 		allTokens[TEMPTABLE].keywordText = "TEMP-TABLE";

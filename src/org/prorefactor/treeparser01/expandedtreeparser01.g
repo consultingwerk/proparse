@@ -149,7 +149,7 @@ functioncall :#(ACCUMULATE accum_what (#(BY expression (DESCENDING)?))? expressi
 	|	#(sr:SUPER {action.callBegin(#sr);} (parameterlist)? {action.callEnd();} )
 	|	#(TIMEZONE (funargs)? )
 	|	#(TYPEOF LEFTPAREN expression COMMA TYPE_NAME RIGHTPAREN )
-	|   #(GETCLASS LEFTPAREN TYPE_NAME RIGHTPAREN )
+	| #(GETCLASS LEFTPAREN TYPE_NAME RIGHTPAREN )
 	|	#(USERID (funargs)? )
 	|	#(USER (funargs)? )
 	|	sqlaggregatefunc  
@@ -2044,6 +2044,7 @@ argfunc :#(AACBIT funargs )
 	|	#(MAXIMUM funargs )
 	|	#(MD5DIGEST funargs )
 	|	#(MEMBER funargs )
+	|	#(MESSAGEDIGEST funargs )
 	|	#(MINIMUM funargs )
 	|	#(MONTH funargs )
 	|	#(NORMALIZE funargs )
@@ -2079,7 +2080,7 @@ argfunc :#(AACBIT funargs )
 	|	#(WEEKDAY funargs )
 	|	#(WIDGETHANDLE funargs )
 	|	#(YEAR funargs )
-	|   #(GETCLASS funargs )
+
 	;
 
 // inherited from grammar JPTreeParser
@@ -2567,6 +2568,15 @@ def_modifiers :( PRIVATE | PROTECTED | PUBLIC | STATIC | ABSTRACT | OVERRIDE | F
 	;
 
 // inherited from grammar JPTreeParser
+parent_id_relation :#(	PARENTIDRELATION (ID)?
+			FOR RECORD_NAME COMMA RECORD_NAME
+			PARENTIDFIELD field
+			( PARENTFIELDSBEFORE LEFTPAREN field (COMMA field)* RIGHTPAREN)?
+			( PARENTFIELDSAFTER  LEFTPAREN field (COMMA field)* RIGHTPAREN)?
+		)
+	;
+
+// inherited from grammar JPTreeParser
 defineproperty_accessor :#(	Property_getter def_modifiers GET
 			(	(PERIOD)=> PERIOD
 			|	(function_params)? block_colon code_block END (GET)? PERIOD
@@ -2716,11 +2726,11 @@ inputoutputthroughstate :#(INPUTOUTPUT (stream_name_or_handle)? THROUGH io_phras
 	;
 
 // inherited from grammar JPTreeParser
-interfacestate
-    :   #(INTERFACE TYPE_NAME (interface_inherits)? block_colon code_block #(END (INTERFACE)?) state_end )
-    ;
-    
-interface_inherits: #(INHERITS TYPE_NAME (COMMA TYPE_NAME)*);	
+interfacestate :#(INTERFACE TYPE_NAME (interface_inherits)? block_colon code_block #(END (INTERFACE)?) state_end )
+	;
+
+// inherited from grammar JPTreeParser
+interface_inherits :#(INHERITS TYPE_NAME (COMMA TYPE_NAME)*);
 
 // inherited from grammar JPTreeParser
 io_phrase :(	#(OSDIR LEFTPAREN expression RIGHTPAREN (NOATTRLIST)? )

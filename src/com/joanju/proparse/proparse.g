@@ -16,7 +16,7 @@ do we not want to try to figure out (from lexical) if it's an attribute
 or method, but we want to make sure that either field or METHOD will
 work in a particular spot, that METHOD is tried for first.
 
-Copyright (C) 2001-2011 Joanju Software (www.joanju.com). All rights reserved.
+Copyright (C) 2001-2015 Joanju Software (www.joanju.com). All rights reserved.
 This file is made available under the terms of the Eclipse Public License v1.0.
 */
 
@@ -242,7 +242,7 @@ statement
 	|	applystate
 	|	assignstate
 	|	bellstate
-    |   blocklevelstate | runstatement	
+    |   blocklevelstate	
 	|	buffercomparestate
 	|	buffercopystate
 	|	callstate  | casestate | catchstate
@@ -300,6 +300,7 @@ statement
 	|	repositionstate  
 	|	returnstate  | revokestate
 	|	routinelevelstate
+	|	runstatement
 	|	savecachestate  | scrollstate
 	|	seekstate  
 	|	selectstate
@@ -416,7 +417,7 @@ builtinfunc
 	|	PAGENUMBER^ LEFTPAREN streamname RIGHTPAREN  // also noarg
 	|	PAGESIZE_KW^ LEFTPAREN streamname RIGHTPAREN  // also noarg
 	|	rawfunc // is also a pseudfn.
-	|	SEEK^ LEFTPAREN (INPUT|OUTPUT|streamname) RIGHTPAREN // streamname, /not/ stream_name_or_handle.
+	|	SEEK^ LEFTPAREN (INPUT|OUTPUT|streamname|STREAMHANDLE expression) RIGHTPAREN // streamname, /not/ stream_name_or_handle.
 	|	substringfunc // is also a pseudfn.
 	|	SUPER^ parameterlist  // also noarg
 	|	TIMEZONE^ funargs  // also noarg
@@ -520,6 +521,7 @@ argfunc
 		|	MAXIMUM^
 		|	MD5DIGEST^
 		|	MEMBER^
+		|	MESSAGEDIGEST^
 		|	MINIMUM^
 		|	MONTH^
 		|	NORMALIZE^
@@ -796,7 +798,7 @@ exprt
 		// Also has to be checked before systemhandlename, because you want to pick up all
 		// of FILE-INFO:FILE-TYPE rather than just FILE-INFO, for example.
 		(widname (OBJCOLON|DOUBLECOLON))=> widname attr_colon {##=#([Widget_ref],##);}
-	|	(exprt2)=> exprt2 (options{greedy=true;}:  attr_colon {##=#([Widget_ref],##);} )?
+	| exprt2 (options{greedy=true;}:  attr_colon {##=#([Widget_ref],##);} )?
 	;
 
 exprt2
@@ -1997,6 +1999,7 @@ definedatasetstate
 		(REFERENCEONLY)?
 		FOR record (COMMA record)*
 		(data_relation ( (COMMA)? data_relation)* )?
+		( parent_id_relation ( (COMMA)? parent_id_relation)* )?
 		state_end
 	;
 data_relation
@@ -2010,6 +2013,13 @@ data_relation
 		|	RECURSIVE
 		)*
 		{if (#n != null) support.defVar(#n.getText());}
+	;
+parent_id_relation
+	:	PARENTIDRELATION^ (n:identifier)?
+		FOR record COMMA record
+		PARENTIDFIELD field
+		( PARENTFIELDSBEFORE LEFTPAREN field (COMMA field)* RIGHTPAREN)?
+		( PARENTFIELDSAFTER  LEFTPAREN field (COMMA field)* RIGHTPAREN)?
 	;
 field_mapping_phrase
 	:	RELATIONFIELDS^	LEFTPAREN
@@ -2401,8 +2411,10 @@ dostate
 
 downstate
 	:	DOWN^
+		// The STREAM phrase may come before or after the expression, ex: DOWN 1 STREAM  MyStream.
 		(options{greedy=true;}: stream_name_or_handle)?
 		(options{greedy=true;}: expression)?
+		(options{greedy=true;}: stream_name_or_handle)?
 		(framephrase)? state_end
 		{sthd(##,0);}
 	;
@@ -2770,6 +2782,10 @@ function_param
 			)
 			(extentphrase)?
 			{support.defVar(#n.getText());}
+		|	{LA(2)==LIKE}?
+			n2:identifier like_field
+			(extentphrase)?
+			{support.defVar(#n2.getText());}
 		|	{LA(2)!=NAMEDOT}? TABLE (FOR)? record (APPEND)? (BIND)?
 		|	{LA(2)!=NAMEDOT}? TABLEHANDLE (FOR)? hn:identifier (APPEND)? (BIND)?
 			{support.defVar(#hn.getText());}
@@ -3469,6 +3485,7 @@ record_opt
 	|	NOWAIT
 	|	NOPREFETCH
 	|	NOERROR_KW
+	|	TABLESCAN
 	;
 
 releasestatement
@@ -3729,6 +3746,7 @@ systemdialoggetdir_opt
 	:	INITIALDIR^ expression
 	|	RETURNTOSTARTDIR
 	|	TITLE^ expression
+	|	UPDATE^ field
 	;
 
 systemdialoggetfilestate
@@ -4140,7 +4158,7 @@ STATIC | THROW | TOPNAVQUERY | UNBOX
 // 10.2B
 ABSTRACT | DELEGATE | DYNAMICNEW | EVENT | FOREIGNKEYHIDDEN | SERIALIZEHIDDEN | SERIALIZENAME | SIGNATURE | STOPAFTER |
 // 11+
-SERIALIZABLE | GETCLASS
+GETCLASS | SERIALIZABLE | TABLESCAN | MESSAGEDIGEST
 	;
 
 

@@ -5,7 +5,7 @@
  * www.joanju.com
  *
  * Copyright (C) 2004-2007 Joanju Software.
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
@@ -64,8 +64,8 @@ public class ParseUnit {
 	protected RefactorSession refpack = RefactorSession.getInstance();
 	private SymbolScopeRoot rootScope;
 
-	
-	
+
+
 	public File getFile() {
 		if (file==null) {
 			// A lot of old code starts with a string filename, sends that to Proparse, gets the top node
@@ -77,8 +77,8 @@ public class ParseUnit {
 		}
 		return file;
 	}
-	
-	
+
+
 	/** Get the file index, either from the PUB file or from the parser, whichever was used to get the tree.
 	 * The return is the array of file names. The file at index zero is always the compile unit.
 	 * The others are include files. The array index position corresponds to JPNode.getFileIndex().
@@ -88,8 +88,8 @@ public class ParseUnit {
 		if (topNode==null) return null;
 		return topNode.getFilenames();
 	}
-	
-	
+
+
 	/** This will trigger a parse if the PUB is out of date. */
 	public IncludeRef getMacroGraph() throws RefactorException, IOException {
 		if (macroGraph!=null) return macroGraph;
@@ -111,11 +111,11 @@ public class ParseUnit {
 		}
 		return macroGraph;
 	}
-	
-	
+
+
 	/** This is just a shortcut for calling getMacroGraph() and MacroLevel.sourceArray().
 	 * Build and return an array of the MacroRef objects, which would map to the SOURCENUM attribute from JPNode.
-	 * Built simply by walking the tree and adding every MacroRef to the array. 
+	 * Built simply by walking the tree and adding every MacroRef to the array.
 	 * @see org.prorefactor.macrolevel.MacroLevel#sourceArray(MacroRef)
 	 */
 	public MacroRef [] getMacroSourceArray() throws RefactorException, IOException {
@@ -131,8 +131,8 @@ public class ParseUnit {
 		}
 		return pub;
 	}
-	
-	
+
+
 	public SymbolScopeRoot getRootScope() { return rootScope; }
 
 
@@ -141,8 +141,8 @@ public class ParseUnit {
 		if (topNode==null && pub!=null) setTopNode(pub.getTree());
 		return topNode;
 	}
-	
-	
+
+
 	/** Load from PUB, or build PUB if it's out of date.
 	 * TreeParser01 is run in order to build the PUB.
 	 * If the PUB was up to date, then TreeParser01 is run
@@ -158,14 +158,14 @@ public class ParseUnit {
 			pub.build();
 		}
 	}
-	
-	
+
+
 	private File macroGraphFile() {
 		// .msg = Macro Source Graph. Common source of heartburn.
 		return new File(PUB.pubDirFileName(file.getAbsolutePath()) + ".msg");
 	}
-	
-	
+
+
 	public void parse() throws RefactorException {
 		refpack.enableParserListing();
 		DoParse doParse = new DoParse(file.getPath());
@@ -196,10 +196,10 @@ public class ParseUnit {
 		return this;
 	}
 
-	
+
 	public void setRootScope(SymbolScopeRoot rootScope) { this.rootScope = rootScope; }
 
-	
+
 	/** Set the syntax tree top (Program_root) node. */
 	public void setTopNode(JPNode topNode) { this.topNode = (ProgramRootNode) topNode; }
 
@@ -216,7 +216,7 @@ public class ParseUnit {
 		}
 	}
 
-	
+
 	/** Run TreeParser01.
 	 * Takes care of calling parse() first, if that has not already been done.
 	 */
@@ -227,7 +227,7 @@ public class ParseUnit {
 		treeParser(tp);
 	}
 
-	
+
 	/** Run TreeParser01 with any TP01Action object.
 	 * Takes care of calling parse() first, if that has not already been done.
 	 */
@@ -239,5 +239,5 @@ public class ParseUnit {
 		treeParser(tp);
 	}
 
-	
+
 }

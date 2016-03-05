@@ -3,9 +3,9 @@
  * @author John Green
  * 19-Nov-2002
  * www.joanju.com
- * 
+ *
  * Copyright (c) 2002-2008 Joanju Software.
- * All rights reserved. This program and the accompanying materials 
+ * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
@@ -74,8 +74,8 @@ public class TP01Support extends TP01Action {
 	 * a block's parent, buffer scopes, etc. That logic is found within
 	 * the Block class.
 	 * Conversely, we cannot use Block.parent to find the current block
-	 * when we close out a block. That is because a scope's root block 
-	 * parent is always the program block, but a programmer may code a 
+	 * when we close out a block. That is because a scope's root block
+	 * parent is always the program block, but a programmer may code a
 	 * scope into a non-root block... which we need to make current again
 	 * once done inside the scope.
 	 */
@@ -98,7 +98,7 @@ public class TP01Support extends TP01Action {
 	 * Needed when we have complex syntax like DEFINE id ... LIKE,
 	 * where we want to track the LIKE but it's not in the same grammar
 	 * production as the DEFINE.
-	 */ 
+	 */
 	private Symbol currSymbol;
 
 	SymbolScope currentScope;
@@ -107,7 +107,8 @@ public class TP01Support extends TP01Action {
 	TableBuffer prevTableReferenced;
 	TableBuffer currDefTable;
 
-	{	// initialization
+	public TP01Support() {	/* CCL */
+		// initialization
 		rootScope = new SymbolScopeRoot();
 		currentScope = rootScope;
 		// See programRoot() for initiazation of the root Block.
@@ -115,14 +116,14 @@ public class TP01Support extends TP01Action {
 
 
 
-	
+
 	/** Called at the *end* of the statement that defines the symbol. */
 	@Override
 	public void addToSymbolScope(Object o) {
 		currentScope.add((Symbol)o);
 	}
 
-	
+
 	/** Get the Table symbol linked from a RECORD_NAME AST. */
 	private Table astTableLink(AST tableAST) {
 		TableBuffer buffer = (TableBuffer) ((JPNode)tableAST).getLink(JPNode.SYMBOL);
@@ -146,14 +147,14 @@ public class TP01Support extends TP01Action {
 		currentBlock = popBlock();
 	}
 
-	
+
 	/** The ID node in a BROWSE ID pair. */
 	@Override
 	protected void browseRef(AST idAST) {
 		frameStack.browseRefNode((JPNode)idAST, currentScope);
 	}
-	
-	
+
+
 	@Override
 	protected void callBegin(AST callAST) {
 		JPNode callNode = (JPNode) callAST;
@@ -161,8 +162,8 @@ public class TP01Support extends TP01Action {
 		callNode.setCall(call);
 		wipCalls.addFirst(call);
 	}
-	
-	
+
+
 	@Override
 	protected void callEnd() {
 		// Record the call in the current context.
@@ -170,7 +171,7 @@ public class TP01Support extends TP01Action {
 		wipCalls.removeFirst();
 	}
 
-	
+
 	/** A CAN-FIND needs to have its own buffer and buffer scope,
 	 * because CAN-FIND(x where x.y = z) does *not* cause a buffer
 	 * reference to be created for x within the surrounding block.
@@ -211,8 +212,8 @@ public class TP01Support extends TP01Action {
 	protected void canFindEnd(AST canfindAST) {
 		scopeClose(canfindAST);
 	}
-	
-	
+
+
 	@Override
 	protected void classState(AST classAST) {
 		JPNode classNode = (JPNode) classAST;
@@ -261,7 +262,7 @@ public class TP01Support extends TP01Action {
 		return pu.getRootScope().generateSymbolScopeSuper();
 	}
 
-	
+
 	@Override
 	protected void clearState(AST headAST) {
 		JPNode headNode = (JPNode)headAST;
@@ -269,16 +270,16 @@ public class TP01Support extends TP01Action {
 		if (firstChild.getType()==TokenTypes.FRAME)
 			frameStack.simpleFrameInitStatement(headNode, firstChild.nextNode(), currentBlock);
 	}
-	
-	
+
+
 	@Override
 	protected void datasetTable(AST tableAST) {
 		RecordNameNode tableNode = (RecordNameNode) tableAST;
 		Dataset dataset = (Dataset) currSymbol;
 		dataset.addBuffer(tableNode.getTableBuffer());
 	}
-	
-	
+
+
 	/** The tree parser calls this at an AS node */
 	@Override
 	protected void defAs(AST asAST) {
@@ -299,7 +300,7 @@ public class TP01Support extends TP01Action {
 			;
 	}
 
-	
+
 	@Override
 	protected void defExtent(AST extentAST) {
 		JPNode extentNode = (JPNode)extentAST;
@@ -313,8 +314,8 @@ public class TP01Support extends TP01Action {
 			primative.setExtent(Integer.parseInt(exprNode.getText()));
 		}
 	}
-	
-	
+
+
 	/** The tree parser calls this at a LIKE node */
 	@Override
 	protected void defLike(AST likeAST) {
@@ -328,8 +329,8 @@ public class TP01Support extends TP01Action {
 			: "Failed to set datatype at " + likeNode.getFilename() + " line " + likeNode.getLine()
 			;
 	}
-	
-	
+
+
 	/** Called at the start of a DEFINE BROWSE statement. */
 	@Override
 	protected Browse defineBrowse(AST defAST, AST idAST) {
@@ -337,7 +338,7 @@ public class TP01Support extends TP01Action {
 		frameStack.nodeOfDefineBrowse(browse, (JPNode)defAST);
 		return browse;
 	}
-	
+
 
 	/** Define a buffer. If the buffer is initialized at the same time it is
 	 * defined (as in a buffer parameter), then parameter init should be true.
@@ -368,7 +369,7 @@ public class TP01Support extends TP01Action {
 		currSymbol = bufSymbol;
 	}
 
-	
+
 	@Override
 	protected Event defineEvent(AST defAST, AST idAST) {
 		JPNode defNode = (JPNode) defAST;
@@ -440,8 +441,8 @@ public class TP01Support extends TP01Action {
 					;
 		}
 	}
-	
-	
+
+
 	protected void defineTable(JPNode defNode, JPNode idNode, int storeType) {
 		TableBuffer buffer = rootScope.defineTable(idNode.getText(), storeType);
 		buffer.setDefOrIdNode(defNode);
@@ -512,7 +513,7 @@ public class TP01Support extends TP01Action {
 	 * @param refAST The Field_ref node.
 	 * @param idAST The ID node.
 	 * @param contextQualifier What sort of reference is this? Read? Update? Etc.
-	 * @param 
+	 * @param
 	 * @param whichTable For name resolution - which table must this be a field of?
 	 * Input 0 for any table, 1 for the lastTableReferenced, 2 for the prevTableReferenced.
 	 */
@@ -522,14 +523,14 @@ public class TP01Support extends TP01Action {
 		FieldRefNode refNode = (FieldRefNode) refAST;
 		String name = idNode.getText();
 		FieldLookupResult result = null;
-		
+
 		refNode.attrSet(IConstants.CONTEXT_QUALIFIER, contextQualifier);
 
 		// Check if this is a Field_ref being "inline defined"
 		// If so, we define it right now.
 		if (refNode.attrGet(IConstants.INLINE_VAR_DEF) == 1)
 			addToSymbolScope(defineVariable(idAST, idAST));
-		
+
 		if (	(	// There seems to be an implicit INPUT in USING phrases in a record phrase.
 					refNode.parent().getType() == TokenTypes.USING
 				&&	refNode.parent().parent().getType() == TokenTypes.RECORD_NAME
@@ -551,7 +552,7 @@ public class TP01Support extends TP01Action {
 			// recently referenced list.
 			result = frameStack.inputFieldLookup(refNode, currentScope);
 		} else if (whichTable == 0) {
-			// Lookup the field, with special handling for FIELDS/USING/EXCEPT phrases	
+			// Lookup the field, with special handling for FIELDS/USING/EXCEPT phrases
 			boolean getBufferScope = (contextQualifier != CQ.SYMBOL);
 			result = currentBlock.lookupField(name, getBufferScope);
 		} else {
@@ -640,7 +641,7 @@ if (result==null) return;
 	protected void fnvExpression(AST node){
 		wipExpression = new Expression((JPNode) node);
 	}
-	
+
 
 	/** Called by the tree parser for filenameorvalue: FILENAME  production
 	 * Partly implemented for Calls and Routines.
@@ -653,7 +654,7 @@ if (result==null) return;
 		wipExpression = exp;
 	}
 
-	
+
 	/** Called from Form_item node */
 	@Override
 	protected void formItem(AST ast) {
@@ -671,7 +672,7 @@ if (result==null) return;
 	protected void frameDef(AST defAST, AST idAST) {
 		frameStack.nodeOfDefineFrame((JPNode)defAST, (JPNode)idAST, currentScope);
 	}
-	
+
 	/** This is a specialization of frameInitializingStatement, called for ENABLE|UPDATE|PROMPT-FOR. */
 	@Override
 	protected void frameEnablingStatement(AST ast) {
@@ -679,17 +680,17 @@ if (result==null) return;
 		frameStack.statementIsEnabler();
 		frameStack.nodeOfInitializingStatement((JPNode)ast, currentBlock);
 	}
-	
+
 	/** This is called at the beginning of a frame affecting statement, with the statement head node. */
 	@Override
 	protected void frameInitializingStatement(AST ast) {
 		frameStack.nodeOfInitializingStatement((JPNode)ast, currentBlock);
 	}
-	
+
 	/** This is called at the end of a frame affecting statement. */
 	@Override
 	protected void frameStatementEnd() {
-		frameStack.statementEnd(); 
+		frameStack.statementEnd();
 	}
 
 	@Override
@@ -697,7 +698,7 @@ if (result==null) return;
 		frameStack.frameRefNode((JPNode)idAST, currentScope);
 	}
 
-	
+
 	@Override
 	protected void funcBegin(AST funcAST, AST idAST) {
 		// John: Need some comments here. Why don't I just fetch any
@@ -715,10 +716,10 @@ if (result==null) return;
 		definingScope.add(r);
 		currentRoutine = r;
 	}
-	
+
 	@Override
 	protected void funcDef(AST funcAST, AST idAST) {
-		/* If this function definition had a function forward declaration, 
+		/* If this function definition had a function forward declaration,
 		 * then we use the block and scope from that
 		 * declaration, in case it is where the parameters were defined.
 		 * (You can define the params in the FORWARD, and leave them out at the body.)
@@ -751,16 +752,16 @@ if (result==null) return;
 	protected void funcForward(AST idAST) {
 		funcForwards.put(idAST.getText(), currentScope);
 	}
-	
-	
+
+
 	public SymbolScope getCurrentScope(){ return currentScope; }
 
 	/** Partly implemented for Calls and Routines. */
 	public ErrorList getErrorList() { return errorList; }
 
 	public SymbolScopeRoot getRootScope() { return rootScope; }
-	
-	
+
+
 	@Override
 	protected void lexat(AST fieldRefAST) {
 		frameStack.lexAt((JPNode)fieldRefAST);
@@ -780,26 +781,26 @@ if (result==null) return;
 		definingScope.add(r);
 		currentRoutine = r;
 	}
-	
+
 	@Override
 	protected void methodEnd(AST blockAST) {
 		scopeClose(blockAST);
 		currentRoutine = rootRoutine;
 	}
-	
-	
+
+
 	@Override
 	protected void paramBind() {
 		wipParameters.getFirst().setBind(true);
 	}
-	
-	
+
+
 	@Override
 	protected void paramEnd() {
 		wipParameters.removeFirst();
 	}
-	
-	
+
+
 	@Override
 	protected void paramExpression(AST exprAST) {
 		JPNode exprNode = (JPNode) exprAST;
@@ -807,8 +808,8 @@ if (result==null) return;
 		// As a result, the symbol for an expression parameter might be null.
 		wipParameters.getFirst().setSymbol(exprNode.getSymbol());
 	}
-	
-	
+
+
 	@Override
 	protected void paramForCall(AST directionAST) {
 		Parameter param = new Parameter();
@@ -816,8 +817,8 @@ if (result==null) return;
 		wipParameters.addFirst(param);
 		wipCalls.getFirst().addParameter(param);
 	}
-	
-	
+
+
 	@Override
 	protected void paramForRoutine(AST directionAST) {
 		Parameter param = new Parameter();
@@ -825,7 +826,7 @@ if (result==null) return;
 		wipParameters.addFirst(param);
 		currentRoutine.addParameter(param);
 	}
-	
+
 
 	/** Called for a parameter with no identifier.
 	 * You may have a parameter that has no name, which means that it is a
@@ -848,14 +849,14 @@ if (result==null) return;
 			variable.setDataType(DataType.getDataType(typeNode.getType()));
 		}
 	}
-	
-	
+
+
 	@Override
 	protected void paramProgressType(int progressType) {
 		wipParameters.getFirst().setProgressType(progressType);
 	}
-	
-	
+
+
 	@Override
 	protected void paramSymbol(AST symbolAST) {
 		wipParameters.getFirst().setSymbol(((JPNode)symbolAST).getSymbol());
@@ -880,8 +881,8 @@ if (result==null) return;
 		definingScope.add(r);
 		currentRoutine = r;
 	}
-	
-	
+
+
 	@Override
 	protected void procedureEnd(AST node){
 		scopeClose(node);
@@ -905,8 +906,8 @@ if (result==null) return;
 		currentRoutine = r;
 		rootRoutine = r;
 	}
-	
-	
+
+
 	@Override
 	protected void programTail() {
 		// Because the tree parser depends on PUB files for getting inheritance information
@@ -919,7 +920,7 @@ if (result==null) return;
 				if (! pub.isCurrent()) pub.build(this);
 			} catch (Exception e) { throw new Error(e); }
 		}
-		
+
 		// Now that we know what all the internal Routines are, wrap up the Calls.
 		ArrayList<SymbolScope> allScopes = new ArrayList<SymbolScope>();
 		allScopes.add(rootScope);
@@ -1031,8 +1032,8 @@ if (result==null) return;
 		}
 		buffer.noteReference(contextQualifier);
 	}
-	
-	
+
+
 	@Override
 	protected void routineReturnDatatype(AST datatypeAST) {
 		JPNode datatypeNode = (JPNode) datatypeAST;
@@ -1040,7 +1041,7 @@ if (result==null) return;
 			datatypeNode = datatypeNode.nextNode();
 		currentRoutine.setReturnDatatypeNode(datatypeNode);
 	}
-	
+
 
 	/** Called by the tree parser at the beginning of a RUN statement.
 	 * @author pcd
@@ -1056,7 +1057,7 @@ if (result==null) return;
 		wipCalls.addFirst(call);
 	}
 
-	
+
 	/** Called by the tree parser in the RUN statement right before any parameters.
 	 * @author pcd
 	 */
@@ -1066,7 +1067,7 @@ if (result==null) return;
 		currentScope.registerCall(wipCalls.getFirst());
 		wipCalls.removeFirst();
 	}
-	
+
 
 	/** Called by the tree parser for RUN IN HANDLE.
 	 * Get the RunHandle value in "run <proc> in <handle>." Where <handle>
@@ -1085,7 +1086,7 @@ if (result==null) return;
 	 * Update the <handle> in "run <proc> persistent set <handle>.":
 	 * save a reference to the external procedure <proc> in <handle>.
 	 * The AST structure for this form of the run is:
-	 * runstate	: 
+	 * runstate	:
 	 * 		#(	RUN filenameorvalue (#(PERSISTENT ( #(SET (field)? ) <A> )? )
 	 * where <A> is this action. Thus, we expect a value in wipFieldNode
 	 * with the name of the handle variable.
@@ -1130,8 +1131,8 @@ if (result==null) return;
 		blockEnd(); // pop the unused block from the stack
 		currentBlock = pushBlock(scope.getRootBlock());
 	}
-	
-	
+
+
 	@Override
 	protected void setSymbol(int symbolType, AST idAST) {
 		JPNode idNode = (JPNode) idAST;
@@ -1148,7 +1149,7 @@ if (result==null) return;
 	protected void strongScope(AST anode) {
 		currentBlock.addStrongBufferScope((RecordNameNode)anode);
 	}
-	
+
 
 	/** Constructor or destructor. */
 	@Override
@@ -1166,16 +1167,16 @@ if (result==null) return;
 		blockNode.setSymbol(r);
 		currentRoutine = r;
 	}
-	
-	
+
+
 	/** End of constructor or destructor. */
 	@Override
 	protected void structorEnd(AST blockAST) {
 		scopeClose(blockAST);
 		currentRoutine = rootRoutine;
 	}
-	
-	
+
+
 	/** Called at the end of a VIEW statement. */
 	@Override
 	protected void viewState(AST headAST) {

@@ -85,22 +85,18 @@ public class Postlexer implements antlr.TokenStream, ProParserTokenTypes {
 
 	ProToken defined() throws IOException {
 		// Progress DEFINED() returns a single digit: 0,1,2, or 3.
-		// DEFINED (WS)? LEFTPAREN (WS)? ID (WS)? RIGHTPAREN
+		// The text between the parens can be pretty arbitrary, and can
+		// have embedded comments, so this calls a specific lexer function for it.
 		getNextToken();
 		if (currToken.getType() == WS)
 			getNextToken();
 		if (currToken.getType() != LEFTPAREN)
 			throwMessage("Bad DEFINED function in &IF preprocessor condition");
+		ProToken argToken = lexer.getAmpIfDefArg();
 		getNextToken();
-		if (currToken.getType() == WS)
-			getNextToken();
-		String idText = currToken.getText();
-		getNextToken();
-		if (currToken.getType() == WS)
-			getNextToken();
 		if (currToken.getType() != RIGHTPAREN)
 			throwMessage("Bad DEFINED function in &IF preprocessor condition");
-		return new ProToken(filenameList, NUMBER, prepro.defined(idText.toLowerCase()));
+		return new ProToken(filenameList, NUMBER, prepro.defined(argToken.getText().trim().toLowerCase()));
 	}
 
 
