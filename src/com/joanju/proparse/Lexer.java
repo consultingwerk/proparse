@@ -122,6 +122,8 @@ public class Lexer implements ProParserTokenTypes {
 				getChar();
 				if (currChar=='*') {
 					return comment();
+				} else if (currChar == '/') {
+					return singleComment();
 				} else if (currChar=='(' || currIsSpace()) {
 					// slash (division) can only be followed by whitespace or '('
 					// ...that's what I found empirically, anyway. (jag 2003/05/09)
@@ -376,6 +378,21 @@ public class Lexer implements ProParserTokenTypes {
 		return makeToken(COMMENT);
 	}
 
+	ProToken singleComment() throws IOException {
+		// Single line comments are treated just like regular comments,
+		// everything till end of line is considered comment - no escape
+		// character to look after
+
+		append(); // currChar=='/'
+
+		while (true) {
+			getChar();
+			unEscapedAppend();
+			if (currChar == '\r' || currChar == '\n' || currInt == EOF_CHAR) {
+				return makeToken(COMMENT);
+			}
+		}
+	}
 
 	ProToken quotedString() throws IOException {
 		// Inside quoted strings (string constants) we preserve
