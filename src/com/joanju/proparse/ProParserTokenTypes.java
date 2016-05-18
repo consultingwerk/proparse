@@ -1,4 +1,4 @@
-// $ANTLR 2.7.7 (20060906): "proparse.g" -> "ProParser.java"$
+// $ANTLR : "proparse.g" -> "ProParser.java"$
 
 package com.joanju.proparse;
 import org.prorefactor.core.JPNode;
