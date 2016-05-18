@@ -1,4 +1,4 @@
-// $ANTLR 2.7.7 (20060906): "expandedtreeparser01.g" -> "TreeParser01.java"$
+// $ANTLR : "expandedtreeparser01.g" -> "TreeParser01.java"$
 
 	package org.prorefactor.treeparser01;
 

@@ -1,4 +1,4 @@
-// $ANTLR 2.7.7 (20060906): expandedtreeparser01.g -> TreeParser01TokenTypes.txt$
+// $ANTLR : expandedtreeparser01.g -> TreeParser01TokenTypes.txt$
 TreeParser01    // output token vocab name
 LEXDATE=4
 NAMEDOT=5

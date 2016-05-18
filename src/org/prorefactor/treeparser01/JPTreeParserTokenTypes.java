@@ -1,6 +1,6 @@
 // $ANTLR : "JPTreeParser.g" -> "JPTreeParser.java"$
 
-	package org.prorefactor.treeparserbase;
+	package org.prorefactor.treeparser01;
 
 	import org.prorefactor.core.IJPNode;
 	import org.prorefactor.treeparser.IJPTreeParser;
