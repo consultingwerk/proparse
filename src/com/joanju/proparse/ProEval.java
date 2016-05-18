@@ -1,4 +1,4 @@
-// $ANTLR 2.7.7 (20060906): "proeval.g" -> "ProEval.java"$
+// $ANTLR : "proeval.g" -> "ProEval.java"$
 
 package com.joanju.proparse;
 import static com.joanju.proparse.ProEvalSupport.*;
@@ -127,6 +127,7 @@ public ProEval() {
 		case ASC:
 		case DATE:
 		case DAY:
+		case DBTYPE:
 		case DECIMAL:
 		case ENCODE:
 		case ENTRY:
@@ -363,6 +364,7 @@ public ProEval() {
 		case BEGINS:
 		case DATE:
 		case DAY:
+		case DBTYPE:
 		case DECIMAL:
 		case ENCODE:
 		case ENTRY:
@@ -913,6 +915,12 @@ public ProEval() {
 			_t = _retTree;
 			break;
 		}
+		case DBTYPE:
+		{
+			r=dbtype_fun(_t);
+			_t = _retTree;
+			break;
+		}
 		case DECIMAL:
 		{
 			r=decimal_fun(_t);
@@ -1339,17 +1347,17 @@ public ProEval() {
 		return ret;
 	}
 	
-	public final Object  decimal_fun(AST _t) throws RecognitionException {
+	public final Object  dbtype_fun(AST _t) throws RecognitionException {
 		Object ret;
 		
-		AST decimal_fun_AST_in = (_t == ASTNULL) ? null : (AST)_t;
+		AST dbtype_fun_AST_in = (_t == ASTNULL) ? null : (AST)_t;
 		
 			Object a;
 		
 		
 		AST __t59 = _t;
 		AST tmp53_AST_in = (AST)_t;
-		match(_t,DECIMAL);
+		match(_t,DBTYPE);
 		_t = _t.getFirstChild();
 		AST tmp54_AST_in = (AST)_t;
 		match(_t,LEFTPAREN);
@@ -1360,6 +1368,34 @@ public ProEval() {
 		match(_t,RIGHTPAREN);
 		_t = _t.getNextSibling();
 		_t = __t59;
+		_t = _t.getNextSibling();
+			ret = "PROGRESS";
+				
+		_retTree = _t;
+		return ret;
+	}
+	
+	public final Object  decimal_fun(AST _t) throws RecognitionException {
+		Object ret;
+		
+		AST decimal_fun_AST_in = (_t == ASTNULL) ? null : (AST)_t;
+		
+			Object a;
+		
+		
+		AST __t61 = _t;
+		AST tmp56_AST_in = (AST)_t;
+		match(_t,DECIMAL);
+		_t = _t.getFirstChild();
+		AST tmp57_AST_in = (AST)_t;
+		match(_t,LEFTPAREN);
+		_t = _t.getNextSibling();
+		a=expr(_t);
+		_t = _retTree;
+		AST tmp58_AST_in = (AST)_t;
+		match(_t,RIGHTPAREN);
+		_t = _t.getNextSibling();
+		_t = __t61;
 		_t = _t.getNextSibling();
 			ret = decimal(a);
 				
@@ -1375,19 +1411,19 @@ public ProEval() {
 			Object a;
 		
 		
-		AST __t61 = _t;
-		AST tmp56_AST_in = (AST)_t;
+		AST __t63 = _t;
+		AST tmp59_AST_in = (AST)_t;
 		match(_t,ENCODE);
 		_t = _t.getFirstChild();
-		AST tmp57_AST_in = (AST)_t;
+		AST tmp60_AST_in = (AST)_t;
 		match(_t,LEFTPAREN);
 		_t = _t.getNextSibling();
 		a=expr(_t);
 		_t = _retTree;
-		AST tmp58_AST_in = (AST)_t;
+		AST tmp61_AST_in = (AST)_t;
 		match(_t,RIGHTPAREN);
 		_t = _t.getNextSibling();
-		_t = __t61;
+		_t = __t63;
 		_t = _t.getNextSibling();
 		if(true) throw new ProEvalException("ENCODE function is not supported.");
 		_retTree = _t;
@@ -1404,16 +1440,16 @@ public ProEval() {
 			Object c = null;
 		
 		
-		AST __t63 = _t;
-		AST tmp59_AST_in = (AST)_t;
+		AST __t65 = _t;
+		AST tmp62_AST_in = (AST)_t;
 		match(_t,ENTRY);
 		_t = _t.getFirstChild();
-		AST tmp60_AST_in = (AST)_t;
+		AST tmp63_AST_in = (AST)_t;
 		match(_t,LEFTPAREN);
 		_t = _t.getNextSibling();
 		a=expr(_t);
 		_t = _retTree;
-		AST tmp61_AST_in = (AST)_t;
+		AST tmp64_AST_in = (AST)_t;
 		match(_t,COMMA);
 		_t = _t.getNextSibling();
 		b=expr(_t);
@@ -1423,7 +1459,7 @@ public ProEval() {
 		switch ( _t.getType()) {
 		case COMMA:
 		{
-			AST tmp62_AST_in = (AST)_t;
+			AST tmp65_AST_in = (AST)_t;
 			match(_t,COMMA);
 			_t = _t.getNextSibling();
 			c=expr(_t);
@@ -1440,10 +1476,10 @@ public ProEval() {
 		}
 		}
 		}
-		AST tmp63_AST_in = (AST)_t;
+		AST tmp66_AST_in = (AST)_t;
 		match(_t,RIGHTPAREN);
 		_t = _t.getNextSibling();
-		_t = __t63;
+		_t = __t65;
 		_t = _t.getNextSibling();
 			ret = entry(a, b, c);
 				
@@ -1459,8 +1495,8 @@ public ProEval() {
 			Object a = null;
 		
 		
-		AST __t66 = _t;
-		AST tmp64_AST_in = (AST)_t;
+		AST __t68 = _t;
+		AST tmp67_AST_in = (AST)_t;
 		match(_t,ETIME_KW);
 		_t = _t.getFirstChild();
 		{
@@ -1468,12 +1504,12 @@ public ProEval() {
 		switch ( _t.getType()) {
 		case LEFTPAREN:
 		{
-			AST tmp65_AST_in = (AST)_t;
+			AST tmp68_AST_in = (AST)_t;
 			match(_t,LEFTPAREN);
 			_t = _t.getNextSibling();
 			a=expr(_t);
 			_t = _retTree;
-			AST tmp66_AST_in = (AST)_t;
+			AST tmp69_AST_in = (AST)_t;
 			match(_t,RIGHTPAREN);
 			_t = _t.getNextSibling();
 			break;
@@ -1488,7 +1524,7 @@ public ProEval() {
 		}
 		}
 		}
-		_t = __t66;
+		_t = __t68;
 		_t = _t.getNextSibling();
 		if(true) throw new ProEvalException("ETIME function is not supported.");
 		_retTree = _t;
@@ -1504,24 +1540,24 @@ public ProEval() {
 			Object b;
 		
 		
-		AST __t69 = _t;
-		AST tmp67_AST_in = (AST)_t;
+		AST __t71 = _t;
+		AST tmp70_AST_in = (AST)_t;
 		match(_t,EXP);
 		_t = _t.getFirstChild();
-		AST tmp68_AST_in = (AST)_t;
+		AST tmp71_AST_in = (AST)_t;
 		match(_t,LEFTPAREN);
 		_t = _t.getNextSibling();
 		a=expr(_t);
 		_t = _retTree;
-		AST tmp69_AST_in = (AST)_t;
+		AST tmp72_AST_in = (AST)_t;
 		match(_t,COMMA);
 		_t = _t.getNextSibling();
 		b=expr(_t);
 		_t = _retTree;
-		AST tmp70_AST_in = (AST)_t;
+		AST tmp73_AST_in = (AST)_t;
 		match(_t,RIGHTPAREN);
 		_t = _t.getNextSibling();
-		_t = __t69;
+		_t = __t71;
 		_t = _t.getNextSibling();
 		if(true) throw new ProEvalException("EXP function not yet supported.");
 		_retTree = _t;
@@ -1537,24 +1573,24 @@ public ProEval() {
 			Object b;
 		
 		
-		AST __t71 = _t;
-		AST tmp71_AST_in = (AST)_t;
+		AST __t73 = _t;
+		AST tmp74_AST_in = (AST)_t;
 		match(_t,FILL);
 		_t = _t.getFirstChild();
-		AST tmp72_AST_in = (AST)_t;
+		AST tmp75_AST_in = (AST)_t;
 		match(_t,LEFTPAREN);
 		_t = _t.getNextSibling();
 		a=expr(_t);
 		_t = _retTree;
-		AST tmp73_AST_in = (AST)_t;
+		AST tmp76_AST_in = (AST)_t;
 		match(_t,COMMA);
 		_t = _t.getNextSibling();
 		b=expr(_t);
 		_t = _retTree;
-		AST tmp74_AST_in = (AST)_t;
+		AST tmp77_AST_in = (AST)_t;
 		match(_t,RIGHTPAREN);
 		_t = _t.getNextSibling();
-		_t = __t71;
+		_t = __t73;
 		_t = _t.getNextSibling();
 		if(true) throw new ProEvalException("FILL function not yet supported.");
 		_retTree = _t;
@@ -1571,16 +1607,16 @@ public ProEval() {
 			Object c = null;
 		
 		
-		AST __t73 = _t;
-		AST tmp75_AST_in = (AST)_t;
+		AST __t75 = _t;
+		AST tmp78_AST_in = (AST)_t;
 		match(_t,INDEX);
 		_t = _t.getFirstChild();
-		AST tmp76_AST_in = (AST)_t;
+		AST tmp79_AST_in = (AST)_t;
 		match(_t,LEFTPAREN);
 		_t = _t.getNextSibling();
 		a=expr(_t);
 		_t = _retTree;
-		AST tmp77_AST_in = (AST)_t;
+		AST tmp80_AST_in = (AST)_t;
 		match(_t,COMMA);
 		_t = _t.getNextSibling();
 		b=expr(_t);
@@ -1590,7 +1626,7 @@ public ProEval() {
 		switch ( _t.getType()) {
 		case COMMA:
 		{
-			AST tmp78_AST_in = (AST)_t;
+			AST tmp81_AST_in = (AST)_t;
 			match(_t,COMMA);
 			_t = _t.getNextSibling();
 			c=expr(_t);
@@ -1607,10 +1643,10 @@ public ProEval() {
 		}
 		}
 		}
-		AST tmp79_AST_in = (AST)_t;
+		AST tmp82_AST_in = (AST)_t;
 		match(_t,RIGHTPAREN);
 		_t = _t.getNextSibling();
-		_t = __t73;
+		_t = __t75;
 		_t = _t.getNextSibling();
 			ret = index(a, b, c);
 				
@@ -1626,19 +1662,19 @@ public ProEval() {
 			Object a;
 		
 		
-		AST __t76 = _t;
-		AST tmp80_AST_in = (AST)_t;
+		AST __t78 = _t;
+		AST tmp83_AST_in = (AST)_t;
 		match(_t,INTEGER);
 		_t = _t.getFirstChild();
-		AST tmp81_AST_in = (AST)_t;
+		AST tmp84_AST_in = (AST)_t;
 		match(_t,LEFTPAREN);
 		_t = _t.getNextSibling();
 		a=expr(_t);
 		_t = _retTree;
-		AST tmp82_AST_in = (AST)_t;
+		AST tmp85_AST_in = (AST)_t;
 		match(_t,RIGHTPAREN);
 		_t = _t.getNextSibling();
-		_t = __t76;
+		_t = __t78;
 		_t = _t.getNextSibling();
 			ret = integer(a);
 				
@@ -1654,19 +1690,19 @@ public ProEval() {
 			Object a;
 		
 		
-		AST __t78 = _t;
-		AST tmp83_AST_in = (AST)_t;
+		AST __t80 = _t;
+		AST tmp86_AST_in = (AST)_t;
 		match(_t,KEYWORD);
 		_t = _t.getFirstChild();
-		AST tmp84_AST_in = (AST)_t;
+		AST tmp87_AST_in = (AST)_t;
 		match(_t,LEFTPAREN);
 		_t = _t.getNextSibling();
 		a=expr(_t);
 		_t = _retTree;
-		AST tmp85_AST_in = (AST)_t;
+		AST tmp88_AST_in = (AST)_t;
 		match(_t,RIGHTPAREN);
 		_t = _t.getNextSibling();
-		_t = __t78;
+		_t = __t80;
 		_t = _t.getNextSibling();
 			ret = keyword(a);
 				
@@ -1682,19 +1718,19 @@ public ProEval() {
 			Object a;
 		
 		
-		AST __t80 = _t;
-		AST tmp86_AST_in = (AST)_t;
+		AST __t82 = _t;
+		AST tmp89_AST_in = (AST)_t;
 		match(_t,KEYWORDALL);
 		_t = _t.getFirstChild();
-		AST tmp87_AST_in = (AST)_t;
+		AST tmp90_AST_in = (AST)_t;
 		match(_t,LEFTPAREN);
 		_t = _t.getNextSibling();
 		a=expr(_t);
 		_t = _retTree;
-		AST tmp88_AST_in = (AST)_t;
+		AST tmp91_AST_in = (AST)_t;
 		match(_t,RIGHTPAREN);
 		_t = _t.getNextSibling();
-		_t = __t80;
+		_t = __t82;
 		_t = _t.getNextSibling();
 			ret = keywordall(a);
 				
@@ -1710,19 +1746,19 @@ public ProEval() {
 			Object a;
 		
 		
-		AST __t82 = _t;
-		AST tmp89_AST_in = (AST)_t;
+		AST __t84 = _t;
+		AST tmp92_AST_in = (AST)_t;
 		match(_t,LC);
 		_t = _t.getFirstChild();
-		AST tmp90_AST_in = (AST)_t;
+		AST tmp93_AST_in = (AST)_t;
 		match(_t,LEFTPAREN);
 		_t = _t.getNextSibling();
 		a=expr(_t);
 		_t = _retTree;
-		AST tmp91_AST_in = (AST)_t;
+		AST tmp94_AST_in = (AST)_t;
 		match(_t,RIGHTPAREN);
 		_t = _t.getNextSibling();
-		_t = __t82;
+		_t = __t84;
 		_t = _t.getNextSibling();
 		if(true) throw new ProEvalException("LC function not yet supported.");
 		_retTree = _t;
@@ -1738,11 +1774,11 @@ public ProEval() {
 			Object b = null;
 		
 		
-		AST __t84 = _t;
-		AST tmp92_AST_in = (AST)_t;
+		AST __t86 = _t;
+		AST tmp95_AST_in = (AST)_t;
 		match(_t,LEFTTRIM);
 		_t = _t.getFirstChild();
-		AST tmp93_AST_in = (AST)_t;
+		AST tmp96_AST_in = (AST)_t;
 		match(_t,LEFTPAREN);
 		_t = _t.getNextSibling();
 		a=expr(_t);
@@ -1752,7 +1788,7 @@ public ProEval() {
 		switch ( _t.getType()) {
 		case COMMA:
 		{
-			AST tmp94_AST_in = (AST)_t;
+			AST tmp97_AST_in = (AST)_t;
 			match(_t,COMMA);
 			_t = _t.getNextSibling();
 			b=expr(_t);
@@ -1769,10 +1805,10 @@ public ProEval() {
 		}
 		}
 		}
-		AST tmp95_AST_in = (AST)_t;
+		AST tmp98_AST_in = (AST)_t;
 		match(_t,RIGHTPAREN);
 		_t = _t.getNextSibling();
-		_t = __t84;
+		_t = __t86;
 		_t = _t.getNextSibling();
 			ret = lefttrim(a, b);
 				
@@ -1789,11 +1825,11 @@ public ProEval() {
 			Object b = null;
 		
 		
-		AST __t87 = _t;
-		AST tmp96_AST_in = (AST)_t;
+		AST __t89 = _t;
+		AST tmp99_AST_in = (AST)_t;
 		match(_t,LENGTH);
 		_t = _t.getFirstChild();
-		AST tmp97_AST_in = (AST)_t;
+		AST tmp100_AST_in = (AST)_t;
 		match(_t,LEFTPAREN);
 		_t = _t.getNextSibling();
 		a=expr(_t);
@@ -1803,7 +1839,7 @@ public ProEval() {
 		switch ( _t.getType()) {
 		case COMMA:
 		{
-			AST tmp98_AST_in = (AST)_t;
+			AST tmp101_AST_in = (AST)_t;
 			match(_t,COMMA);
 			_t = _t.getNextSibling();
 			b=expr(_t);
@@ -1820,10 +1856,10 @@ public ProEval() {
 		}
 		}
 		}
-		AST tmp99_AST_in = (AST)_t;
+		AST tmp102_AST_in = (AST)_t;
 		match(_t,RIGHTPAREN);
 		_t = _t.getNextSibling();
-		_t = __t87;
+		_t = __t89;
 		_t = _t.getNextSibling();
 			if (b!=null)
 						throw new ProEvalException("Type option of LENGTH function not yet supported.");
@@ -1841,19 +1877,19 @@ public ProEval() {
 			Object a;
 		
 		
-		AST __t90 = _t;
-		AST tmp100_AST_in = (AST)_t;
+		AST __t92 = _t;
+		AST tmp103_AST_in = (AST)_t;
 		match(_t,LIBRARY);
 		_t = _t.getFirstChild();
-		AST tmp101_AST_in = (AST)_t;
+		AST tmp104_AST_in = (AST)_t;
 		match(_t,LEFTPAREN);
 		_t = _t.getNextSibling();
 		a=expr(_t);
 		_t = _retTree;
-		AST tmp102_AST_in = (AST)_t;
+		AST tmp105_AST_in = (AST)_t;
 		match(_t,RIGHTPAREN);
 		_t = _t.getNextSibling();
-		_t = __t90;
+		_t = __t92;
 		_t = _t.getNextSibling();
 		if(true) throw new ProEvalException("LIBRARY function not yet supported.");
 		_retTree = _t;
@@ -1869,11 +1905,11 @@ public ProEval() {
 			Object b = null;
 		
 		
-		AST __t92 = _t;
-		AST tmp103_AST_in = (AST)_t;
+		AST __t94 = _t;
+		AST tmp106_AST_in = (AST)_t;
 		match(_t,LOG);
 		_t = _t.getFirstChild();
-		AST tmp104_AST_in = (AST)_t;
+		AST tmp107_AST_in = (AST)_t;
 		match(_t,LEFTPAREN);
 		_t = _t.getNextSibling();
 		a=expr(_t);
@@ -1883,7 +1919,7 @@ public ProEval() {
 		switch ( _t.getType()) {
 		case COMMA:
 		{
-			AST tmp105_AST_in = (AST)_t;
+			AST tmp108_AST_in = (AST)_t;
 			match(_t,COMMA);
 			_t = _t.getNextSibling();
 			b=expr(_t);
@@ -1900,10 +1936,10 @@ public ProEval() {
 		}
 		}
 		}
-		AST tmp106_AST_in = (AST)_t;
+		AST tmp109_AST_in = (AST)_t;
 		match(_t,RIGHTPAREN);
 		_t = _t.getNextSibling();
-		_t = __t92;
+		_t = __t94;
 		_t = _t.getNextSibling();
 		if(true) throw new ProEvalException("LOG function not yet supported.");
 		_retTree = _t;
@@ -1920,16 +1956,16 @@ public ProEval() {
 			Object c = null;
 		
 		
-		AST __t95 = _t;
-		AST tmp107_AST_in = (AST)_t;
+		AST __t97 = _t;
+		AST tmp110_AST_in = (AST)_t;
 		match(_t,LOOKUP);
 		_t = _t.getFirstChild();
-		AST tmp108_AST_in = (AST)_t;
+		AST tmp111_AST_in = (AST)_t;
 		match(_t,LEFTPAREN);
 		_t = _t.getNextSibling();
 		a=expr(_t);
 		_t = _retTree;
-		AST tmp109_AST_in = (AST)_t;
+		AST tmp112_AST_in = (AST)_t;
 		match(_t,COMMA);
 		_t = _t.getNextSibling();
 		b=expr(_t);
@@ -1939,7 +1975,7 @@ public ProEval() {
 		switch ( _t.getType()) {
 		case COMMA:
 		{
-			AST tmp110_AST_in = (AST)_t;
+			AST tmp113_AST_in = (AST)_t;
 			match(_t,COMMA);
 			_t = _t.getNextSibling();
 			c=expr(_t);
@@ -1956,10 +1992,10 @@ public ProEval() {
 		}
 		}
 		}
-		AST tmp111_AST_in = (AST)_t;
+		AST tmp114_AST_in = (AST)_t;
 		match(_t,RIGHTPAREN);
 		_t = _t.getNextSibling();
-		_t = __t95;
+		_t = __t97;
 		_t = _t.getNextSibling();
 			ret = lookup(a, b, c);
 				
@@ -1976,11 +2012,11 @@ public ProEval() {
 			Object b;
 		
 		
-		AST __t98 = _t;
-		AST tmp112_AST_in = (AST)_t;
+		AST __t100 = _t;
+		AST tmp115_AST_in = (AST)_t;
 		match(_t,MAXIMUM);
 		_t = _t.getFirstChild();
-		AST tmp113_AST_in = (AST)_t;
+		AST tmp116_AST_in = (AST)_t;
 		match(_t,LEFTPAREN);
 		_t = _t.getNextSibling();
 		a=expr(_t);
@@ -1988,12 +2024,12 @@ public ProEval() {
 			ret = a;
 				
 		{
-		int _cnt100=0;
-		_loop100:
+		int _cnt102=0;
+		_loop102:
 		do {
 			if (_t==null) _t=ASTNULL;
 			if ((_t.getType()==COMMA)) {
-				AST tmp114_AST_in = (AST)_t;
+				AST tmp117_AST_in = (AST)_t;
 				match(_t,COMMA);
 				_t = _t.getNextSibling();
 				b=expr(_t);
@@ -2007,16 +2043,16 @@ public ProEval() {
 							
 			}
 			else {
-				if ( _cnt100>=1 ) { break _loop100; } else {throw new NoViableAltException(_t);}
+				if ( _cnt102>=1 ) { break _loop102; } else {throw new NoViableAltException(_t);}
 			}
 			
-			_cnt100++;
+			_cnt102++;
 		} while (true);
 		}
-		AST tmp115_AST_in = (AST)_t;
+		AST tmp118_AST_in = (AST)_t;
 		match(_t,RIGHTPAREN);
 		_t = _t.getNextSibling();
-		_t = __t98;
+		_t = __t100;
 		_t = _t.getNextSibling();
 		_retTree = _t;
 		return ret;
@@ -2030,19 +2066,19 @@ public ProEval() {
 			Object a;
 		
 		
-		AST __t102 = _t;
-		AST tmp116_AST_in = (AST)_t;
+		AST __t104 = _t;
+		AST tmp119_AST_in = (AST)_t;
 		match(_t,MEMBER);
 		_t = _t.getFirstChild();
-		AST tmp117_AST_in = (AST)_t;
+		AST tmp120_AST_in = (AST)_t;
 		match(_t,LEFTPAREN);
 		_t = _t.getNextSibling();
 		a=expr(_t);
 		_t = _retTree;
-		AST tmp118_AST_in = (AST)_t;
+		AST tmp121_AST_in = (AST)_t;
 		match(_t,RIGHTPAREN);
 		_t = _t.getNextSibling();
-		_t = __t102;
+		_t = __t104;
 		_t = _t.getNextSibling();
 		if(true) throw new ProEvalException("MEMBER function not yet supported.");
 		_retTree = _t;
@@ -2058,11 +2094,11 @@ public ProEval() {
 			Object b;
 		
 		
-		AST __t104 = _t;
-		AST tmp119_AST_in = (AST)_t;
+		AST __t106 = _t;
+		AST tmp122_AST_in = (AST)_t;
 		match(_t,MINIMUM);
 		_t = _t.getFirstChild();
-		AST tmp120_AST_in = (AST)_t;
+		AST tmp123_AST_in = (AST)_t;
 		match(_t,LEFTPAREN);
 		_t = _t.getNextSibling();
 		a=expr(_t);
@@ -2070,12 +2106,12 @@ public ProEval() {
 			ret = a;
 				
 		{
-		int _cnt106=0;
-		_loop106:
+		int _cnt108=0;
+		_loop108:
 		do {
 			if (_t==null) _t=ASTNULL;
 			if ((_t.getType()==COMMA)) {
-				AST tmp121_AST_in = (AST)_t;
+				AST tmp124_AST_in = (AST)_t;
 				match(_t,COMMA);
 				_t = _t.getNextSibling();
 				b=expr(_t);
@@ -2089,16 +2125,16 @@ public ProEval() {
 							
 			}
 			else {
-				if ( _cnt106>=1 ) { break _loop106; } else {throw new NoViableAltException(_t);}
+				if ( _cnt108>=1 ) { break _loop108; } else {throw new NoViableAltException(_t);}
 			}
 			
-			_cnt106++;
+			_cnt108++;
 		} while (true);
 		}
-		AST tmp122_AST_in = (AST)_t;
+		AST tmp125_AST_in = (AST)_t;
 		match(_t,RIGHTPAREN);
 		_t = _t.getNextSibling();
-		_t = __t104;
+		_t = __t106;
 		_t = _t.getNextSibling();
 		_retTree = _t;
 		return ret;
@@ -2112,19 +2148,19 @@ public ProEval() {
 			Object a;
 		
 		
-		AST __t108 = _t;
-		AST tmp123_AST_in = (AST)_t;
+		AST __t110 = _t;
+		AST tmp126_AST_in = (AST)_t;
 		match(_t,MONTH);
 		_t = _t.getFirstChild();
-		AST tmp124_AST_in = (AST)_t;
+		AST tmp127_AST_in = (AST)_t;
 		match(_t,LEFTPAREN);
 		_t = _t.getNextSibling();
 		a=expr(_t);
 		_t = _retTree;
-		AST tmp125_AST_in = (AST)_t;
+		AST tmp128_AST_in = (AST)_t;
 		match(_t,RIGHTPAREN);
 		_t = _t.getNextSibling();
-		_t = __t108;
+		_t = __t110;
 		_t = _t.getNextSibling();
 		if(true) throw new ProEvalException("MONTH function not yet supported.");
 		_retTree = _t;
@@ -2140,11 +2176,11 @@ public ProEval() {
 			Object b = null;
 		
 		
-		AST __t110 = _t;
-		AST tmp126_AST_in = (AST)_t;
+		AST __t112 = _t;
+		AST tmp129_AST_in = (AST)_t;
 		match(_t,NUMENTRIES);
 		_t = _t.getFirstChild();
-		AST tmp127_AST_in = (AST)_t;
+		AST tmp130_AST_in = (AST)_t;
 		match(_t,LEFTPAREN);
 		_t = _t.getNextSibling();
 		a=expr(_t);
@@ -2154,7 +2190,7 @@ public ProEval() {
 		switch ( _t.getType()) {
 		case COMMA:
 		{
-			AST tmp128_AST_in = (AST)_t;
+			AST tmp131_AST_in = (AST)_t;
 			match(_t,COMMA);
 			_t = _t.getNextSibling();
 			b=expr(_t);
@@ -2171,10 +2207,10 @@ public ProEval() {
 		}
 		}
 		}
-		AST tmp129_AST_in = (AST)_t;
+		AST tmp132_AST_in = (AST)_t;
 		match(_t,RIGHTPAREN);
 		_t = _t.getNextSibling();
-		_t = __t110;
+		_t = __t112;
 		_t = _t.getNextSibling();
 			ret = numentries(a, b);
 				
@@ -2187,7 +2223,7 @@ public ProEval() {
 		
 		AST opsys_fun_AST_in = (_t == ASTNULL) ? null : (AST)_t;
 		
-		AST tmp130_AST_in = (AST)_t;
+		AST tmp133_AST_in = (AST)_t;
 		match(_t,OPSYS);
 		_t = _t.getNextSibling();
 			String opsys = Environment.instance().opsys;
@@ -2204,7 +2240,7 @@ public ProEval() {
 		
 		AST propath_fun_AST_in = (_t == ASTNULL) ? null : (AST)_t;
 		
-		AST tmp131_AST_in = (AST)_t;
+		AST tmp134_AST_in = (AST)_t;
 		match(_t,PROPATH);
 		_t = _t.getNextSibling();
 			ret = propath();
@@ -2218,7 +2254,7 @@ public ProEval() {
 		
 		AST proversion_fun_AST_in = (_t == ASTNULL) ? null : (AST)_t;
 		
-		AST tmp132_AST_in = (AST)_t;
+		AST tmp135_AST_in = (AST)_t;
 		match(_t,PROVERSION);
 		_t = _t.getNextSibling();
 			String proversion = Environment.instance().proversion;
@@ -2240,16 +2276,16 @@ public ProEval() {
 			Object c = null;
 		
 		
-		AST __t116 = _t;
-		AST tmp133_AST_in = (AST)_t;
+		AST __t118 = _t;
+		AST tmp136_AST_in = (AST)_t;
 		match(_t,RINDEX);
 		_t = _t.getFirstChild();
-		AST tmp134_AST_in = (AST)_t;
+		AST tmp137_AST_in = (AST)_t;
 		match(_t,LEFTPAREN);
 		_t = _t.getNextSibling();
 		a=expr(_t);
 		_t = _retTree;
-		AST tmp135_AST_in = (AST)_t;
+		AST tmp138_AST_in = (AST)_t;
 		match(_t,COMMA);
 		_t = _t.getNextSibling();
 		b=expr(_t);
@@ -2259,7 +2295,7 @@ public ProEval() {
 		switch ( _t.getType()) {
 		case COMMA:
 		{
-			AST tmp136_AST_in = (AST)_t;
+			AST tmp139_AST_in = (AST)_t;
 			match(_t,COMMA);
 			_t = _t.getNextSibling();
 			c=expr(_t);
@@ -2276,10 +2312,10 @@ public ProEval() {
 		}
 		}
 		}
-		AST tmp137_AST_in = (AST)_t;
+		AST tmp140_AST_in = (AST)_t;
 		match(_t,RIGHTPAREN);
 		_t = _t.getNextSibling();
-		_t = __t116;
+		_t = __t118;
 		_t = _t.getNextSibling();
 			ret = rindex(a, b, c);
 				
@@ -2296,24 +2332,24 @@ public ProEval() {
 			Object b;
 		
 		
-		AST __t119 = _t;
-		AST tmp138_AST_in = (AST)_t;
+		AST __t121 = _t;
+		AST tmp141_AST_in = (AST)_t;
 		match(_t,RANDOM);
 		_t = _t.getFirstChild();
-		AST tmp139_AST_in = (AST)_t;
+		AST tmp142_AST_in = (AST)_t;
 		match(_t,LEFTPAREN);
 		_t = _t.getNextSibling();
 		a=expr(_t);
 		_t = _retTree;
-		AST tmp140_AST_in = (AST)_t;
+		AST tmp143_AST_in = (AST)_t;
 		match(_t,COMMA);
 		_t = _t.getNextSibling();
 		b=expr(_t);
 		_t = _retTree;
-		AST tmp141_AST_in = (AST)_t;
+		AST tmp144_AST_in = (AST)_t;
 		match(_t,RIGHTPAREN);
 		_t = _t.getNextSibling();
-		_t = __t119;
+		_t = __t121;
 		_t = _t.getNextSibling();
 		if(true) throw new ProEvalException("RANDOM function not yet supported.");
 		_retTree = _t;
@@ -2330,29 +2366,29 @@ public ProEval() {
 			Object c;
 		
 		
-		AST __t121 = _t;
-		AST tmp142_AST_in = (AST)_t;
+		AST __t123 = _t;
+		AST tmp145_AST_in = (AST)_t;
 		match(_t,REPLACE);
 		_t = _t.getFirstChild();
-		AST tmp143_AST_in = (AST)_t;
+		AST tmp146_AST_in = (AST)_t;
 		match(_t,LEFTPAREN);
 		_t = _t.getNextSibling();
 		a=expr(_t);
 		_t = _retTree;
-		AST tmp144_AST_in = (AST)_t;
+		AST tmp147_AST_in = (AST)_t;
 		match(_t,COMMA);
 		_t = _t.getNextSibling();
 		b=expr(_t);
 		_t = _retTree;
-		AST tmp145_AST_in = (AST)_t;
+		AST tmp148_AST_in = (AST)_t;
 		match(_t,COMMA);
 		_t = _t.getNextSibling();
 		c=expr(_t);
 		_t = _retTree;
-		AST tmp146_AST_in = (AST)_t;
+		AST tmp149_AST_in = (AST)_t;
 		match(_t,RIGHTPAREN);
 		_t = _t.getNextSibling();
-		_t = __t121;
+		_t = __t123;
 		_t = _t.getNextSibling();
 			ret = replace(getString(a), getString(b), getString(c));
 				
@@ -2369,11 +2405,11 @@ public ProEval() {
 			Object b = null;
 		
 		
-		AST __t123 = _t;
-		AST tmp147_AST_in = (AST)_t;
+		AST __t125 = _t;
+		AST tmp150_AST_in = (AST)_t;
 		match(_t,RIGHTTRIM);
 		_t = _t.getFirstChild();
-		AST tmp148_AST_in = (AST)_t;
+		AST tmp151_AST_in = (AST)_t;
 		match(_t,LEFTPAREN);
 		_t = _t.getNextSibling();
 		a=expr(_t);
@@ -2383,7 +2419,7 @@ public ProEval() {
 		switch ( _t.getType()) {
 		case COMMA:
 		{
-			AST tmp149_AST_in = (AST)_t;
+			AST tmp152_AST_in = (AST)_t;
 			match(_t,COMMA);
 			_t = _t.getNextSibling();
 			b=expr(_t);
@@ -2400,10 +2436,10 @@ public ProEval() {
 		}
 		}
 		}
-		AST tmp150_AST_in = (AST)_t;
+		AST tmp153_AST_in = (AST)_t;
 		match(_t,RIGHTPAREN);
 		_t = _t.getNextSibling();
-		_t = __t123;
+		_t = __t125;
 		_t = _t.getNextSibling();
 			String s = getString(a);
 					if (b!=null)
@@ -2424,24 +2460,24 @@ public ProEval() {
 			Object b;
 		
 		
-		AST __t126 = _t;
-		AST tmp151_AST_in = (AST)_t;
+		AST __t128 = _t;
+		AST tmp154_AST_in = (AST)_t;
 		match(_t,ROUND);
 		_t = _t.getFirstChild();
-		AST tmp152_AST_in = (AST)_t;
+		AST tmp155_AST_in = (AST)_t;
 		match(_t,LEFTPAREN);
 		_t = _t.getNextSibling();
 		a=expr(_t);
 		_t = _retTree;
-		AST tmp153_AST_in = (AST)_t;
+		AST tmp156_AST_in = (AST)_t;
 		match(_t,COMMA);
 		_t = _t.getNextSibling();
 		b=expr(_t);
 		_t = _retTree;
-		AST tmp154_AST_in = (AST)_t;
+		AST tmp157_AST_in = (AST)_t;
 		match(_t,RIGHTPAREN);
 		_t = _t.getNextSibling();
-		_t = __t126;
+		_t = __t128;
 		_t = _t.getNextSibling();
 		if(true) throw new ProEvalException("ROUND function not yet supported.");
 		_retTree = _t;
@@ -2456,19 +2492,19 @@ public ProEval() {
 			Object a;
 		
 		
-		AST __t128 = _t;
-		AST tmp155_AST_in = (AST)_t;
+		AST __t130 = _t;
+		AST tmp158_AST_in = (AST)_t;
 		match(_t,SQRT);
 		_t = _t.getFirstChild();
-		AST tmp156_AST_in = (AST)_t;
+		AST tmp159_AST_in = (AST)_t;
 		match(_t,LEFTPAREN);
 		_t = _t.getNextSibling();
 		a=expr(_t);
 		_t = _retTree;
-		AST tmp157_AST_in = (AST)_t;
+		AST tmp160_AST_in = (AST)_t;
 		match(_t,RIGHTPAREN);
 		_t = _t.getNextSibling();
-		_t = __t128;
+		_t = __t130;
 		_t = _t.getNextSibling();
 		if(true) throw new ProEvalException("SQRT function not yet supported.");
 		_retTree = _t;
@@ -2484,11 +2520,11 @@ public ProEval() {
 			Object b = null;
 		
 		
-		AST __t130 = _t;
-		AST tmp158_AST_in = (AST)_t;
+		AST __t132 = _t;
+		AST tmp161_AST_in = (AST)_t;
 		match(_t,STRING);
 		_t = _t.getFirstChild();
-		AST tmp159_AST_in = (AST)_t;
+		AST tmp162_AST_in = (AST)_t;
 		match(_t,LEFTPAREN);
 		_t = _t.getNextSibling();
 		a=expr(_t);
@@ -2498,7 +2534,7 @@ public ProEval() {
 		switch ( _t.getType()) {
 		case COMMA:
 		{
-			AST tmp160_AST_in = (AST)_t;
+			AST tmp163_AST_in = (AST)_t;
 			match(_t,COMMA);
 			_t = _t.getNextSibling();
 			b=expr(_t);
@@ -2515,10 +2551,10 @@ public ProEval() {
 		}
 		}
 		}
-		AST tmp161_AST_in = (AST)_t;
+		AST tmp164_AST_in = (AST)_t;
 		match(_t,RIGHTPAREN);
 		_t = _t.getNextSibling();
-		_t = __t130;
+		_t = __t132;
 		_t = _t.getNextSibling();
 			if (b!=null)
 						throw new ProEvalException("Format option of STRING function is not yet supported.");
@@ -2537,36 +2573,36 @@ public ProEval() {
 			Object b;
 		
 		
-		AST __t133 = _t;
-		AST tmp162_AST_in = (AST)_t;
+		AST __t135 = _t;
+		AST tmp165_AST_in = (AST)_t;
 		match(_t,SUBSTITUTE);
 		_t = _t.getFirstChild();
-		AST tmp163_AST_in = (AST)_t;
+		AST tmp166_AST_in = (AST)_t;
 		match(_t,LEFTPAREN);
 		_t = _t.getNextSibling();
 		a=expr(_t);
 		_t = _retTree;
 		{
-		_loop135:
+		_loop137:
 		do {
 			if (_t==null) _t=ASTNULL;
 			if ((_t.getType()==COMMA)) {
-				AST tmp164_AST_in = (AST)_t;
+				AST tmp167_AST_in = (AST)_t;
 				match(_t,COMMA);
 				_t = _t.getNextSibling();
 				b=expr(_t);
 				_t = _retTree;
 			}
 			else {
-				break _loop135;
+				break _loop137;
 			}
 			
 		} while (true);
 		}
-		AST tmp165_AST_in = (AST)_t;
+		AST tmp168_AST_in = (AST)_t;
 		match(_t,RIGHTPAREN);
 		_t = _t.getNextSibling();
-		_t = __t133;
+		_t = __t135;
 		_t = _t.getNextSibling();
 		if(true) throw new ProEvalException("SUBSTITUTE function not yet supported.");
 		_retTree = _t;
@@ -2584,16 +2620,16 @@ public ProEval() {
 			Object d = null;
 		
 		
-		AST __t137 = _t;
-		AST tmp166_AST_in = (AST)_t;
+		AST __t139 = _t;
+		AST tmp169_AST_in = (AST)_t;
 		match(_t,SUBSTRING);
 		_t = _t.getFirstChild();
-		AST tmp167_AST_in = (AST)_t;
+		AST tmp170_AST_in = (AST)_t;
 		match(_t,LEFTPAREN);
 		_t = _t.getNextSibling();
 		a=expr(_t);
 		_t = _retTree;
-		AST tmp168_AST_in = (AST)_t;
+		AST tmp171_AST_in = (AST)_t;
 		match(_t,COMMA);
 		_t = _t.getNextSibling();
 		b=expr(_t);
@@ -2603,7 +2639,7 @@ public ProEval() {
 		switch ( _t.getType()) {
 		case COMMA:
 		{
-			AST tmp169_AST_in = (AST)_t;
+			AST tmp172_AST_in = (AST)_t;
 			match(_t,COMMA);
 			_t = _t.getNextSibling();
 			c=expr(_t);
@@ -2613,7 +2649,7 @@ public ProEval() {
 			switch ( _t.getType()) {
 			case COMMA:
 			{
-				AST tmp170_AST_in = (AST)_t;
+				AST tmp173_AST_in = (AST)_t;
 				match(_t,COMMA);
 				_t = _t.getNextSibling();
 				d=expr(_t);
@@ -2642,10 +2678,10 @@ public ProEval() {
 		}
 		}
 		}
-		AST tmp171_AST_in = (AST)_t;
+		AST tmp174_AST_in = (AST)_t;
 		match(_t,RIGHTPAREN);
 		_t = _t.getNextSibling();
-		_t = __t137;
+		_t = __t139;
 		_t = _t.getNextSibling();
 			if (d!=null)
 						throw new ProEvalException("Type option of STRING function is not yet supported.");
@@ -2660,7 +2696,7 @@ public ProEval() {
 		
 		AST time_fun_AST_in = (_t == ASTNULL) ? null : (AST)_t;
 		
-		AST tmp172_AST_in = (AST)_t;
+		AST tmp175_AST_in = (AST)_t;
 		match(_t,TIME);
 		_t = _t.getNextSibling();
 		if(true) throw new ProEvalException("TIME function not yet supported.");
@@ -2673,7 +2709,7 @@ public ProEval() {
 		
 		AST today_fun_AST_in = (_t == ASTNULL) ? null : (AST)_t;
 		
-		AST tmp173_AST_in = (AST)_t;
+		AST tmp176_AST_in = (AST)_t;
 		match(_t,TODAY);
 		_t = _t.getNextSibling();
 		if(true) throw new ProEvalException("TODAY function not yet supported.");
@@ -2690,11 +2726,11 @@ public ProEval() {
 			Object b = null;
 		
 		
-		AST __t143 = _t;
-		AST tmp174_AST_in = (AST)_t;
+		AST __t145 = _t;
+		AST tmp177_AST_in = (AST)_t;
 		match(_t,TRIM);
 		_t = _t.getFirstChild();
-		AST tmp175_AST_in = (AST)_t;
+		AST tmp178_AST_in = (AST)_t;
 		match(_t,LEFTPAREN);
 		_t = _t.getNextSibling();
 		a=expr(_t);
@@ -2704,7 +2740,7 @@ public ProEval() {
 		switch ( _t.getType()) {
 		case COMMA:
 		{
-			AST tmp176_AST_in = (AST)_t;
+			AST tmp179_AST_in = (AST)_t;
 			match(_t,COMMA);
 			_t = _t.getNextSibling();
 			b=expr(_t);
@@ -2721,10 +2757,10 @@ public ProEval() {
 		}
 		}
 		}
-		AST tmp177_AST_in = (AST)_t;
+		AST tmp180_AST_in = (AST)_t;
 		match(_t,RIGHTPAREN);
 		_t = _t.getNextSibling();
-		_t = __t143;
+		_t = __t145;
 		_t = _t.getNextSibling();
 			String s = getString(a);
 					if (b != null)
@@ -2745,24 +2781,24 @@ public ProEval() {
 			Object b;
 		
 		
-		AST __t146 = _t;
-		AST tmp178_AST_in = (AST)_t;
+		AST __t148 = _t;
+		AST tmp181_AST_in = (AST)_t;
 		match(_t,TRUNCATE);
 		_t = _t.getFirstChild();
-		AST tmp179_AST_in = (AST)_t;
+		AST tmp182_AST_in = (AST)_t;
 		match(_t,LEFTPAREN);
 		_t = _t.getNextSibling();
 		a=expr(_t);
 		_t = _retTree;
-		AST tmp180_AST_in = (AST)_t;
+		AST tmp183_AST_in = (AST)_t;
 		match(_t,COMMA);
 		_t = _t.getNextSibling();
 		b=expr(_t);
 		_t = _retTree;
-		AST tmp181_AST_in = (AST)_t;
+		AST tmp184_AST_in = (AST)_t;
 		match(_t,RIGHTPAREN);
 		_t = _t.getNextSibling();
-		_t = __t146;
+		_t = __t148;
 		_t = _t.getNextSibling();
 		if(true) throw new ProEvalException("TRUNCATE function not yet supported.");
 		_retTree = _t;
@@ -2777,19 +2813,19 @@ public ProEval() {
 			Object a;
 		
 		
-		AST __t148 = _t;
-		AST tmp182_AST_in = (AST)_t;
+		AST __t150 = _t;
+		AST tmp185_AST_in = (AST)_t;
 		match(_t,WEEKDAY);
 		_t = _t.getFirstChild();
-		AST tmp183_AST_in = (AST)_t;
+		AST tmp186_AST_in = (AST)_t;
 		match(_t,LEFTPAREN);
 		_t = _t.getNextSibling();
 		a=expr(_t);
 		_t = _retTree;
-		AST tmp184_AST_in = (AST)_t;
+		AST tmp187_AST_in = (AST)_t;
 		match(_t,RIGHTPAREN);
 		_t = _t.getNextSibling();
-		_t = __t148;
+		_t = __t150;
 		_t = _t.getNextSibling();
 		if(true) throw new ProEvalException("WEEKDAY function not yet supported.");
 		_retTree = _t;
@@ -2804,19 +2840,19 @@ public ProEval() {
 			Object a;
 		
 		
-		AST __t150 = _t;
-		AST tmp185_AST_in = (AST)_t;
+		AST __t152 = _t;
+		AST tmp188_AST_in = (AST)_t;
 		match(_t,YEAR);
 		_t = _t.getFirstChild();
-		AST tmp186_AST_in = (AST)_t;
+		AST tmp189_AST_in = (AST)_t;
 		match(_t,LEFTPAREN);
 		_t = _t.getNextSibling();
 		a=expr(_t);
 		_t = _retTree;
-		AST tmp187_AST_in = (AST)_t;
+		AST tmp190_AST_in = (AST)_t;
 		match(_t,RIGHTPAREN);
 		_t = _t.getNextSibling();
-		_t = __t150;
+		_t = __t152;
 		_t = _t.getNextSibling();
 		if(true) throw new ProEvalException("YEAR function not yet supported.");
 		_retTree = _t;
@@ -4032,9 +4068,9 @@ public ProEval() {
 		"TABLESCAN",
 		"MESSAGEDIGEST",
 		"PARENTIDRELATION",
-		"PARENTIDFIELD", 
+		"PARENTIDFIELD",
 		"PARENTFIELDSBEFORE",
-		"PARENTFIELDSAFTER", 
+		"PARENTFIELDSAFTER",
 		"Last_Token_Number"
 	};
 	

@@ -1,4 +1,4 @@
-// $ANTLR 2.7.7 (20060906): proeval.g -> ProEvalTokenTypes.txt$
+// $ANTLR : proeval.g -> ProEvalTokenTypes.txt$
 ProEval    // output token vocab name
 LEXDATE=4
 NAMEDOT=5

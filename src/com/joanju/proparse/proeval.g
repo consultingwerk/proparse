@@ -224,6 +224,7 @@ function returns [Object r]
 	|	r=asc_fun
 	|	r=date_fun
 	|	r=day_fun
+	|	r=dbtype_fun
 	|	r=decimal_fun
 	|	r=encode_fun
 	|	r=entry_fun
@@ -303,6 +304,15 @@ day_fun returns [Object ret]
 }
 	:	#(DAY LEFTPAREN a=expr RIGHTPAREN)
 		{if(true) throw new ProEvalException("DAY function not yet supported.");}
+	;
+
+dbtype_fun returns [Object ret]
+{
+	Object a;
+}
+	:	#(DBTYPE LEFTPAREN a=expr RIGHTPAREN)
+		{	ret = "PROGRESS";
+		}
 	;
 
 

@@ -1,4 +1,4 @@
-// $ANTLR 2.7.7 (20060906): "proeval.g" -> "ProEval.java"$
+// $ANTLR : "proeval.g" -> "ProEval.java"$
 
 package com.joanju.proparse;
 import static com.joanju.proparse.ProEvalSupport.*;
