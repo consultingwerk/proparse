@@ -1,4 +1,4 @@
-// $ANTLR 2.7.7 (20060906): proparse.g -> ProParserTokenTypes.txt$
+// $ANTLR : proparse.g -> ProParserTokenTypes.txt$
 ProParser    // output token vocab name
 LEXDATE=4
 NAMEDOT=5
