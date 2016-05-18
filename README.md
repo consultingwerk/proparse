@@ -1,5 +1,4 @@
-proparse
-========
+# proparse
 
 Proparse, forked from http://www.oehive.org/proparse/
 
@@ -27,3 +26,21 @@ Adding new keyword usually require:
 	3. depending on keyword type the grammar file might need to be updated
 		- SYSTEM HANDLE (SYSHDL), add the keyword on 'systemhandlename' rule
 		- FUNCTIONS (MAY_BE_REGULAR_FUNC or MAY_BE_NO_ARG_FUNC), add it to one of the following rules: 'builtinfunc', 'argfunc', 'recordfunc', 'noargfunc'
+
+# Parsing Proparse from the ABL
+
+Parsing rules form the ABL are derived from the original Prolint sources ... It's basically creating an instance of a java.io.File and passing it to the treeParser01 method of the org.prorefactor.treeparser.ParseUnit class.
+
+So it looks, that the ABL uses the org/prorefactor/treeparser01/expandedtreeparser01.g grammar.
+
+```
+DEFINE VARIABLE javafile AS java.io.File                         NO-UNDO .
+DEFINE VARIABLE pu       AS org.prorefactor.treeparser.ParseUnit NO-UNDO .
+
+javafile = NEW java.io.File (pcFilename).
+
+pu = NEW ParseUnit(javafile).
+pu:treeParser01().
+
+DELETE  OBJECT javafile .		
+```
