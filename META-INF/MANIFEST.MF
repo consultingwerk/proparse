@@ -37,5 +37,6 @@ Export-Package: com.joanju,
 Require-Bundle: org.eclipse.swt,
  org.eclipse.jface,
  org.eclipse.jface.text,
- org.prorefactor.lib
+ org.prorefactor.lib,
+ org.junit
 Eclipse-LazyStart: true
