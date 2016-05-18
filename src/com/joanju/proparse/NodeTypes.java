@@ -318,7 +318,7 @@ public class NodeTypes implements ProParserTokenTypes, TokenTypesI, Xferable {
 		add(ABSTRACT, 8, "abstract", TI.KEYWORD);
 		add(ACCELERATOR, 11, "accelerator", TI.KEYWORD);
 		add(ACCUMULATE, 5, "accumulate", TI.KEYWORD | TI.RESERVED);
-		add(ACTIVEFORM, 11, "active-form", TI.KEYWORD | TI.RESERVED);
+		add(ACTIVEFORM, 11, "active-form", TI.KEYWORD | TI.RESERVED | TI.SYSHDL);
 		add(ACTIVEWINDOW, 13, "active-window", TI.KEYWORD | TI.RESERVED | TI.SYSHDL);
 		add(ADD, 3, "add", TI.KEYWORD | TI.RESERVED);
 		add(ADDINTERVAL, 12, "add-interval", TI.KEYWORD | TI.MAY_BE_REGULAR_FUNC);
