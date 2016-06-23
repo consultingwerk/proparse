@@ -26,6 +26,7 @@ public class ParserSupport {
 
 	private boolean currDefInheritable = false;
 	private boolean unitIsInterface = false;
+	private boolean inDynamicNew = false;
 
 	private ClassFinder classFinder = new ClassFinder();
 	private DoParse doParse;
@@ -87,6 +88,14 @@ public class ParserSupport {
 	}
 
 
+	public boolean isInDynamicNew() {
+	    return inDynamicNew;
+	  }
+
+	  public void setInDynamicNew(boolean flag) {
+	    inDynamicNew = flag;
+	  }
+	  
 	/** Mark a node as "operator" */
 	static void attrOp(JPNode ast) {
 		ast.attrSet(JPNode.AK_OPERATOR, JPNode.AV_TRUE);

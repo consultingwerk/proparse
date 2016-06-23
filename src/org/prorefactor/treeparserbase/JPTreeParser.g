@@ -155,6 +155,7 @@ statement
 	|						casestate
 	|						catchstate
 	|						choosestate
+  |           enumstate
 	|						classstate
 	|						clearstate
 	|	{state2(_t, 0)}?			closestate			// SQL
@@ -401,7 +402,7 @@ functioncall
 	|	#(FRAMEDOWN (LEFTPAREN ID RIGHTPAREN)? )
 	|	#(FRAMELINE (LEFTPAREN ID RIGHTPAREN)? )
 	|	#(FRAMEROW (LEFTPAREN ID RIGHTPAREN)? )
-	|	#(GETCODEPAGES (funargs)? )
+  | #(GETCODEPAGE funargs )
 	|	#(GUID LEFTPAREN (expression)? RIGHTPAREN )
 	|	#(IF expression THEN expression ELSE expression )
 	|	ldbnamefunc 
@@ -593,6 +594,7 @@ noargfunc
 	|	GENERATEPBESALT
 	|	GENERATERANDOMKEY
 	|	GENERATEUUID
+  | GETCODEPAGES
 	|	GATEWAYS
 	|	GOPENDING
 	|	ISATTRSPACE
@@ -977,6 +979,22 @@ choosestate
 		)
 	;
 
+enumstate
+  :  #(  ENUM TYPE_NAME (FLAGS)? block_colon
+      defenumstate
+      #(END (ENUM)? )
+      state_end
+     )
+  ;
+
+defenumstate
+  :  #( DEFINE ENUM (enum_member)+ state_end )
+  ;
+
+enum_member
+  : TYPE_NAME ( EQUAL ( NUMBER | TYPE_NAME (COMMA TYPE_NAME)*))?
+  ;
+
 classstate
 	:	#(	CLASS TYPE_NAME
 			(	#(INHERITS TYPE_NAME)
@@ -1053,6 +1071,9 @@ columnformat
 			|	#(LABELBGCOLOR expression )
 			|	#(LABELFGCOLOR expression )
 			|	#(LEXAT field (columnformat)? )
+      | #(HEIGHT NUMBER )
+      | #(HEIGHTPIXELS NUMBER )
+      | #(HEIGHTCHARS NUMBER )
 			|	#(WIDTH NUMBER )
 			|	#(WIDTHPIXELS NUMBER )
 			|	#(WIDTHCHARS NUMBER )
@@ -1168,7 +1189,7 @@ createbrowsestate
 	;
 
 createbufferstate
-	:	#(	CREATE BUFFER field FOR TABLE expression
+	:	#(	CREATE BUFFER (field | widattr) FOR TABLE expression
 			( #(BUFFERNAME expression) )?
 			(#(IN_KW WIDGETPOOL expression))?
 			(NOERROR_KW)? state_end
@@ -1199,7 +1220,7 @@ createdatasourcestate
 	;
 
 createquerystate
-	:	#(CREATE QUERY create_whatever_args state_end )
+	:	#(CREATE QUERY (field | widattr) (#(IN_KW WIDGETPOOL expression))? (NOERROR_KW)? state_end )
 	;
 
 createsaxreaderstate
@@ -1231,7 +1252,7 @@ createsocketstate
 	;
 
 createtemptablestate
-	:	#(CREATE TEMPTABLE field (#(IN_KW WIDGETPOOL expression))? (NOERROR_KW)? state_end )
+	:	#(CREATE TEMPTABLE (field | widattr) (#(IN_KW WIDGETPOOL expression))? (NOERROR_KW)? state_end )
 	;
 
 createwidgetstate
