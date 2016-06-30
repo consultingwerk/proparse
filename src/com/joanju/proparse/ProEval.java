@@ -1360,7 +1360,7 @@ public ProEval() {
 		
 		AST dbtype_fun_AST_in = (_t == ASTNULL) ? null : (AST)_t;
 		
-		Object a;
+			Object a;
 		
 		
 		AST __t59 = _t;
@@ -1377,7 +1377,8 @@ public ProEval() {
 		_t = _t.getNextSibling();
 		_t = __t59;
 		_t = _t.getNextSibling();
-		ret = "PROGRESS";
+			ret = "PROGRESS";
+				
 		_retTree = _t;
 		return ret;
 	}
