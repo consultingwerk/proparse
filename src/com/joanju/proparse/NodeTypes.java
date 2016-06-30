@@ -631,6 +631,7 @@ public class NodeTypes implements ProParserTokenTypes, TokenTypesI, Xferable {
 		add(ENDROWRESIZE, 14, "end-row-resize", TI.KEYWORD);
 		add(ENTERED, 7, "entered", TI.KEYWORD);
 		add(ENTRY, 5, "entry", TI.KEYWORD | TI.RESERVED | TI.MAY_BE_REGULAR_FUNC);
+        add(ENUM, 4, "enum", TI.KEYWORD);
 		add(EQ, 2, "eq", TI.KEYWORD);
 		add(EQUAL, 0, "", TI.NO_FLAGS);
 		add(ERROR, 5, "error", TI.KEYWORD | TI.MAY_BE_REGULAR_FUNC);
@@ -693,6 +694,7 @@ public class NodeTypes implements ProParserTokenTypes, TokenTypesI, Xferable {
 		add(FIXCHAR, 7, "fixchar", TI.KEYWORD);
 		add(FIXCODEPAGE, 12, "fix-codepage", TI.KEYWORD);
 		add(FIXEDONLY, 10, "fixed-only", TI.KEYWORD);
+        add(FLAGS, 5, "flags", TI.KEYWORD);
 		add(FLATBUTTON, 11, "flat-button", TI.KEYWORD);
 		add(FLOAT, 5, "float", TI.KEYWORD);
 		add(FOCUS, 5, "focus", TI.KEYWORD | TI.RESERVED | TI.SYSHDL);
@@ -746,7 +748,8 @@ public class NodeTypes implements ProParserTokenTypes, TokenTypesI, Xferable {
 		add(GETCGILONGVALUE, 18, "get-cgi-long-value", TI.KEYWORD);
 		add(GETCGIVALUE, 13, "get-cgi-value", TI.KEYWORD);
 		add(GETCLASS, 9, "get-class", TI.KEYWORD | TI.MAY_BE_REGULAR_FUNC);
-		add(GETCODEPAGES, 12, "get-codepages", TI.KEYWORD | TI.RESERVED | TI.MAY_BE_NO_ARG_FUNC | TI.MAY_BE_REGULAR_FUNC);
+        add(GETCODEPAGE, 12, "get-codepage", TI.KEYWORD | TI.RESERVED | TI.MAY_BE_REGULAR_FUNC);
+        add(GETCODEPAGES, 13, "get-codepages", TI.KEYWORD | TI.RESERVED | TI.MAY_BE_NO_ARG_FUNC | TI.MAY_BE_REGULAR_FUNC);
 		add(GETCOLLATIONS, 8, "get-collations", TI.KEYWORD | TI.RESERVED | TI.MAY_BE_REGULAR_FUNC);
 		add(GETCONFIGVALUE, 16, "get-config-value", TI.KEYWORD);
 		add(GETDIR, 7, "get-dir", TI.KEYWORD);
@@ -779,6 +782,8 @@ public class NodeTypes implements ProParserTokenTypes, TokenTypesI, Xferable {
 		add(HAVING, 6, "having", TI.KEYWORD | TI.RESERVED);
 		add(HEADER, 6, "header", TI.KEYWORD | TI.RESERVED);
 		add(HEIGHT, 6, "height", TI.KEYWORD);
+        add(HEIGHTCHARS, 8, "height-chars", TI.KEYWORD);
+        add(HEIGHTPIXELS, 8, "height-pixels", TI.KEYWORD);
 		add(HELP, 4, "help", TI.KEYWORD | TI.RESERVED);
 		add(HELPTOPIC, 10, "help-topic", TI.KEYWORD);
 		add(HEXDECODE, 10, "hex-decode", TI.KEYWORD | TI.MAY_BE_REGULAR_FUNC);
@@ -929,7 +934,7 @@ public class NodeTypes implements ProParserTokenTypes, TokenTypesI, Xferable {
 		add(MATCHES, 7, "matches", TI.KEYWORD);
 		add(MAXCHARS, 9, "max-chars", TI.KEYWORD);
 		add(MAXIMIZE, 8, "maximize", TI.KEYWORD);
-		add(MAXIMUM, 3, "max", TI.KEYWORD | TI.MAY_BE_REGULAR_FUNC | TI.MAY_BE_REGULAR_FUNC);
+		add(MAXIMUM, 3, "max", TI.KEYWORD | TI.MAY_BE_REGULAR_FUNC);
 		add(MAXIMUM, 7, "maximum", TI.EXTRA_LITERAL);
 		add(MAXIMUMLEVEL, 13, "maximum-level", TI.KEYWORD);
 		add(MAXROWS, 8, "max-rows", TI.KEYWORD);
@@ -948,7 +953,7 @@ public class NodeTypes implements ProParserTokenTypes, TokenTypesI, Xferable {
 		add(MESSAGELINE, 12, "message-line", TI.KEYWORD);
 		add(MESSAGELINES, 13, "message-lines", TI.KEYWORD | TI.RESERVED | TI.MAY_BE_NO_ARG_FUNC);
 		add(METHOD, 6, "method", TI.KEYWORD);
-		add(MINIMUM, 3, "minimum", TI.KEYWORD | TI.MAY_BE_REGULAR_FUNC | TI.MAY_BE_REGULAR_FUNC);
+		add(MINIMUM, 3, "minimum", TI.KEYWORD | TI.MAY_BE_REGULAR_FUNC);
 		add(MINSIZE, 8, "min-size", TI.KEYWORD);
 		add(MINUS, 0, "", TI.NO_FLAGS);
 		add(MINVALUE, 7, "min-value", TI.KEYWORD);

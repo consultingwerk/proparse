@@ -1210,5 +1210,10 @@ public interface JPTreeParserTokenTypes {
 	int PARENTIDFIELD = 1207;
 	int PARENTFIELDSBEFORE = 1208;
 	int PARENTFIELDSAFTER = 1209;
-	int Last_Token_Number = 1210;
+	int ENUM = 1210;
+	int FLAGS = 1211;
+	int GETCODEPAGE = 1212;
+	int HEIGHTCHARS = 1213;
+	int HEIGHTPIXELS = 1214;
+	int Last_Token_Number = 1215;
 }
