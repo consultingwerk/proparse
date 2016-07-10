@@ -132,7 +132,7 @@ functioncall :#(ACCUMULATE accum_what (#(BY expression (DESCENDING)?))? expressi
 	|	#(FRAMEDOWN (LEFTPAREN ID RIGHTPAREN)? )
 	|	#(FRAMELINE (LEFTPAREN ID RIGHTPAREN)? )
 	|	#(FRAMEROW (LEFTPAREN ID RIGHTPAREN)? )
-	|	#(GETCODEPAGES (funargs)? )
+  | #(GETCODEPAGE funargs )
 	|	#(GUID LEFTPAREN (expression)? RIGHTPAREN )
 	|	#(IF expression THEN expression ELSE expression )
 	|	ldbnamefunc 
@@ -144,7 +144,7 @@ functioncall :#(ACCUMULATE accum_what (#(BY expression (DESCENDING)?))? expressi
 	|	#(PAGENUMBER (LEFTPAREN ID RIGHTPAREN)? )
 	|	#(PAGESIZE_KW (LEFTPAREN ID RIGHTPAREN)? )
 	|	rawfunc // is also a pseudfn.
-	|	#(SEEK LEFTPAREN (INPUT|OUTPUT|ID) RIGHTPAREN )
+  | #(SEEK LEFTPAREN (INPUT|OUTPUT|ID|STREAMHANDLE expression) RIGHTPAREN )
 	|	substringfunc // is also a pseudfn.
 	|	#(sr:SUPER {action.callBegin(#sr);} (parameterlist)? {action.callEnd();} )
 	|	#(TIMEZONE (funargs)? )
@@ -264,6 +264,7 @@ widname :systemhandlename
 	|	XDOCUMENT ID
 	|	XNODEREF ID
 	|	SOCKET ID
+  | STREAM ID
 	;
 
 tbl[int contextQualifier] :id:RECORD_NAME {action.recordNameNode(#id, contextQualifier);}
@@ -376,6 +377,22 @@ choosestate :#(	head:CHOOSE (ROW|FIELD)  { action.frameInitializingStatement(#he
 		)
 	;
 
+enumstate
+  :  #(  ENUM TYPE_NAME (FLAGS)? block_colon
+      defenumstate
+      #(END (ENUM)? )
+      state_end
+     )
+  ;
+
+defenumstate
+  :  #( DEFINE ENUM (enum_member)+ state_end )
+  ;
+
+enum_member
+  : TYPE_NAME ( EQUAL ( NUMBER | TYPE_NAME (COMMA TYPE_NAME)*))?
+  ;
+
 classstate :#(	c:CLASS {action.classState(#c);}
 			TYPE_NAME
 			(	#(INHERITS TYPE_NAME)
@@ -430,6 +447,9 @@ columnformat :#(	Format_phrase
 			|	#(LABELBGCOLOR expression )
 			|	#(LABELFGCOLOR expression )
 			|	#(LEXAT af:fld[CQ.SYMBOL] {action.lexat(#af);} (columnformat)? )
+			| #(HEIGHT NUMBER )
+      | #(HEIGHTPIXELS NUMBER )
+      | #(HEIGHTCHARS NUMBER )
 			|	#(WIDTH NUMBER )
 			|	#(WIDTHPIXELS NUMBER )
 			|	#(WIDTHCHARS NUMBER )
@@ -593,7 +613,7 @@ data_relation :#(	DATARELATION (ID)?
 			)*
 		)
 	;
-
+	
 field_mapping_phrase :#(RELATIONFIELDS LEFTPAREN fld2[CQ.SYMBOL] COMMA fld1[CQ.SYMBOL]
 		( COMMA fld2[CQ.SYMBOL] COMMA fld1[CQ.SYMBOL] )* RIGHTPAREN )
 	;
@@ -1371,6 +1391,7 @@ recordphrase :(record_fields)? (options{greedy=true;}:TODAY|NOW|constant)?
 		|	NOWAIT
 		|	NOPREFETCH
 		|	NOERROR_KW
+    | TABLESCAN
 		)*
 	;
 
@@ -1449,6 +1470,7 @@ systemdialoggetdirstate :#(	SYSTEMDIALOG GETDIR fld[CQ.REFUP]
 			(	#(INITIALDIR expression)
 			|	RETURNTOSTARTDIR
 			|	#(TITLE expression)
+      | #(UPDATE fld[CQ.REFUP])
 			)*
 			state_end
 		)
@@ -1727,6 +1749,7 @@ statement :aatracestatement
 	|						casestate
 	|						catchstate
 	|						choosestate
+  |           enumstate
 	|						classstate
 	|						clearstate
 	|	{state2(_t, 0)}?			closestate			// SQL
@@ -2115,6 +2138,7 @@ noargfunc :AACONTROL
 	|	GENERATEPBESALT
 	|	GENERATERANDOMKEY
 	|	GENERATEUUID
+  | GETCODEPAGES
 	|	GATEWAYS
 	|	GOPENDING
 	|	ISATTRSPACE
@@ -2237,7 +2261,7 @@ systemhandlename :AAMEMORY | ACTIVEFORM | ACTIVEWINDOW | AUDITCONTROL | AUDITPOL
 	|	COMSELF | CURRENTWINDOW | DEBUGGER | DEFAULTWINDOW
 	|	ERRORSTATUS | FILEINFORMATION | FOCUS | FONTTABLE | LASTEVENT | LOGMANAGER
 	|	MOUSE | PROFILER | RCODEINFORMATION | SECURITYPOLICY | SELF | SESSION
-	|	SOURCEPROCEDURE | SUPER | TARGETPROCEDURE | TEXTCURSOR | THISOBJECT | THISPROCEDURE | WEBCONTEXT
+  | SOURCEPROCEDURE | SUPER | TARGETPROCEDURE | TEXTCURSOR | THISOBJECT | THISPROCEDURE | WEBCONTEXT | ACTIVEFORM
 	;
 
 // inherited from grammar JPTreeParser
