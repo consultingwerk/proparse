@@ -1392,6 +1392,9 @@ public class NodeTypes implements ProParserTokenTypes, TokenTypesI, Xferable {
 		add(TARGET, 6, "target", TI.KEYWORD);
 		add(TARGETPROCEDURE, 16, "target-procedure", TI.KEYWORD | TI.SYSHDL);
 		add(TEMPTABLE, 10, "temp-table", TI.KEYWORD);
+		add(TENANT_ID, 9, "tenant-id", TI.KEYWORD | TI.RESERVED | TI.MAY_BE_REGULAR_FUNC);
+		add(TENANT_NAME, 11, "tenant-name", TI.KEYWORD | TI.RESERVED | TI.MAY_BE_REGULAR_FUNC);
+		add(TENANT_NAME_TO_ID, 17, "tenant-name-to-id", TI.KEYWORD | TI.RESERVED | TI.MAY_BE_REGULAR_FUNC);
 		add(TERMINAL, 4, "term", TI.KEYWORD | TI.RESERVED | TI.MAY_BE_NO_ARG_FUNC);
 		add(TERMINAL, 8, "terminal", TI.EXTRA_LITERAL);
 		add(TERMINATE, 9, "terminate", TI.KEYWORD);

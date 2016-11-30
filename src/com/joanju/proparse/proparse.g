@@ -422,6 +422,8 @@ builtinfunc
 	|	SEEK^ LEFTPAREN (INPUT|OUTPUT|streamname|STREAMHANDLE expression) RIGHTPAREN // streamname, /not/ stream_name_or_handle.
 	|	substringfunc // is also a pseudfn.
 	|	SUPER^ parameterlist  // also noarg
+	| TENANT_ID^ LEFTPAREN (expression)? RIGHTPAREN
+	| TENANT_NAME^ LEFTPAREN (expression)? RIGHTPAREN
 	|	TIMEZONE^ funargs  // also noarg
 	|	TYPEOF^ LEFTPAREN expression COMMA type_name RIGHTPAREN
 	| GETCLASS^ LEFTPAREN type_name RIGHTPAREN
@@ -549,6 +551,7 @@ argfunc
 		|	SSLSERVERNAME^
 		|	STRING^
 		|	SUBSTITUTE^
+		| TENANT_NAME_TO_ID^
 		|	TOROWID^
 		|	TRIM^
 		|	TRUNCATE^
@@ -696,7 +699,7 @@ funargs
 // Use funargs /only/ if it is the child of a root-node keyword.
 	:	LEFTPAREN expression (COMMA expression)* RIGHTPAREN
 	;
-
+  
 // ... or value phrases
 // There are a number of situations where you can have name, filename,
 // or "Anything", or that can be substituted with "value(expression)".
@@ -4242,7 +4245,7 @@ reservedkeyword:
  | SECURITYPOLICY | SEEK | SELECT | SELF | SESSION | SET | SETATTRCALLTYPE | SETUSERID 
  | SHARED | SHARELOCK | SHOWSTATS | SKIP | SKIPDELETEDRECORD | SOME | SPACE | STATUS 
  | STOMPDETECTION | STOMPFREQUENCY | STREAM | STREAMHANDLE | STREAMIO | SYSTEMDIALOG 
- | TABLE | TABLEHANDLE | TABLENUMBER | TERMINAL | TEXT | THEN | THISOBJECT 
+ | TABLE | TABLEHANDLE | TABLENUMBER | TENANT_ID | TENANT_NAME | TENANT_NAME_TO_ID | TERMINAL | TEXT | THEN | THISOBJECT 
  | THISPROCEDURE | TIME | TITLE | TO | TOPONLY | TOROWID | TRANSACTION | TRIGGER 
  | TRIGGERS | TRIM | TRUE_KW | UNDERLINE | UNDO | UNFORMATTED | UNION | UNIQUE | UNIX 
  | UNLESSHIDDEN | UP | UPDATE | USEINDEX | USERID | USING | V6FRAME | VALUE 
