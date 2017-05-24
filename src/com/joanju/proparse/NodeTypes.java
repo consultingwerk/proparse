@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.io.IOException;
 
 import com.joanju.Xferable;
+
 import com.joanju.DataXferStream;
 
 public class NodeTypes implements ProParserTokenTypes, TokenTypesI, Xferable {
@@ -754,6 +755,8 @@ public class NodeTypes implements ProParserTokenTypes, TokenTypesI, Xferable {
 		add(GETCONFIGVALUE, 16, "get-config-value", TI.KEYWORD);
 		add(GETDIR, 7, "get-dir", TI.KEYWORD);
 		add(GETDOUBLE, 10, "get-double", TI.KEYWORD | TI.MAY_BE_REGULAR_FUNC);
+		add(GET_EFFECTIVE_TENANT_ID, 23, "get-effective-tenant-id", TI.KEYWORD | TI.RESERVED | TI.MAY_BE_REGULAR_FUNC);
+		add(GET_EFFECTIVE_TENANT_NAME, 25, "get-effective-tenant-name", TI.KEYWORD | TI.RESERVED | TI.MAY_BE_REGULAR_FUNC);
 		add(GETFILE, 8, "get-file", TI.KEYWORD);
 		add(GETFLOAT, 9, "get-float", TI.KEYWORD | TI.MAY_BE_REGULAR_FUNC);
 		add(GETINT64, 9, "get-int64", TI.KEYWORD | TI.MAY_BE_REGULAR_FUNC);
@@ -1015,6 +1018,7 @@ public class NodeTypes implements ProParserTokenTypes, TokenTypesI, Xferable {
 		add(NOMAP, 6, "no-map", TI.KEYWORD | TI.RESERVED);
 		add(NOMESSAGE, 6, "no-message", TI.KEYWORD | TI.RESERVED);
 		add(NONE, 4, "none", TI.KEYWORD);
+		add(NON_SERIALIZABLE, 16, "non-serializable", TI.KEYWORD);
 		add(NOPAUSE, 8, "no-pause", TI.KEYWORD | TI.RESERVED);
 		add(NOPREFETCH, 8, "no-prefetch", TI.KEYWORD | TI.RESERVED);
 		add(NORETURNVALUE, 13, "no-return-value", TI.KEYWORD | TI.RESERVED);

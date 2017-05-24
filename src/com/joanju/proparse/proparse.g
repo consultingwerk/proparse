@@ -405,6 +405,8 @@ builtinfunc
 	|	FRAMEROW^ LEFTPAREN widgetname RIGHTPAREN  // also noarg
 	|	GETCODEPAGE^ funargs  // also noarg
 	|	GETCODEPAGES^ funargs  // also noarg
+	| GET_EFFECTIVE_TENANT_ID^ LEFTPAREN (expression)? RIGHTPAREN 
+	| GET_EFFECTIVE_TENANT_NAME^ LEFTPAREN (expression)? RIGHTPAREN
 	|	GUID^ LEFTPAREN (expression)? RIGHTPAREN
 	|	IF^ expression THEN expression ELSE expression
 	|	ldbnamefunc 
@@ -1924,6 +1926,8 @@ definestatement
 		|	ABSTRACT
 		|	STATIC
 		|	OVERRIDE
+		| SERIALIZABLE
+		| NON_SERIALIZABLE
 		)*
 		(	definebrowsestate	{sthd(##,BROWSE);}
 		|	definebufferstate	{sthd(##,BUFFER);}
@@ -2190,7 +2194,7 @@ defineparam_as
 
 definepropertystate
 	:	PROPERTY n:new_identifier AS datatype
-		(options{greedy=true;}: extentphrase|initial_constant|NOUNDO)*
+		(options{greedy=true;}: extentphrase|initial_constant|NOUNDO|serialize_name)*
 		defineproperty_accessor (options{greedy=true;}: defineproperty_accessor)?
 		{support.defVar(#n.getText());}
 	;
@@ -4195,7 +4199,7 @@ STATIC | THROW | TOPNAVQUERY | UNBOX
 // 10.2B
 ABSTRACT | DELEGATE | DYNAMICNEW | EVENT | FOREIGNKEYHIDDEN | SERIALIZEHIDDEN | SERIALIZENAME | SIGNATURE | STOPAFTER |
 // 11+
-GETCLASS | SERIALIZABLE | TABLESCAN | MESSAGEDIGEST | ENUM | FLAGS
+GETCLASS | SERIALIZABLE | TABLESCAN | MESSAGEDIGEST | ENUM | FLAGS | NON_SERIALIZABLE 
 	;
 
 
@@ -4219,7 +4223,8 @@ reservedkeyword:
  | FINDSELECT | FINDWRAPAROUND | FIRST | FIRSTOF | FOCUS | FONT | FOR | FORMAT | FRAME 
  | FRAMECOL | FRAMEDB | FRAMEDOWN | FRAMEFIELD | FRAMEFILE | FRAMEINDEX | FRAMELINE 
  | FRAMENAME | FRAMEROW | FRAMEVALUE | FROM | FUNCTIONCALLTYPE | GETATTRCALLTYPE 
- | GETBUFFERHANDLE | GETCODEPAGE | GETCODEPAGES | GETCOLLATIONS | GETKEYVALUE | GLOBAL | GOON 
+ | GETBUFFERHANDLE | GETCODEPAGE | GETCODEPAGES | GETCOLLATIONS 
+ | GET_EFFECTIVE_TENANT_ID | GET_EFFECTIVE_TENANT_NAME | GETKEYVALUE | GLOBAL | GOON 
  | GOPENDING | GRANT | GRAPHICEDGE | GROUP | HAVING | HEADER | HELP | HIDE 
  | HOSTBYTEORDER | IF | IMPORT | INDEX | INDICATOR | INPUT | INPUTOUTPUT | INSERT 
  | INTO | IN_KW | IS | ISATTRSPACE | ISLEADBYTE | JOIN | KBLABEL | KEYS | KEYWORD 

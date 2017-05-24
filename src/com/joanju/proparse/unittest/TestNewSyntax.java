@@ -37,7 +37,7 @@ public class TestNewSyntax extends TestCase {
 	}
 
 	public void test01() throws Exception {
-		File directory = new File("data/newsyntax/11.6");
+		File directory = new File("data/newsyntax/11.7");
 		String[] extensions = { "p", "w", "cls" };
 		Collection files = FileUtils.listFiles(directory, extensions, true);
 		for (Iterator it = files.iterator(); it.hasNext();) {

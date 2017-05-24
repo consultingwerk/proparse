@@ -1221,5 +1221,8 @@ public interface ProParserTokenTypes {
 	int TENANT_ID = 1215;
 	int TENANT_NAME = 1216;
 	int TENANT_NAME_TO_ID = 1217;
-	int Last_Token_Number = 1218;
+	int GET_EFFECTIVE_TENANT_NAME = 1218;
+	int GET_EFFECTIVE_TENANT_ID = 1219;
+	int NON_SERIALIZABLE = 1220;
+	int Last_Token_Number = 1221;
 }
