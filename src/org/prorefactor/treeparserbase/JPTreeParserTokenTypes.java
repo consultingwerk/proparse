@@ -1215,5 +1215,8 @@ public interface JPTreeParserTokenTypes {
 	int GETCODEPAGE = 1212;
 	int HEIGHTCHARS = 1213;
 	int HEIGHTPIXELS = 1214;
-	int Last_Token_Number = 1215;
+	int TENANT_ID = 1215;
+	int TENANT_NAME = 1216;
+	int TENANT_NAME_TO_ID = 1217;
+	int Last_Token_Number = 1218;
 }

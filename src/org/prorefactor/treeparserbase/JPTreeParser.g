@@ -417,6 +417,8 @@ functioncall
 	|	#(SEEK LEFTPAREN (INPUT|OUTPUT|ID|STREAMHANDLE expression) RIGHTPAREN )
 	|	substringfunc // is also a pseudfn.
 	|	#(SUPER (parameterlist)? )
+	| #(TENANT_ID LEFTPAREN (expression)? RIGHTPAREN )
+  | #(TENANT_NAME LEFTPAREN (expression)? RIGHTPAREN )
 	|	#(TIMEZONE (funargs)? )
 	|	#(TYPEOF LEFTPAREN expression COMMA TYPE_NAME RIGHTPAREN )
 	| #(GETCLASS LEFTPAREN TYPE_NAME RIGHTPAREN )
@@ -546,6 +548,7 @@ argfunc
 	|	#(SSLSERVERNAME funargs )
 	|	#(STRING funargs )
 	|	#(SUBSTITUTE funargs )
+  | #(TENANT_NAME_TO_ID funargs )
 	|	#(TOROWID funargs )
 	|	#(TRIM funargs )
 	|	#(TRUNCATE funargs )
@@ -616,7 +619,7 @@ noargfunc
 	|	RETRY
 	|	RETURNVALUE
 	|	SCREENLINES
-	|	TERMINAL
+	| TERMINAL
 	|	TIME
 	|	TODAY
 	|	TRANSACTION
