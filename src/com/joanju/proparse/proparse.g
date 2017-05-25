@@ -382,6 +382,11 @@ builtinfunc
 		)
 	|	ADDINTERVAL^ LEFTPAREN expression COMMA expression COMMA expression RIGHTPAREN
 	|	AUDITENABLED^ LEFTPAREN (expression)? RIGHTPAREN
+	| BUFFER_GROUP_ID^ LEFTPAREN ID RIGHTPAREN 
+	| BUFFER_GROUP_NAME^ LEFTPAREN ID RIGHTPAREN 
+	| BUFFER_PARTITION_ID^ LEFTPAREN ID RIGHTPAREN 
+	| BUFFER_TENANT_ID^ LEFTPAREN ID RIGHTPAREN 
+  | BUFFER_TENANT_NAME^ LEFTPAREN ID RIGHTPAREN 
 	|	(AVG LEFTPAREN)=> sqlaggregatefunc  
 	|	CANFIND^<AST=BlockNode> LEFTPAREN (options{greedy=true;}: findwhich)? recordphrase RIGHTPAREN
 	|	CAST^ LEFTPAREN expression COMMA type_name RIGHTPAREN
@@ -409,6 +414,7 @@ builtinfunc
 	| GET_EFFECTIVE_TENANT_NAME^ LEFTPAREN (expression)? RIGHTPAREN
 	|	GUID^ LEFTPAREN (expression)? RIGHTPAREN
 	|	IF^ expression THEN expression ELSE expression
+	| IS_DB_MULTI_TENANT^ LEFTPAREN (expression)? RIGHTPAREN 
 	|	ldbnamefunc 
 	|	lengthfunc // is also a pseudfn.
 	|	LINECOUNTER^ LEFTPAREN streamname RIGHTPAREN  // also noarg
@@ -424,6 +430,7 @@ builtinfunc
 	|	SEEK^ LEFTPAREN (INPUT|OUTPUT|streamname|STREAMHANDLE expression) RIGHTPAREN // streamname, /not/ stream_name_or_handle.
 	|	substringfunc // is also a pseudfn.
 	|	SUPER^ parameterlist  // also noarg
+	| SET_EFFECTIVE_TENANT^ LEFTPAREN expression (COMMA expression)? RIGHTPAREN 
 	| TENANT_ID^ LEFTPAREN (expression)? RIGHTPAREN
 	| TENANT_NAME^ LEFTPAREN (expression)? RIGHTPAREN
 	|	TIMEZONE^ funargs  // also noarg
@@ -1686,13 +1693,17 @@ copylob_for
 copylob_starting
 	:	STARTING^ AT expression
 	;
-		
+
+fortenant
+	: FOR^ TENANT expression
+	;
+	
 createstatement
 		// "CREATE WIDGET-POOL." truly is ambiguous if you have a table named "widget-pool".
 		// Progress seems to treat this as a CREATE WIDGET-POOL statement rather than a
 		// CREATE table statement. So, we'll resolve it the same way.
 	:	(CREATE WIDGETPOOL state_end)=> createwidgetpoolstate
-	|	(CREATE record (USING|NOERROR_KW|PERIOD|EOF))=> createstate
+	|	(CREATE record (FOR|USING|NOERROR_KW|PERIOD|EOF))=> createstate
 	|	create_whatever_state
 	|	createaliasstate
 	|	createautomationobjectstate
@@ -1712,7 +1723,7 @@ createstatement
 	;
 
 createstate
-	:	CREATE^ record (using_row)? (NOERROR_KW)? state_end
+	:	CREATE^ record (fortenant)? (using_row)? (NOERROR_KW)? state_end
 		{sthd(##,0);}
 	;
 
@@ -1817,7 +1828,9 @@ createwidgetpoolstate
 	;
 
 currentvaluefunc
-	:	CURRENTVALUE^ LEFTPAREN sequencename (COMMA identifier)? RIGHTPAREN
+	:	CURRENTVALUE^ LEFTPAREN sequencename (COMMA identifier)? // logical name 
+	(COMMA expression)? // multitenant 
+	RIGHTPAREN
 	;
 
 // Basic variable class or primitive datatype syntax.
@@ -3157,7 +3170,9 @@ nextpromptstate
 	;
 
 nextvaluefunc
-	:	NEXTVALUE^ LEFTPAREN sequencename (COMMA identifier)* RIGHTPAREN
+	:	NEXTVALUE^ LEFTPAREN sequencename (COMMA identifier)? // logical name 
+  (COMMA expression)? // multitenant
+  RIGHTPAREN
 	;
 
 nullphrase
@@ -3520,6 +3535,7 @@ record_opt
 		// (The constant NO-LOCK value is 6209).
 	|	(WHERE (SHARELOCK|EXCLUSIVELOCK|NOLOCK|NOWAIT|NOPREFETCH|NOERROR_KW))=> WHERE^
 	|	WHERE^ (options{greedy=true;}: expression)?
+	| TENANT_WHERE^ expression (SKIP_GROUP_DUPLICATES)?
 	|	USEINDEX^ identifier
 	|	USING^ field (AND field)*
 	|	lockhow
@@ -3555,7 +3571,7 @@ repositionstate
 	;
 reposition_opt
 	:	TO^
-		(	ROWID expression (COMMA expression)* 
+		(	ROWID expression (COMMA expression)* (FOR TENANT expression)?
 		|	RECID expression
 		|	ROW expression
 		)
@@ -4199,7 +4215,7 @@ STATIC | THROW | TOPNAVQUERY | UNBOX
 // 10.2B
 ABSTRACT | DELEGATE | DYNAMICNEW | EVENT | FOREIGNKEYHIDDEN | SERIALIZEHIDDEN | SERIALIZENAME | SIGNATURE | STOPAFTER |
 // 11+
-GETCLASS | SERIALIZABLE | TABLESCAN | MESSAGEDIGEST | ENUM | FLAGS | NON_SERIALIZABLE 
+GETCLASS | SERIALIZABLE | TABLESCAN | MESSAGEDIGEST | ENUM | FLAGS | NON_SERIALIZABLE  | TENANT
 	;
 
 
@@ -4247,7 +4263,7 @@ reservedkeyword:
  | SAXRUNNING | SAXUNINITIALIZED | SAXWRITEBEGIN | SAXWRITECOMPLETE | SAXWRITECONTENT 
  | SAXWRITEELEMENT | SAXWRITEERROR | SAXWRITEIDLE | SAXWRITETAG | SCHEMA | SCREEN 
  | SCREENIO | SCREENLINES | SCROLL | SDBNAME | SEARCH | SEARCHSELF | SEARCHTARGET 
- | SECURITYPOLICY | SEEK | SELECT | SELF | SESSION | SET | SETATTRCALLTYPE | SETUSERID 
+ | SECURITYPOLICY | SEEK | SELECT | SELF | SESSION | SET | SETATTRCALLTYPE | SET_EFFECTIVE_TENANT | SETUSERID 
  | SHARED | SHARELOCK | SHOWSTATS | SKIP | SKIPDELETEDRECORD | SOME | SPACE | STATUS 
  | STOMPDETECTION | STOMPFREQUENCY | STREAM | STREAMHANDLE | STREAMIO | SYSTEMDIALOG 
  | TABLE | TABLEHANDLE | TABLENUMBER | TENANT_ID | TENANT_NAME | TENANT_NAME_TO_ID | TERMINAL | TEXT | THEN | THISOBJECT 

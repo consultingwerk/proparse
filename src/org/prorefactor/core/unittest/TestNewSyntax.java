@@ -52,7 +52,8 @@ public class TestNewSyntax extends TestCase {
 			ParseUnit pu = new ParseUnit(file);
 			pu.treeParser(new JPTreeParser());
 
-//			pu.treeParser01();
+			pu.treeParser01();
+			
 //			TreeParser03 tp3 = new TreeParser03();
 //			tp3.setSupport(new TP03Support());
 //			pu.treeParser(tp3);

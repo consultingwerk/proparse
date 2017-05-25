@@ -1,9 +1,9 @@
 // $ANTLR : "JPTreeParser.g" -> "JPTreeParser.java"$
 
-	package org.prorefactor.treeparserbase;
+  package org.prorefactor.treeparserbase;
 
-	import org.prorefactor.core.IJPNode;
-	import org.prorefactor.treeparser.IJPTreeParser;
+  import org.prorefactor.core.IJPNode;
+  import org.prorefactor.treeparser.IJPTreeParser;
 
 public interface JPTreeParserTokenTypes {
 	int EOF = 1;
@@ -1218,5 +1218,18 @@ public interface JPTreeParserTokenTypes {
 	int TENANT_ID = 1215;
 	int TENANT_NAME = 1216;
 	int TENANT_NAME_TO_ID = 1217;
-	int Last_Token_Number = 1218;
+	int GET_EFFECTIVE_TENANT_NAME = 1218;
+	int GET_EFFECTIVE_TENANT_ID = 1219;
+	int NON_SERIALIZABLE = 1220;
+	int SET_EFFECTIVE_TENANT = 1221;
+	int IS_DB_MULTI_TENANT = 1222;
+	int BUFFER_GROUP_ID = 1223;
+	int BUFFER_GROUP_NAME = 1224;
+	int BUFFER_PARTITION_ID = 1225;
+	int BUFFER_TENANT_ID = 1226;
+	int BUFFER_TENANT_NAME = 1227;
+	int TENANT = 1228;
+	int TENANT_WHERE = 1229;
+	int SKIP_GROUP_DUPLICATES = 1230;
+	int Last_Token_Number = 1231;
 }
