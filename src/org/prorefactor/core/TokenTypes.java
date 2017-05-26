@@ -10,7 +10,7 @@
  */
 package org.prorefactor.core;
 
-import org.prorefactor.treeparserbase.JPTreeParserTokenTypes;
+import org.prorefactor.treeparser01.TreeParser01TokenTypes;
 
 import com.joanju.proparse.NodeTypes;
 
@@ -21,7 +21,7 @@ import com.joanju.proparse.NodeTypes;
  * class is largely redundant with com.joanju.proparse.NodeTypes.
  * @See com.joanju.proparse.NodeTypes.
  */
-public class TokenTypes implements JPTreeParserTokenTypes, TokenTypesI {
+public class TokenTypes implements TreeParser01TokenTypes, TokenTypesI {
 
 	private static TokenInfo [] allTokens = new TokenInfo[Last_Token_Number + 1];
 

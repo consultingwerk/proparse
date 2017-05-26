@@ -29,7 +29,7 @@ import antlr.collections.AST;
  */
 public class TP01Action {
 
-	protected ParseUnit parseUnit = new ParseUnit(null);
+	protected ParseUnit parseUnit = new ParseUnit();
 
 	
 
