@@ -185,7 +185,7 @@ public class ParseUnit {
 	}
 
 	public void parse() throws RefactorException {
-		parse(file.getPath());
+		parse(file, null);
 	}
 
 	public void parse(String fileName) throws RefactorException {
@@ -193,14 +193,18 @@ public class ParseUnit {
 	}
 	
 	public void parse(String fileName, String fileContent) throws RefactorException {
+		parse(new File(fileName), fileContent);
+	}
+		
+	public void parse(File file, String fileContent) throws RefactorException {	
 		refpack.enableParserListing();
-		DoParse doParse = new DoParse(fileName, fileContent);
+		DoParse doParse = new DoParse(file.getAbsolutePath(), fileContent);
 		try {
 			doParse.doParse();
 			ListingParser listingParser = new ListingParser(RefactorSession.getListingFileName());
 			listingParser.parse();
 			macroGraph = listingParser.getRoot();
-			if (RefactorSession.getInstance().getProjectBinaraiesEnabled()) {
+			if (refpack.getProjectBinaraiesEnabled()) {
 				File macroGraphFile = macroGraphFile();
 				macroGraphFile.getParentFile().mkdirs();
 				FileOutputStream fileOut = new FileOutputStream(macroGraphFile);
