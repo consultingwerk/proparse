@@ -7,7 +7,6 @@ import java.util.Iterator;
 import org.apache.commons.io.FileUtils;
 import org.prorefactor.refactor.RefactorException;
 import org.prorefactor.treeparser.ParseUnit;
-import org.prorefactor.treeparserbase.JPTreeParser;
 
 public class TestMe {
 
@@ -24,7 +23,8 @@ public class TestMe {
 			
 			ParseUnit pu = new ParseUnit(file);
 			try {
-				pu.treeParser(new JPTreeParser());
+				//pu.treeParser(new JPTreeParser());
+				pu.treeParser01();
 			} catch (RefactorException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
