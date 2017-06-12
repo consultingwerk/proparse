@@ -1,6 +1,9 @@
 proparse
 ========
 
+[PUG Challenge 2017 Presentation](
+https://github.com/consultingwerk/proparse/files/1066604/2017.Proparse.EN.pdf)
+
 Proparse, forked from http://www.oehive.org/proparse/
 
 The grammar files uses ANTLR 2x syntax (compiler in lib/antlr-2.7.7.jar), use the ANTLR plugin for Eclipse
