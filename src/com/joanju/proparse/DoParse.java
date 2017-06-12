@@ -113,7 +113,7 @@ public class DoParse {
 		
 		if (inputContent != null)
 			inputReader = new StringReader(inputContent);
-		else {
+		else if (fileName != null) {
 			try {
 				inputReader = new FileReader(fileName);
 			} catch (FileNotFoundException fe) {
@@ -122,7 +122,8 @@ public class DoParse {
 			}
 		}
 		
-		inStream = new BufferedReader(inputReader);
+		if (inputReader != null)
+			inStream = new BufferedReader(inputReader);
 		
 		Preprocessor prepro = new Preprocessor(fileName, inStream, this);
 
@@ -229,7 +230,8 @@ public class DoParse {
 					env.clearSuperCache();
 			}
 			
-			inputReader.close();
+			if (inStream != null)
+				inStream.close();
 		}
 	}
 
