@@ -196,9 +196,31 @@ public class ParseUnit {
 		parse(new File(fileName), fileContent);
 	}
 		
-	public void parse(File file, String fileContent) throws RefactorException {	
-		refpack.enableParserListing();
-		DoParse doParse = new DoParse(file.getAbsolutePath(), fileContent);
+	public void parse(File file, String fileContent) throws RefactorException {
+		String errmsg = "";
+		
+		if (file != null) {
+			errmsg = "Error parsing " + file.getName() + System.lineSeparator(); 
+		}
+		
+		if (fileContent != null && !fileContent.isEmpty()) {
+			errmsg = errmsg + "Error parsing fileContent." + System.lineSeparator();
+		}
+		
+		if (refpack == null) {
+			throw new RefactorException (errmsg + "refpack is null");
+		}
+		
+		DoParse doParse; 
+		
+		try {
+			refpack.enableParserListing();
+			doParse = new DoParse(file.getAbsolutePath(), fileContent);
+		}
+		catch (Exception e) {
+			throw new RefactorException(errmsg + e.getMessage(), e);
+		}
+		
 		try {
 			doParse.doParse();
 			ListingParser listingParser = new ListingParser(RefactorSession.getListingFileName());
@@ -214,9 +236,16 @@ public class ParseUnit {
 				fileOut.close();
 			}
 		} catch (Exception e) {
-			throw new RefactorException(e);
+			throw new RefactorException(errmsg + e.getMessage(), e);
 		}
-		setTopNode(doParse.getTopNode());
+		
+		try {
+			setTopNode(doParse.getTopNode());
+		}
+		catch (Exception e) {
+			throw new RefactorException(errmsg + e.getMessage(), e);
+		}
+
 	}
 
 	public ParseUnit setPUB(PUB pub) {
