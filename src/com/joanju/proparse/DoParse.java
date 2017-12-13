@@ -11,7 +11,10 @@ import org.prorefactor.core.JPNode;
 
 import java.util.ArrayList;
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
 import java.io.FileReader;
 
 import antlr.TokenStreamException;
@@ -20,11 +23,20 @@ import antlr.RecognitionException;
 public class DoParse {
 
 	public DoParse(String fileName) {
-		this.fileName = fileName;
+		this(fileName, null, null);
+	}
+	
+	public DoParse(String fileName, String inputContent) {
+		this(fileName, inputContent, null);
 	}
 
-	DoParse(String filename, DoParse primary) {
-		this.fileName = filename;
+	DoParse(String fileName, DoParse primary) {
+		this(fileName, null, primary);
+	}
+	
+	DoParse(String fileName, String inputContent, DoParse primary) {
+		this.fileName = fileName;
+		this.inputContent = inputContent;
 		this.primary = primary;
 	}
 
@@ -42,6 +54,7 @@ public class DoParse {
 	private Environment env = Environment.instance();
 	ProParser parser;
 	String fileName;
+	String inputContent;
 	TokenVectorIterator tvi;
 
 	IntegerIndex<String> filenameList = new IntegerIndex<String>();
@@ -96,8 +109,22 @@ public class DoParse {
 	public void doParse()
 			throws IOException, TokenStreamException, RecognitionException {
 
-		if (fileName!=null)
-			inStream = new BufferedReader(new FileReader(fileName));
+		Reader inputReader = null;
+		
+		if (inputContent != null)
+			inputReader = new StringReader(inputContent);
+		else if (fileName != null) {
+			try {
+				inputReader = new FileReader(fileName);
+			} catch (FileNotFoundException fe) {
+				inputReader = new StringReader(fileName);
+				fileName = "dummy.p";
+			}
+		}
+		
+		if (inputReader != null)
+			inStream = new BufferedReader(inputReader);
+		
 		Preprocessor prepro = new Preprocessor(fileName, inStream, this);
 
 		try {
@@ -202,6 +229,9 @@ public class DoParse {
 				if (! env.isMultiParse() )
 					env.clearSuperCache();
 			}
+			
+			if (inStream != null)
+				inStream.close();
 		}
 	}
 

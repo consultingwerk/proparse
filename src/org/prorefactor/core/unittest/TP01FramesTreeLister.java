@@ -16,7 +16,6 @@ import org.prorefactor.nodetypes.BlockNode;
 import org.prorefactor.nodetypes.FieldRefNode;
 import org.prorefactor.treeparser.Block;
 import org.prorefactor.treeparser.FieldContainer;
-import org.prorefactor.treeparserbase.TokenTypesReader;
 import org.prorefactor.widgettypes.Frame;
 
 public class TP01FramesTreeLister extends JPNodeLister {

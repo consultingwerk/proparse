@@ -754,7 +754,7 @@ public class JPNode extends BaseAST implements IJPNode, Xferable {
 	public void setComments(String comments) { setLink(COMMENTS, comments); }
 
 
-	void setDown(JPNode down) {this.down = down;}
+	public void setDown(JPNode down) {this.down = down;}
 
 
 	/** @see #getFieldContainer() */
@@ -935,5 +935,21 @@ public class JPNode extends BaseAST implements IJPNode, Xferable {
 		out.schemaRef("linkMap");
 	}
 
-
+	/**
+	 * Returns the reference to the Node's ProToken instance
+	 * @return The ProToken instance of the Node
+	 */
+	public ProToken getToken () {
+		return this.token;
+	}
+	
+	/**
+	 * Assigns the reference to the Node's ProToken instance
+	 * @param newToken The new ProToken reference
+	 * @return The ProToken instance of the Node (fluent style)
+	 */
+	public ProToken setToken (ProToken newToken) {
+		this.token = newToken;
+		return newToken;
+	}
 }

@@ -23,7 +23,6 @@ import org.prorefactor.treeparser.ParseUnit;
 // TODO add back, or split out
 //import org.prorefactor.treeparser03.TP03Support;
 //import org.prorefactor.treeparser03.TreeParser03;
-import org.prorefactor.treeparserbase.JPTreeParser;
 
 
 /** Test all tree parsers against new syntax.
@@ -50,13 +49,21 @@ public class TestNewSyntax extends TestCase {
 			System.out.println("Parse: " + file.getAbsolutePath());
 			
 			ParseUnit pu = new ParseUnit(file);
-			pu.treeParser(new JPTreeParser());
+			//pu.treeParser(new JPTreeParser());
 
-//			pu.treeParser01();
+			pu.treeParser01();
+			
 //			TreeParser03 tp3 = new TreeParser03();
 //			tp3.setSupport(new TP03Support());
 //			pu.treeParser(tp3);
 		}
+	}
+	
+	public void test02() throws Exception {
+		// parse in-memory string
+		ParseUnit pu = new ParseUnit();
+		pu.treeParser01("define variable test as character no-undo.\n define temp-table ttCust no-undo field custName as character.");
+			
 	}
 
 }

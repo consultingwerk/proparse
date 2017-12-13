@@ -18,6 +18,8 @@ import java.util.Iterator;
 import junit.framework.TestCase;
 
 import org.apache.commons.io.FileUtils;
+import org.prorefactor.refactor.RefactorSession;
+import org.prorefactor.treeparser.ParseUnit;
 
 import com.joanju.proparse.DoParse;
 
@@ -37,7 +39,7 @@ public class TestNewSyntax extends TestCase {
 	}
 
 	public void test01() throws Exception {
-		File directory = new File("data/newsyntax/11.6");
+		File directory = new File("data/newsyntax/11.7");
 		String[] extensions = { "p", "w", "cls" };
 		Collection files = FileUtils.listFiles(directory, extensions, true);
 		for (Iterator it = files.iterator(); it.hasNext();) {
@@ -48,6 +50,25 @@ public class TestNewSyntax extends TestCase {
 			pu.doParse();
 
 			// pu.treeParser01();
+			// TreeParser03 tp3 = new TreeParser03();
+			// tp3.setSupport(new TP03Support());
+			// pu.treeParser(tp3);
+		}
+	}
+	
+	public void test02() throws Exception {
+		File directory = new File("data/newsyntax/11.7");
+		String[] extensions = { "p", "w", "cls" };
+		Collection files = FileUtils.listFiles(directory, extensions, true);
+		RefactorSession.getInstance().setProjectBinariesEnabledOn();
+		
+		for (Iterator it = files.iterator(); it.hasNext();) {
+			File file = (File) it.next();
+			System.out.println("Parse: " + file.getAbsolutePath());
+
+			ParseUnit pu = new ParseUnit(file);
+			pu.treeParser01();
+
 			// TreeParser03 tp3 = new TreeParser03();
 			// tp3.setSupport(new TP03Support());
 			// pu.treeParser(tp3);
