@@ -1,1 +1,0 @@
-0 0 0 fileindex 0 data/newsyntax/prolint/regrtest-oo/test6.cls
