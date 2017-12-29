@@ -12,6 +12,7 @@ FUNCTION myExampleFunction RETURNS LOGICAL (
     input tstf as decimal extent 5,
     input fer like ttIdx.idxName,
     input hkjhkjh as class Progress.Lang.Error,
-    input-output class Progress.Lang.AppError):
+    input-output class Progress.Lang.AppError,
+    output decimal):
     return true.
 end function.

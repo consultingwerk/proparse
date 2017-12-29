@@ -24503,7 +24503,11 @@ inputState.guessing--;
 				}
 				}
 				if ( inputState.guessing==0 ) {
-					action.defAs(as);
+					
+						action.addToSymbolScope(action.defineVariable(id, id));
+						action.defAs(as);
+					action.paramSymbol(id);
+					
 				}
 				break;
 			}
@@ -24518,7 +24522,11 @@ inputState.guessing--;
 				_t = __t974;
 				_t = _t.getNextSibling();
 				if ( inputState.guessing==0 ) {
+					
+					action.addToSymbolScope(action.defineVariable(id, id));
 					action.defLike(li);
+					action.paramSymbol(id);
+					
 				}
 				break;
 			}
@@ -24527,11 +24535,6 @@ inputState.guessing--;
 				throw new NoViableAltException(_t);
 			}
 			}
-			}
-			if ( inputState.guessing==0 ) {
-				action.addToSymbolScope(action.defineVariable(id, id));
-				action.paramSymbol(id);
-				
 			}
 			break;
 		}

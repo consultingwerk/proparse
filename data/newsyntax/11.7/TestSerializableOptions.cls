@@ -20,6 +20,8 @@ CLASS Test.TestSerializableOptions SERIALIZABLE:
      *
      * @return CHARACTER
      */
+    
+    define public event testEvt signature void (amr as character).
      
     DEFINE PRIVATE SERIALIZABLE TEMP-TABLE ttTest NO-UNDO FIELD c AS CHARACTER .
 
