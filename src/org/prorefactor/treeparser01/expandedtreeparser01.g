@@ -1212,16 +1212,27 @@ function_param_arg :TABLE (FOR)? tb1:tbl[CQ.TEMPTABLESYMBOL] (APPEND)? (BIND {ac
     { action.addToSymbolScope(action.defineVariable(#dsh, #dsh, HANDLE));
       action.paramSymbol(#dsh);
     }
-  | ( 
-      // ID AS is optional - you are allowed to list just the datatype.
-      id:ID as:AS
-      { action.addToSymbolScope(action.defineVariable(#id, #id));
-        action.defAs(#as);
-        action.paramSymbol(#id);
-      }
-    )?
-    {if (#id==null) action.paramNoName(_t);}
+  | { action.paramNoName(_t); }
     (CLASS TYPE_NAME | datatype_var) (extentphrase_def_symbol)?
+  | // ID AS is optional - you are allowed to list just the datatype.
+    id:ID 
+    ((as:AS 
+    {
+    	action.addToSymbolScope(action.defineVariable(#id, #id));
+    	action.defAs(#as);
+        action.paramSymbol(#id);
+    }
+    (CLASS TYPE_NAME | datatype_var) (extentphrase_def_symbol)?) 
+    
+    |
+    #(li:LIKE fld[CQ.SYMBOL]) 
+    {
+        action.addToSymbolScope(action.defineVariable(#id, #id));
+        action.defLike(#li);
+        action.paramSymbol(#id);
+    }
+    )
+    
   ;
 
 getkeyvaluestate :#(GETKEYVALUE SECTION expression KEY (DEFAULT|expression) VALUE fld[CQ.UPDATING] state_end )
