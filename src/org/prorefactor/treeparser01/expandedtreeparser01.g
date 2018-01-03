@@ -1216,12 +1216,14 @@ function_param_arg :TABLE (FOR)? tb1:tbl[CQ.TEMPTABLESYMBOL] (APPEND)? (BIND {ac
     (CLASS TYPE_NAME | datatype_var) (extentphrase_def_symbol)?
   | // ID AS is optional - you are allowed to list just the datatype.
     id:ID 
-    ((as:AS (CLASS TYPE_NAME | datatype_var) (extentphrase_def_symbol)?) 
+    ((as:AS 
     {
     	action.addToSymbolScope(action.defineVariable(#id, #id));
     	action.defAs(#as);
         action.paramSymbol(#id);
     }
+    (CLASS TYPE_NAME | datatype_var) (extentphrase_def_symbol)?) 
+    
     |
     #(li:LIKE fld[CQ.SYMBOL]) 
     {

@@ -43,4 +43,14 @@ CLASS Test.TestSerializableOptions SERIALIZABLE:
 	
 	DEFINE PRIVATE SERIALIZABLE VARIABLE TestVariable2 AS CHARACTER NO-UNDO SERIALIZE-NAME "BamBam":U. 
  
+  METHOD PROTECTED VOID InternalAdd (poItem AS Progress.Lang.Object EXTENT):
+
+        DEFINE VARIABLE i AS INTEGER NO-UNDO.
+
+        DO i = 1 TO EXTENT (poItem):
+            THIS-OBJECT:InternalAdd (poItem[i]) .
+        END.
+
+    END METHOD.
+    
 END CLASS.

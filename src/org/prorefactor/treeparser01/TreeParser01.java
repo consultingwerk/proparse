@@ -24441,6 +24441,13 @@ inputState.guessing--;
 				as = (AST)_t;
 				match(_t,AS);
 				_t = _t.getNextSibling();
+				if ( inputState.guessing==0 ) {
+					
+						action.addToSymbolScope(action.defineVariable(id, id));
+						action.defAs(as);
+					action.paramSymbol(id);
+					
+				}
 				{
 				if (_t==null) _t=ASTNULL;
 				switch ( _t.getType()) {
@@ -24501,13 +24508,6 @@ inputState.guessing--;
 				}
 				}
 				}
-				}
-				if ( inputState.guessing==0 ) {
-					
-						action.addToSymbolScope(action.defineVariable(id, id));
-						action.defAs(as);
-					action.paramSymbol(id);
-					
 				}
 				break;
 			}
