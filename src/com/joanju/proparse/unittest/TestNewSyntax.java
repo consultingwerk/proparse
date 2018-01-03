@@ -22,6 +22,7 @@ import org.prorefactor.refactor.RefactorSession;
 import org.prorefactor.treeparser.ParseUnit;
 
 import com.joanju.proparse.DoParse;
+import com.joanju.proparse.Environment;
 
 /**
  * Test all tree parsers against new syntax. These tests just run the tree
@@ -36,6 +37,8 @@ public class TestNewSyntax extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 
+		Environment env = Environment.instance();
+		env.configSet("proversion", "11.7");
 	}
 
 	public void test01() throws Exception {
