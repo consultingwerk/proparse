@@ -482,7 +482,7 @@ public class JPNode extends BaseAST implements IJPNode, Xferable {
 
 	/** Get the array of file names. The file at index zero is always the compile unit.
 	 * The others are include files. The array index position corresponds to JPNode.getFileIndex().
-	 * The array is genereated every time this is called, so don't make repeated calls to this.
+	 * The array is generated every time this is called, so don't make repeated calls to this.
 	 */
 	public String[] getFilenames() {
 		ArrayList<String> list = token.getFilenameList().getValues();
