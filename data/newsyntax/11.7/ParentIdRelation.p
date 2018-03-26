@@ -14,6 +14,7 @@ define temp-table ObjectType no-undo
   field GetObjectInfoResult_id as integer .
 
   define dataset dsGetObjectInfoResult namespace-uri "http://services.kinetic.ch/"
+    xml-node-type "HIDDEN" serialize-hidden
     for GetObjectInfoResult, ObjectType
     parent-id-relation RELATION1 for GetObjectInfoResult, ObjectType
       parent-id-field GetObjectInfoResult_id
