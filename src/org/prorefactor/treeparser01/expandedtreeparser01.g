@@ -610,6 +610,7 @@ definedatasetstate :#(  def:DEFINE (def_shared)? def_modifiers DATASET
       FOR tb1:tbl[CQ.INIT] {action.datasetTable(#tb1);}
       (COMMA tb2:tbl[CQ.INIT] {action.datasetTable(#tb2);} )*
       ( data_relation ( (COMMA)? data_relation)* )?
+      ( parent_id_relation ( (COMMA)? parent_id_relation)* )?
       state_end
       { action.addToSymbolScope(pop()); }
     )
