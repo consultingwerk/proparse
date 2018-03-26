@@ -384,11 +384,14 @@ public class Lexer implements ProParserTokenTypes {
 		// character to look after
 
 		append(); // currChar=='/'
-
+		prepro.doingComment = true;
+		
 		while (true) {
 			getChar();
 			unEscapedAppend();
-			if (currChar == '\r' || currChar == '\n' || currInt == EOF_CHAR) {
+			// check if the preprocessor escaped the 4gl new line (~n, ~r)
+			if ((prepro.escapeCurrent == false && (currChar == '\r' || currChar == '\n')) || currInt == EOF_CHAR) {
+				prepro.doingComment = false;
 				return makeToken(COMMENT);
 			}
 		}
