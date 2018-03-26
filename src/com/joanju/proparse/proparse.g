@@ -543,6 +543,7 @@ argfunc
 		|	OSGETENV^
 		|	PDBNAME^
 		|	PROGRAMNAME^
+		|	PROVERSION^
 		|	QUERYOFFEND^
 		|	QUOTER^
 		|	RINDEX^

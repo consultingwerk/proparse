@@ -148,6 +148,7 @@ functioncall :#(ACCUMULATE accum_what (#(BY expression (DESCENDING)?))? expressi
     // ENTERED and NOTENTERED are only dealt with as part of an expression term. See: exprt.
   | #(PAGENUMBER (LEFTPAREN ID RIGHTPAREN)? )
   | #(PAGESIZE_KW (LEFTPAREN ID RIGHTPAREN)? )
+  | #(PROVERSION (funargs)? )
   | rawfunc // is also a pseudfn.
   | #(SEEK LEFTPAREN (INPUT|OUTPUT|ID|STREAMHANDLE expression) RIGHTPAREN )
   | substringfunc // is also a pseudfn.

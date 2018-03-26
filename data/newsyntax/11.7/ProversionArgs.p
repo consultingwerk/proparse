@@ -1,0 +1,3 @@
+DEFINE VARIABLE lcVersion as CHARACTER NO-UNDO.
+
+lcVersion = PROVERSION(1).
