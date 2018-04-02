@@ -496,9 +496,13 @@ public class TP01Support extends TP01Action {
 	@Override
 	protected Variable defineVariable(AST defAST, AST idAST, AST likeAST) {
 		Variable v = defineVariable(defAST, idAST);
-		FieldRefNode likeRefNode = (FieldRefNode) likeAST;
-		v.setDataType(likeRefNode.getDataType());
-		v.setClassName(likeRefNode.getClassName());
+		if (likeAST != null) {
+			FieldRefNode likeRefNode = (FieldRefNode) likeAST;
+			if (likeRefNode.getSymbol() != null) {
+				v.setDataType(likeRefNode.getDataType());
+				v.setClassName(likeRefNode.getClassName());
+			}
+		}
 		return v;
 	}
 
