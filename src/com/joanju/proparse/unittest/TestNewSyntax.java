@@ -18,6 +18,7 @@ import java.util.Iterator;
 import junit.framework.TestCase;
 
 import org.apache.commons.io.FileUtils;
+import org.prorefactor.core.schema.Schema;
 import org.prorefactor.refactor.RefactorSession;
 import org.prorefactor.treeparser.ParseUnit;
 
@@ -37,12 +38,13 @@ public class TestNewSyntax extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 
-		Environment env = Environment.instance();
-		env.configSet("proversion", "11.7");
+		RefactorSession refpack = RefactorSession.getInstance();
+		refpack.loadProjectForced("unittest");
+			
 	}
 
 	public void test01() throws Exception {
-		File directory = new File("data/newsyntax/11.7");
+		File directory = new File("data/newsyntax");
 		String[] extensions = { "p", "w", "cls" };
 		Collection files = FileUtils.listFiles(directory, extensions, true);
 		for (Iterator it = files.iterator(); it.hasNext();) {
@@ -51,16 +53,11 @@ public class TestNewSyntax extends TestCase {
 
 			DoParse pu = new DoParse(file.getAbsolutePath());
 			pu.doParse();
-
-			// pu.treeParser01();
-			// TreeParser03 tp3 = new TreeParser03();
-			// tp3.setSupport(new TP03Support());
-			// pu.treeParser(tp3);
 		}
 	}
 	
 	public void test02() throws Exception {
-		File directory = new File("data/newsyntax/11.7");
+		File directory = new File("data/newsyntax");
 		String[] extensions = { "p", "w", "cls" };
 		Collection files = FileUtils.listFiles(directory, extensions, true);
 		RefactorSession.getInstance().setProjectBinariesEnabledOn();
@@ -72,9 +69,6 @@ public class TestNewSyntax extends TestCase {
 			ParseUnit pu = new ParseUnit(file);
 			pu.treeParser01();
 
-			// TreeParser03 tp3 = new TreeParser03();
-			// tp3.setSupport(new TP03Support());
-			// pu.treeParser(tp3);
 		}
 	}
 

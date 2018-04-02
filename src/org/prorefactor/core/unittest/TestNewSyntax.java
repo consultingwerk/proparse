@@ -59,11 +59,11 @@ public class TestNewSyntax extends TestCase {
 		}
 	}
 	
-	public void test02() throws Exception {
-		// parse in-memory string
-		ParseUnit pu = new ParseUnit();
-		pu.treeParser01("define variable test as character no-undo.\n define temp-table ttCust no-undo field custName as character.");
-			
-	}
+//	public void test02() throws Exception {
+//		// parse in-memory string
+//		ParseUnit pu = new ParseUnit();
+//		pu.treeParser01("define variable test as character no-undo.\n define temp-table ttCust no-undo field custName as character.");
+//			
+//	}
 
 }

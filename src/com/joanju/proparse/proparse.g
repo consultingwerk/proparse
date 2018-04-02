@@ -3181,29 +3181,31 @@ nullphrase
 	:	NULL_KW^ (options{greedy=true;}: funargs)?
 	;
 
+dbevent:
+	(	(CREATE|DELETE_KW|FIND) OF record (label_constant)?
+		|	WRITE OF bf:record (label_constant)?
+			(options{greedy=true;}: 	NEW (options{greedy=true;}: BUFFER)? n:identifier (label_constant)?
+				{support.defBuffer(#n.getText(), #bf.getText());}
+			)? 
+			(options{greedy=true;}: 	OLD (options{greedy=true;}: BUFFER)? o:identifier (label_constant)?
+				{support.defBuffer(#o.getText(), #bf.getText());}
+			)? 
+		|	ASSIGN OF field (trigger_table_label)?
+			(	OLD (VALUE)? f:identifier (options{greedy=true;}: defineparam_var)?
+				{support.defVar(#f.getText());}
+			)?
+	)
+	(options{greedy=true;}: OVERRIDE)?
+	(	REVERT state_end
+	|	PERSISTENT runstate
+	|	{support.addInnerScope();} blockorstate {support.dropInnerScope();}
+	);
+	
 onstate
 	:	ON^<AST=BlockNode>
 		{sthd(##,0);}
 		(	// ON event OF database-object
-			((ASSIGN|CREATE|DELETE_KW|FIND|WRITE) OF record|field)=>
-			(	(CREATE|DELETE_KW|FIND) OF record (label_constant)?
-			|	WRITE OF bf:record (label_constant)?
-				(options{greedy=true;}: 	NEW (options{greedy=true;}: BUFFER)? n:identifier (label_constant)?
-					{support.defBuffer(#n.getText(), #bf.getText());}
-				)? 
-				(options{greedy=true;}: 	OLD (options{greedy=true;}: BUFFER)? o:identifier (label_constant)?
-					{support.defBuffer(#o.getText(), #bf.getText());}
-				)? 
-			|	ASSIGN OF field (trigger_table_label)?
-				(	OLD (VALUE)? f:identifier (options{greedy=true;}: defineparam_var)?
-					{support.defVar(#f.getText());}
-				)?
-	 		)
-			(options{greedy=true;}: OVERRIDE)?
-			(	REVERT state_end
-			|	PERSISTENT runstate
-			|	{support.addInnerScope();} blockorstate {support.dropInnerScope();}
-			)
+			(dbevent)=> dbevent
 		|	// ON key-label keyfunction.
 			(. . state_end)=> . . state_end
 		|	eventlist
