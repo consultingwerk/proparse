@@ -18,6 +18,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import org.prorefactor.core.JPNode;
 import org.prorefactor.core.PRCException;
@@ -218,7 +220,15 @@ public class ParseUnit {
 			doParse = new DoParse(file.getAbsolutePath(), fileContent);
 		}
 		catch (Exception e) {
-			throw new RefactorException(errmsg + e.getMessage(), e);
+			StringWriter sw = new StringWriter();
+			PrintWriter pw = new PrintWriter(sw);
+			e.printStackTrace(pw);
+			String sStackTrace = sw.toString();
+			
+			throw new RefactorException(errmsg + 
+										"Original Excetion: " + e.getMessage() + System.lineSeparator() + 
+										"Exception Type: " + e.getClass().getTypeName() + System.lineSeparator() +
+										sStackTrace, e);
 		}
 		
 		try {
@@ -236,16 +246,31 @@ public class ParseUnit {
 				fileOut.close();
 			}
 		} catch (Exception e) {
-			throw new RefactorException(errmsg + e.getMessage(), e);
+			StringWriter sw = new StringWriter();
+			PrintWriter pw = new PrintWriter(sw);
+			e.printStackTrace(pw);
+			String sStackTrace = sw.toString();			
+			
+			throw new RefactorException(errmsg + 	
+										"Original Excetion: " + e.getMessage() + System.lineSeparator() + 
+										"Exception Type: " + e.getClass().getTypeName() + System.lineSeparator() +
+										sStackTrace, e);
 		}
 		
 		try {
 			setTopNode(doParse.getTopNode());
 		}
 		catch (Exception e) {
-			throw new RefactorException(errmsg + e.getMessage(), e);
+			StringWriter sw = new StringWriter();
+			PrintWriter pw = new PrintWriter(sw);
+			e.printStackTrace(pw);
+			String sStackTrace = sw.toString();
+						
+			throw new RefactorException (errmsg + 
+										 "Original Excetion: " + e.getMessage() + System.lineSeparator() + 
+ 										 "Exception Type: " + e.getClass().getTypeName() + System.lineSeparator() +
+										 sStackTrace, e);
 		}
-
 	}
 
 	public ParseUnit setPUB(PUB pub) {
