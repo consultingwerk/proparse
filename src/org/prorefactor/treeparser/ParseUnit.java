@@ -202,11 +202,11 @@ public class ParseUnit {
 		String errmsg = "";
 		
 		if (file != null) {
-			errmsg = "Error parsing " + file.getName() + System.lineSeparator(); 
+			errmsg = "Error parsing " + file.getName() + System.lineSeparator() + System.lineSeparator(); 
 		}
 		
 		if (fileContent != null && !fileContent.isEmpty()) {
-			errmsg = errmsg + "Error parsing fileContent." + System.lineSeparator();
+			errmsg = errmsg + "Error parsing fileContent." + System.lineSeparator() + System.lineSeparator();
 		}
 		
 		if (refpack == null) {
@@ -226,8 +226,8 @@ public class ParseUnit {
 			String sStackTrace = sw.toString();
 			
 			throw new RefactorException(errmsg + 
-										"Original Excetion: " + e.getMessage() + System.lineSeparator() + 
-										"Exception Type: " + e.getClass().getTypeName() + System.lineSeparator() +
+										"Original Exception: " + e.getMessage() + System.lineSeparator() + System.lineSeparator() + 
+//										"Exception Type: " + e.getClass().getName() + System.lineSeparator() +
 										sStackTrace, e);
 		}
 		
@@ -252,8 +252,8 @@ public class ParseUnit {
 			String sStackTrace = sw.toString();			
 			
 			throw new RefactorException(errmsg + 	
-										"Original Excetion: " + e.getMessage() + System.lineSeparator() + 
-										"Exception Type: " + e.getClass().getTypeName() + System.lineSeparator() +
+										"Original Exception: " + e.getMessage() + System.lineSeparator() + System.lineSeparator() +
+//										"Exception Type: " + e.getClass().getName() + System.lineSeparator() +
 										sStackTrace, e);
 		}
 		
@@ -267,8 +267,8 @@ public class ParseUnit {
 			String sStackTrace = sw.toString();
 						
 			throw new RefactorException (errmsg + 
-										 "Original Excetion: " + e.getMessage() + System.lineSeparator() + 
- 										 "Exception Type: " + e.getClass().getTypeName() + System.lineSeparator() +
+										 "Original Exception: " + e.getMessage() + System.lineSeparator() + System.lineSeparator() +
+// 										 "Exception Type: " + e.getClass().getName() + System.lineSeparator() +
 										 sStackTrace, e);
 		}
 	}
