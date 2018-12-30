@@ -18,6 +18,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import org.prorefactor.core.JPNode;
 import org.prorefactor.core.PRCException;
@@ -200,11 +202,11 @@ public class ParseUnit {
 		String errmsg = "";
 		
 		if (file != null) {
-			errmsg = "Error parsing " + file.getName() + System.lineSeparator(); 
+			errmsg = "Error parsing " + file.getName() + System.lineSeparator() + System.lineSeparator(); 
 		}
 		
 		if (fileContent != null && !fileContent.isEmpty()) {
-			errmsg = errmsg + "Error parsing fileContent." + System.lineSeparator();
+			errmsg = errmsg + "Error parsing fileContent." + System.lineSeparator() + System.lineSeparator();
 		}
 		
 		if (refpack == null) {
@@ -218,7 +220,15 @@ public class ParseUnit {
 			doParse = new DoParse(file.getAbsolutePath(), fileContent);
 		}
 		catch (Exception e) {
-			throw new RefactorException(errmsg + e.getMessage(), e);
+			StringWriter sw = new StringWriter();
+			PrintWriter pw = new PrintWriter(sw);
+			e.printStackTrace(pw);
+			String sStackTrace = sw.toString();
+			
+			throw new RefactorException(errmsg + 
+										"Original Exception: " + e.getMessage() + System.lineSeparator() + System.lineSeparator() + 
+//										"Exception Type: " + e.getClass().getName() + System.lineSeparator() +
+										sStackTrace, e);
 		}
 		
 		try {
@@ -236,16 +246,31 @@ public class ParseUnit {
 				fileOut.close();
 			}
 		} catch (Exception e) {
-			throw new RefactorException(errmsg + e.getMessage(), e);
+			StringWriter sw = new StringWriter();
+			PrintWriter pw = new PrintWriter(sw);
+			e.printStackTrace(pw);
+			String sStackTrace = sw.toString();			
+			
+			throw new RefactorException(errmsg + 	
+										"Original Exception: " + e.getMessage() + System.lineSeparator() + System.lineSeparator() +
+//										"Exception Type: " + e.getClass().getName() + System.lineSeparator() +
+										sStackTrace, e);
 		}
 		
 		try {
 			setTopNode(doParse.getTopNode());
 		}
 		catch (Exception e) {
-			throw new RefactorException(errmsg + e.getMessage(), e);
+			StringWriter sw = new StringWriter();
+			PrintWriter pw = new PrintWriter(sw);
+			e.printStackTrace(pw);
+			String sStackTrace = sw.toString();
+						
+			throw new RefactorException (errmsg + 
+										 "Original Exception: " + e.getMessage() + System.lineSeparator() + System.lineSeparator() +
+// 										 "Exception Type: " + e.getClass().getName() + System.lineSeparator() +
+										 sStackTrace, e);
 		}
-
 	}
 
 	public ParseUnit setPUB(PUB pub) {
