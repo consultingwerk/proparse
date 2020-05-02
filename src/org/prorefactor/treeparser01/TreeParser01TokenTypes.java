@@ -1234,5 +1234,7 @@ public interface TreeParser01TokenTypes {
 	int TENANT = 1228;
 	int TENANT_WHERE = 1229;
 	int SKIP_GROUP_DUPLICATES = 1230;
-	int Last_Token_Number = 1231;
+	int PACKAGEPROTECTED = 1231;
+    int PACKAGEPRIVATE = 1232;
+	int Last_Token_Number = 1233;
 }

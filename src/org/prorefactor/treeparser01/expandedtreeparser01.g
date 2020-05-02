@@ -2615,7 +2615,7 @@ def_shared :SHARED
   ;
 
 // inherited from grammar JPTreeParser
-def_modifiers :( PRIVATE | PROTECTED | PUBLIC | STATIC | ABSTRACT | OVERRIDE | FINAL | SERIALIZABLE | NON_SERIALIZABLE )*
+def_modifiers :( PRIVATE | PROTECTED | PACKAGEPRIVATE | PACKAGEPROTECTED | PUBLIC | STATIC | ABSTRACT | OVERRIDE | FINAL | SERIALIZABLE | NON_SERIALIZABLE )*
   ;
 
 // inherited from grammar JPTreeParser

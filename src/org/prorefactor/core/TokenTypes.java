@@ -1197,5 +1197,9 @@ public class TokenTypes implements TreeParser01TokenTypes, TokenTypesI {
 		allTokens[BLOCKLEVEL].keywordText = "BLOCK-LEVEL";
 		allTokens[GETCLASS].keywordText = "GET-CLASS";
 
+		// OpenEdge 12.2
+		allTokens[PACKAGEPROTECTED].keywordText = "PACKAGE-PROTECTED";
+		allTokens[PACKAGEPRIVATE].keywordText = "PACKAGE-PRIVATE";
+		
 	}
 }

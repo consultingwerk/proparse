@@ -12581,6 +12581,20 @@ inputState.guessing--;
 				_t = _t.getNextSibling();
 				break;
 			}
+			case PACKAGEPRIVATE:
+			{
+				AST tmp963_AST_in = (AST)_t;
+				match(_t,PACKAGEPRIVATE);
+				_t = _t.getNextSibling();
+				break;
+			}
+			case PACKAGEPROTECTED:
+			{
+				AST tmp964_AST_in = (AST)_t;
+				match(_t,PACKAGEPROTECTED);
+				_t = _t.getNextSibling();
+				break;
+			}
 			case PROTECTED:
 			{
 				AST tmp964_AST_in = (AST)_t;
@@ -15015,9 +15029,11 @@ inputState.guessing--;
 		case BUFFER:
 		case OVERRIDE:
 		case PRIVATE:
+		case PACKAGEPRIVATE:
 		case PUBLIC:
 		case FINAL:
 		case PROTECTED:
+		case PACKAGEPROTECTED:
 		case STATIC:
 		case ABSTRACT:
 		case SERIALIZABLE:
@@ -16017,10 +16033,12 @@ inputState.guessing--;
 		}
 		case OVERRIDE:
 		case PRIVATE:
+		case PACKAGEPRIVATE:
 		case PUBLIC:
 		case DATASET:
 		case FINAL:
 		case PROTECTED:
+		case PACKAGEPROTECTED:
 		case STATIC:
 		case ABSTRACT:
 		case SERIALIZABLE:
@@ -19639,10 +19657,12 @@ inputState.guessing--;
 		}
 		case OVERRIDE:
 		case PRIVATE:
+		case PACKAGEPRIVATE:
 		case PUBLIC:
 		case QUERY:
 		case FINAL:
 		case PROTECTED:
+		case PACKAGEPROTECTED:
 		case STATIC:
 		case ABSTRACT:
 		case SERIALIZABLE:
@@ -20168,10 +20188,12 @@ inputState.guessing--;
 		}
 		case OVERRIDE:
 		case PRIVATE:
+		case PACKAGEPRIVATE:
 		case PUBLIC:
 		case STREAM:
 		case FINAL:
 		case PROTECTED:
+		case PACKAGEPROTECTED:
 		case STATIC:
 		case ABSTRACT:
 		case SERIALIZABLE:
@@ -20314,10 +20336,12 @@ inputState.guessing--;
 		}
 		case OVERRIDE:
 		case PRIVATE:
+		case PACKAGEPRIVATE:
 		case PUBLIC:
 		case TEMPTABLE:
 		case FINAL:
 		case PROTECTED:
+		case PACKAGEPROTECTED:
 		case STATIC:
 		case ABSTRACT:
 		case SERIALIZABLE:
@@ -21443,10 +21467,12 @@ inputState.guessing--;
 		}
 		case OVERRIDE:
 		case PRIVATE:
+		case PACKAGEPRIVATE:
 		case PUBLIC:
 		case VARIABLE:
 		case FINAL:
 		case PROTECTED:
+		case PACKAGEPROTECTED:
 		case STATIC:
 		case ABSTRACT:
 		case SERIALIZABLE:
@@ -44975,6 +45001,8 @@ inputState.guessing--;
 		"TENANT",
 		"TENANT_WHERE",
 		"SKIP_GROUP_DUPLICATES",
+		"PACKAGEPROTECTED",
+		"PACKAGEPRIVATE",
 		"Last_Token_Number"
 	};
 	

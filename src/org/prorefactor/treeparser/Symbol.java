@@ -166,6 +166,8 @@ abstract public class Symbol implements SymbolI {
 			if (defNode==null) return false;
 			return	(	defNode.findDirectChild(TokenTypes.PUBLIC)!=null
 					||	defNode.findDirectChild(TokenTypes.PROTECTED)!=null
+					||	defNode.findDirectChild(TokenTypes.PACKAGEPROTECTED)!=null
+					||	defNode.findDirectChild(TokenTypes.PACKAGEPRIVATE)!=null
 					);
 		}
 		// If there is no DEFINE node (inline var def), then it is not visible.

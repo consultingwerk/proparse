@@ -169,7 +169,9 @@ public class NodeTypes implements ProParserTokenTypes, TokenTypesI, Xferable {
 		switch(type) {
 			case PUBLIC:
 			case PROTECTED:
+			case PACKAGEPROTECTED:
 			case PRIVATE:
+			case PACKAGEPRIVATE:
 			case OVERRIDE:
 			case FINAL:
 				return true;
@@ -1088,6 +1090,8 @@ public class NodeTypes implements ProParserTokenTypes, TokenTypesI, Xferable {
 		add(OUTPUT, 6, "output", TI.KEYWORD | TI.RESERVED);
 		add(OVERLAY, 7, "overlay", TI.KEYWORD | TI.RESERVED);
 		add(OVERRIDE, 8, "override", TI.KEYWORD);
+		add(PACKAGEPRIVATE, 15, "package-private", TI.KEYWORD);
+		add(PACKAGEPROTECTED, 17, "package-protected", TI.KEYWORD);
 		add(PAGE, 4, "page", TI.KEYWORD | TI.RESERVED);
 		add(PAGEBOTTOM, 8, "page-bottom", TI.KEYWORD | TI.RESERVED);
 		add(PAGED, 5, "paged", TI.KEYWORD);
