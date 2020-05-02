@@ -16,9 +16,24 @@ public class UnitTest extends TestCase {
 	protected void tearDown() throws Exception {
 		super.tearDown();
 	}
-
+/*
 	public void testParseUnit() {
 		java.io.File file = new File("C:\\Work\\Proparse\\Github\\proparse\\src\\test\\test.cls");
+	
+		ParseUnit pu = new ParseUnit(file);
+	
+		try {
+			pu.treeParser01();
+		} catch (RefactorException e) {
+			System.out.println(e.getMessage());
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
+	}
+*/
+	public void testParseUnit2() {
+		java.io.File file = new File("C:\\Work\\Proparse\\Github\\proparse\\src\\test\\TestClass122.cls");
 	
 		ParseUnit pu = new ParseUnit(file);
 	

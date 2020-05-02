@@ -1649,7 +1649,7 @@ connectstate
 
 constructorstate
 	:	CONSTRUCTOR^<AST=BlockNode>
-		(options{greedy=true;}: PUBLIC|PROTECTED|PRIVATE|STATIC)?
+		(options{greedy=true;}: PUBLIC|PROTECTED|PACKAGEPROTECTED|PACKAGEPRIVATE|PRIVATE|STATIC)?
 		tn:type_name2 function_params block_colon
 		{ support.typenameThis(#tn); }
 		code_block
@@ -1935,7 +1935,9 @@ definestatement
 	:	DEFINE^ define_share
 		{support.setCurrDefInheritable(false);}
 		(	PRIVATE
+		|	PACKAGEPRIVATE 
 		|	PROTECTED {support.setCurrDefInheritable(true);}
+		|	PACKAGEPROTECTED {support.setCurrDefInheritable(true);}
 		|	PUBLIC {support.setCurrDefInheritable(true);}
 		|	ABSTRACT
 		|	STATIC
@@ -2214,7 +2216,7 @@ definepropertystate
 		{support.defVar(#n.getText());}
 	;
 defineproperty_accessor
-	:	(PUBLIC|PROTECTED|PRIVATE)?
+	:	(PUBLIC|PROTECTED|PRIVATE|PACKAGEPROTECTED|PACKAGEPRIVATE)?
 		(	(GET PERIOD)=> GET PERIOD {## = #([Property_getter], ##);}
 		|	SET PERIOD {## = #([Property_setter], ##);}
 		|	GET (function_params)? block_colon code_block END (GET)? PERIOD
@@ -3134,6 +3136,8 @@ methodstate
 		(options{greedy=true;}: 	PRIVATE {support.setCurrDefInheritable(false);}
 		|	PROTECTED
 		|	PUBLIC // default
+		|   PACKAGEPROTECTED
+		|   PACKAGEPRIVATE
 		|	STATIC
 		|	ABSTRACT {isAbstract=true;}
 		|	OVERRIDE
@@ -4219,8 +4223,11 @@ STATIC | THROW | TOPNAVQUERY | UNBOX
 // 10.2B
 ABSTRACT | DELEGATE | DYNAMICNEW | EVENT | FOREIGNKEYHIDDEN | SERIALIZEHIDDEN | SERIALIZENAME | SIGNATURE | STOPAFTER |
 // 11+
-GETCLASS | SERIALIZABLE | TABLESCAN | MESSAGEDIGEST | ENUM | FLAGS | NON_SERIALIZABLE  | TENANT
-	;
+GETCLASS | SERIALIZABLE | TABLESCAN | MESSAGEDIGEST | ENUM | FLAGS | NON_SERIALIZABLE  | TENANT |
+	
+// 12.2
+PACKAGEPROTECTED | PACKAGEPRIVATE
+;
 
 
 reservedkeyword:

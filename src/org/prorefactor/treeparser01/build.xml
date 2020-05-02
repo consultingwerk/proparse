@@ -2,7 +2,7 @@
 
 <project name="treeparser01" default="antlr" basedir=".">
 
-	<property name="grammarfile" value="treeparser01.g"/>
+	<property name="grammarfile" value="expandedtreeparser01.g"/>
 	<property name="outputfile" value="TreeParser01.java"/>
 	
 	<target name="antlr" description="Invoke Antlr">
