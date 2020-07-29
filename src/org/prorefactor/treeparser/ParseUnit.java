@@ -357,10 +357,8 @@ public class ParseUnit {
 		
 		Charset set = Charset.defaultCharset();
 		try {
-			if(codepage == null || codepage == "") {
-				codepage = "UTF-8";
-			}
-			set = Charset.forName(codepage);
+			if(codepage != null && codepage != "")
+				set = Charset.forName(codepage);
 		}
 		catch(UnsupportedCharsetException e) {
 			set = Charset.defaultCharset();

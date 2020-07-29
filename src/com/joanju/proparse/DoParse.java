@@ -110,16 +110,8 @@ public class DoParse {
 
 	public void doParse() 
 			throws TokenStreamException, RecognitionException, IOException {
-		
-		Charset set = Charset.defaultCharset();
-		try {
-			set = Charset.forName("UTF-8");
-		}
-		catch(UnsupportedCharsetException e) {
-			set = Charset.defaultCharset();
-		}
-		
-		this.doParse(set);
+
+		this.doParse(Charset.defaultCharset());
 	}
 
 	public void doParse(Charset charset)

@@ -46,5 +46,30 @@ public class UnitTest extends TestCase {
 		} 
 		
 	}
+	
+	/* SCL-3087 */
+	public void testParseUnit3() {
+		java.io.File file = new File("C:\\Work\\Proparse\\Github\\proparse\\src\\test\\Test_SCL-3087.cls");
+
+		
+		try {
+			ParseUnit pu = new ParseUnit(file, "ISO8859_1");
+			
+			try {
+				
+				pu.treeParser01();
+				
+			} catch (RefactorException e) {
+				System.out.println(e.getMessage());
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		
+		
+	}
 
 }
