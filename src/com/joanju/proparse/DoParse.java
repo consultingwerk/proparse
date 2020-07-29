@@ -15,7 +15,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.io.FileReader;
+import java.nio.charset.Charset;
+import java.nio.charset.UnsupportedCharsetException;
+import java.io.InputStreamReader;
+import java.io.FileInputStream;
 
 import antlr.TokenStreamException;
 import antlr.RecognitionException;
@@ -105,19 +108,32 @@ public class DoParse {
 		doParse();
 	}
 
+	public void doParse() 
+			throws TokenStreamException, RecognitionException, IOException {
+		
+		Charset set = Charset.defaultCharset();
+		try {
+			set = Charset.forName("UTF-8");
+		}
+		catch(UnsupportedCharsetException e) {
+			set = Charset.defaultCharset();
+		}
+		
+		this.doParse(set);
+	}
 
-	public void doParse()
+	public void doParse(Charset charset)
 			throws IOException, TokenStreamException, RecognitionException {
 
 		Reader inputReader = null;
 		
 		if (inputContent != null)
-			inputReader = new StringReader(inputContent);
+			inputReader = new StringReader(new String(inputContent.getBytes(), charset));
 		else if (fileName != null) {
 			try {
-				inputReader = new FileReader(fileName);
+				inputReader = new InputStreamReader(new FileInputStream(fileName), charset);
 			} catch (FileNotFoundException fe) {
-				inputReader = new StringReader(fileName);
+				inputReader = new StringReader(new String(inputContent.getBytes(), charset));
 				fileName = "dummy.p";
 			}
 		}

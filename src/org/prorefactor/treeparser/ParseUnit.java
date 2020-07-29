@@ -20,6 +20,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.nio.charset.Charset;
+import java.nio.charset.UnsupportedCharsetException;
 
 import org.prorefactor.core.JPNode;
 import org.prorefactor.core.PRCException;
@@ -55,6 +57,11 @@ public class ParseUnit {
 	public ParseUnit(File file) {
 		this.file = file;
 	}
+	
+	public ParseUnit(File file, String codepage) {
+		this.file = file;
+		this.charset = this.getCharset(codepage);
+	}
 
 	/** The JPNode tree is "connected" to Proparse, by default */
 	public static final int CONNECTED = 0;
@@ -70,6 +77,7 @@ public class ParseUnit {
 
 	protected int style = DEFAULT;
 	protected File file;
+	private Charset charset = Charset.defaultCharset();
 	private IncludeRef macroGraph = null;
 	private ProgramRootNode topNode;
 	protected PUB pub = null;
@@ -232,7 +240,7 @@ public class ParseUnit {
 		}
 		
 		try {
-			doParse.doParse();
+			doParse.doParse(charset);
 			ListingParser listingParser = new ListingParser(RefactorSession.getListingFileName());
 			listingParser.parse();
 			macroGraph = listingParser.getRoot();
@@ -345,4 +353,20 @@ public class ParseUnit {
 		treeParser(tp);
 	}
 
+	private Charset getCharset(String codepage) {
+		
+		Charset set = Charset.defaultCharset();
+		try {
+			if(codepage == null || codepage == "") {
+				codepage = "UTF-8";
+			}
+			set = Charset.forName(codepage);
+		}
+		catch(UnsupportedCharsetException e) {
+			set = Charset.defaultCharset();
+		}
+		
+		return set;
+	}
+	
 }
