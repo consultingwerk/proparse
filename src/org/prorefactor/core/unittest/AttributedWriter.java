@@ -15,9 +15,12 @@
 package org.prorefactor.core.unittest;
 
 import java.io.BufferedWriter;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.File;
+import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.TreeSet;
 
@@ -117,7 +120,8 @@ public class AttributedWriter {
 		try {
 			ParseUnit pu = new ParseUnit(new File(inName));
 			pu.treeParser01();
-			writer = new BufferedWriter(new FileWriter(outName));
+			/* SCL-3087 : Replaced FileWriter with OutputStreamWriter to use the current codepage */
+			writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outName), Charset.forName(System.getProperty("file.encoding"))));
 			walker(pu.getTopNode(), true);
 		} finally {
 			if (writer!=null) writer.close();

@@ -14,9 +14,12 @@
 package org.prorefactor.core.schema;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.StreamTokenizer;
+import java.nio.charset.Charset;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -129,7 +132,8 @@ public class Schema {
 	 * @param from The filename to read from.
 	 */
 	public void loadSchema(String from) throws IOException {
-		BufferedReader reader = new BufferedReader(new FileReader(from));
+		/* SCL-3087 : Replaced FileReader with InputStreamReader to use the current codepage */
+		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(from), Charset.forName(System.getProperty("file.encoding"))));
 		StreamTokenizer tokenstream  = new StreamTokenizer(reader);
 		tokenstream.eolIsSignificant(false);
 		tokenstream.wordChars('!', 'z');

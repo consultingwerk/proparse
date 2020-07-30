@@ -16,6 +16,7 @@ package org.prorefactor.core;
 
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.*;
 
 
@@ -68,7 +69,8 @@ public class Util {
 	 * @param source The string to append.
 	 */
 	static public void fileAppendString(String target, String source) throws IOException {
-		BufferedWriter out = new BufferedWriter(new FileWriter(target, true));
+		/* SCL-3087 : Replaced FileWriter with OutputStreamWriter to use the current codepage */
+		BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(target, true), Charset.forName(System.getProperty("file.encoding"))));
 		out.write(source);
 		out.close();
 	}
@@ -86,8 +88,10 @@ public class Util {
 
 
 	static private void fileThing(String from, String to, boolean append) throws IOException {
-		BufferedReader in = new BufferedReader(new FileReader(from));
-		BufferedWriter out = new BufferedWriter(new FileWriter(to, append));
+		/* SCL-3087 : Replaced FileReader with InputStreamReader to use the current codepage */
+		BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(from), Charset.forName(System.getProperty("file.encoding"))));
+		/* SCL-3087 : Replaced FileWriter with OutputStreamWriter to use the current codepage */
+		BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(to, append), Charset.forName(System.getProperty("file.encoding"))));
 		int c;
 		while ((c = in.read()) != -1) out.write(c);
 		in.close();
@@ -178,7 +182,8 @@ public class Util {
 
 	/** Read the contents of a file into a StringBuffer */
 	public static StringBuffer readFile(File from) throws IOException {
-		BufferedReader in = new BufferedReader(new FileReader(from));
+		/* SCL-3087 : Replaced FileReader with InputStreamReader to use the current codepage */
+		BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(from), Charset.forName(System.getProperty("file.encoding"))));
 		StringWriter sWriter = new StringWriter();
 		BufferedWriter out = new BufferedWriter(sWriter);
 		int c;

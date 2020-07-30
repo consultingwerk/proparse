@@ -108,24 +108,19 @@ public class DoParse {
 		doParse();
 	}
 
-	public void doParse() 
-			throws TokenStreamException, RecognitionException, IOException {
-
-		this.doParse(Charset.defaultCharset());
-	}
-
-	public void doParse(Charset charset)
+	public void doParse()
 			throws IOException, TokenStreamException, RecognitionException {
 
 		Reader inputReader = null;
 		
 		if (inputContent != null)
-			inputReader = new StringReader(new String(inputContent.getBytes(), charset));
+			inputReader = new StringReader(inputContent);
 		else if (fileName != null) {
 			try {
-				inputReader = new InputStreamReader(new FileInputStream(fileName), charset);
+				/* SCL-3087: replaced FileReader with InputStreamReader to use the current codepage */
+				inputReader = new InputStreamReader(new FileInputStream(fileName), Charset.forName(System.getProperty("file.encoding")));
 			} catch (FileNotFoundException fe) {
-				inputReader = new StringReader(new String(inputContent.getBytes(), charset));
+				inputReader = new StringReader(inputContent);
 				fileName = "dummy.p";
 			}
 		}

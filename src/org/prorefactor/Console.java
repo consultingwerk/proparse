@@ -12,9 +12,11 @@ import static java.lang.System.out;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -72,7 +74,8 @@ public class Console {
 	@SuppressWarnings("unchecked")
 	public Collection buildCUListFromFile(String listFileName) throws IOException {
 		out.println("Reading files list...");
-		BufferedReader cuList = new BufferedReader(new FileReader(new File(listFileName)));
+		/* SCL-3087 : Replaced FileReader with InputStreamReader to use the current codepage */
+		BufferedReader cuList = new BufferedReader(new InputStreamReader(new FileInputStream(new File(listFileName)), Charset.forName(System.getProperty("file.encoding"))));
 		ArrayList ret = new ArrayList();
 		for (String cuName = ""; cuName!=null; cuName = cuList.readLine()) {
 			cuName = cuName.trim();

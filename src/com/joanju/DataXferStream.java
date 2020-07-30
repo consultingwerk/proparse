@@ -16,6 +16,7 @@ import com.joanju.proparse.IntegerIndex;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -318,7 +319,8 @@ public class DataXferStream {
 
 
 	private void writeString(String s) throws IOException {
-		byte [] b = s.getBytes();
+		/* SCL-3087 : Added Codepage to read with the current codepage */
+		byte [] b = s.getBytes(Charset.forName(System.getProperty("file.encoding")));
 		out.writeInt(b.length);
 		out.write(b);
 	}

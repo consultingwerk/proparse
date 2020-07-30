@@ -60,7 +60,8 @@ public class ParseUnit {
 	
 	public ParseUnit(File file, String codepage) {
 		this.file = file;
-		this.charset = this.getCharset(codepage);
+		if(Charset.isSupported(codepage)) 
+			System.setProperty("file.encoding", codepage);
 	}
 
 	/** The JPNode tree is "connected" to Proparse, by default */
@@ -77,7 +78,6 @@ public class ParseUnit {
 
 	protected int style = DEFAULT;
 	protected File file;
-	private Charset charset = Charset.defaultCharset();
 	private IncludeRef macroGraph = null;
 	private ProgramRootNode topNode;
 	protected PUB pub = null;
@@ -240,7 +240,7 @@ public class ParseUnit {
 		}
 		
 		try {
-			doParse.doParse(charset);
+			doParse.doParse();
 			ListingParser listingParser = new ListingParser(RefactorSession.getListingFileName());
 			listingParser.parse();
 			macroGraph = listingParser.getRoot();

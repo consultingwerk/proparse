@@ -13,9 +13,14 @@ package org.prorefactor.core.unittest;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
 
 import org.prorefactor.core.Util;
 import org.prorefactor.core.schema.Schema;
@@ -58,11 +63,13 @@ public class TP01Test02 extends UnitTestBase2 {
 			schema.clear();
 			schema.loadSchema(schemaName);
 			outFile.delete();
-			reader = new BufferedReader(new FileReader(inName));
+			/* SCL-3087 : Replaced FileReader with InputStreamReader to use the current codepage */
+			reader = new BufferedReader(new InputStreamReader(new FileInputStream(inName), Charset.forName(System.getProperty("file.encoding"))));
 			String line = null;
 			snippet_loop:
 			for (;;) {
-				writer = new BufferedWriter(new FileWriter(snippetFile));
+				/* SCL-3087 : Replaced FileWriter with OutputStreamWriter to use the current codepage */
+				writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(snippetFile), Charset.forName(System.getProperty("file.encoding"))));
 				for (;;) {
 					line = reader.readLine();
 					if (line==null || line.startsWith("--")) break;

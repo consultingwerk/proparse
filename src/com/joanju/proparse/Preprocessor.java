@@ -33,6 +33,7 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.regex.Pattern;
 import java.io.*;
+import java.nio.charset.Charset;
 
 import static com.joanju.proparse.StringFuncs.escapeLineBreaks;
 
@@ -516,7 +517,8 @@ public class Preprocessor {
 		if (listingFile == null || listingFile.length()==0)
 			return;
 		listing = true;
-		listingStream = new BufferedWriter(new FileWriter(listingFile));
+		/* SCL-3087 : Replaced FileReader with InputStreamReader to use the current codepage */
+		listingStream = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(listingFile), Charset.forName(System.getProperty("file.encoding"))));
 	}
 
 
@@ -794,7 +796,8 @@ public class Preprocessor {
 				getFilename() + ": " + "Could not find include file: " + referencedWithName
 				);
 
-		currentInput = new InputSource(++sourceCounter, new BufferedReader(new FileReader(fName)));
+		/* SCL-3087 : Replaced FileReader with InputStreamReader to use the current codepage */
+		currentInput = new InputSource(++sourceCounter, new BufferedReader(new InputStreamReader(new FileInputStream(fName), Charset.forName(System.getProperty("file.encoding")))));
 		currentInput.fileIndex = doParse.addFilename(fName);
 		currentInclude = new IncludeFile(referencedWithName, currentInput);
 		includeVector.add(currentInclude);

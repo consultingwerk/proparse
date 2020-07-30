@@ -12,8 +12,10 @@ package org.prorefactor.refactor;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 import org.prorefactor.refactor.messages.Message;
@@ -35,7 +37,8 @@ public class FileStuff {
 
 	/** Count lines in a file */
 	public static int countLines(File file) throws IOException {
-		BufferedReader buff = new BufferedReader(new FileReader(file));
+		/* SCL-3087 : Replaced FileReader with InputStreamReader to use the current codepage */
+		BufferedReader buff = new BufferedReader(new InputStreamReader(new FileInputStream(file), Charset.forName(System.getProperty("file.encoding"))));
 		int numLines = 0;
 		while (buff.readLine() != null) numLines++;
 		buff.close();
@@ -173,7 +176,8 @@ public class FileStuff {
 	public static ArrayList searchFile(
 			File file, String searchString, String messageString )
 			throws IOException {
-		BufferedReader buff = new BufferedReader(new FileReader(file));
+		/* SCL-3087 : Replaced FileReader with InputStreamReader to use the current codepage */
+		BufferedReader buff = new BufferedReader(new InputStreamReader(new FileInputStream(file), Charset.forName(System.getProperty("file.encoding"))));
 		ArrayList results = new ArrayList();
 		String currline;
 		String lowerSearch = searchString.toLowerCase();
