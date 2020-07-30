@@ -68,8 +68,81 @@ public class UnitTest extends TestCase {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
-		
-		
 	}
+	
+	/* SCL-3087 */
+	public void testIso8859_1() {
+		java.io.File file = new File("C:\\Work_STREAM\\SmartComponentLibrary\\Develop122\\ABL\\Consultingwerk\\SmartComponentsDemo\\OERA\\Sports2000\\CountryDataAccess.cls");
 
+		com.joanju.proparse.Environment proparseEnv = null;		
+		org.prorefactor.core.schema.Schema proparseSchema = null;		
+		
+		try {
+			proparseEnv = com.joanju.proparse.Environment.instance();
+			proparseSchema = org.prorefactor.core.schema.Schema.getInstance();			
+			
+			proparseSchema.clear();
+			proparseSchema.loadSchema("C:\\Work\\Proparse\\Github\\proparse\\src\\test\\schema.txt");
+			
+			proparseEnv.configSet ("propath", "C:\\Work_STREAM\\SmartComponentLibrary\\Develop122\\ABL");			
+
+			proparseEnv.configSet ("batch-mode", "false");
+			proparseEnv.configSet ("opsys", "WIN32");
+			proparseEnv.configSet ("proversion", "12.2");
+			proparseEnv.configSet ("window-system", "MS-WINXP");						
+			
+			ParseUnit pu = new ParseUnit(file, "ISO8859-1");
+			
+			try {
+				
+				pu.treeParser01();
+				
+			} catch (RefactorException e) {
+				System.out.println(e.getMessage());
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+	}	
+
+	/* SCL-3087 */
+	public void testUtf_8() {
+		java.io.File file = new File("C:\\Work_STREAM\\SmartComponentLibrary\\Develop122\\ABL\\Consultingwerk\\SmartComponentsDemo\\OERA\\Sports2000\\CountryDataAccess.cls");
+
+		com.joanju.proparse.Environment proparseEnv = null;
+		org.prorefactor.core.schema.Schema proparseSchema = null;		
+		
+		try {
+			proparseEnv = com.joanju.proparse.Environment.instance();
+			proparseSchema = org.prorefactor.core.schema.Schema.getInstance();			
+			
+			proparseSchema.clear();
+			proparseSchema.loadSchema("C:\\Work\\Proparse\\Github\\proparse\\src\\test\\schema.txt");
+			
+			proparseEnv.configSet ("propath", "C:\\Work_STREAM\\SmartComponentLibrary\\Develop122\\ABL");			
+			
+			proparseEnv.configSet ("batch-mode", "false");
+			proparseEnv.configSet ("opsys", "WIN32");
+			proparseEnv.configSet ("proversion", "12.2");
+			proparseEnv.configSet ("window-system", "MS-WINXP");						
+			
+			ParseUnit pu = new ParseUnit(file, "utf-8");
+			
+			try {
+				
+				pu.treeParser01();
+				
+			} catch (RefactorException e) {
+				System.out.println(e.getMessage());
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+	}	
 }
