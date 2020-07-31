@@ -20,6 +20,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.nio.charset.Charset;
+import java.nio.charset.IllegalCharsetNameException;
+import java.nio.charset.UnsupportedCharsetException;
 
 import org.prorefactor.core.JPNode;
 import org.prorefactor.core.PRCException;
@@ -54,6 +57,38 @@ public class ParseUnit {
 
 	public ParseUnit(File file) {
 		this.file = file;
+	}
+	
+	/**
+	 * Creates a new ParseUnit with a custom codepage
+	 * @param file The file that is to be parsed
+	 * @param codepage Name of the codepage that should be used for file operations instead of the default
+	 * @throws IllegalCharsetNameException Thrown if the codepage contains illegal characters See: https://docs.oracle.com/javase/8/docs/api/java/nio/charset/Charset.html#names
+	 * @throws UnsupportedCharsetException Thrown if the codepage is not recognized/supported by the system
+	 * @throws IllegalArgumentException Thrown if the codepage is null
+	 */
+	public ParseUnit(File file, String codepage) throws IllegalCharsetNameException,
+														UnsupportedCharsetException,
+							 					 		IllegalArgumentException {
+		this.file = file;
+		try {
+			
+			Charset.forName(codepage);
+			System.setProperty("file.encoding", codepage);
+			
+		} catch (IllegalCharsetNameException e) {
+				
+				throw new IllegalCharsetNameException("Codepage " + codepage + " is not a valid name for a codepage!");
+				
+		}catch (UnsupportedCharsetException e) {
+			
+			throw new UnsupportedCharsetException("Codepage " + codepage + " is not supported!");
+			
+		} catch (IllegalArgumentException e) {
+			
+			throw new IllegalArgumentException("The codepage can not be null!", new NullPointerException());
+			
+		} 
 	}
 
 	/** The JPNode tree is "connected" to Proparse, by default */
@@ -344,5 +379,4 @@ public class ParseUnit {
 		action.setParseUnit(this);
 		treeParser(tp);
 	}
-
 }

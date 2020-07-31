@@ -25,6 +25,7 @@ package com.joanju.proparse;
 
 import java.util.LinkedList;
 import java.io.*;
+import java.nio.charset.Charset;
 
 
 public class Iwdiff {
@@ -115,14 +116,16 @@ public class Iwdiff {
 
 	/** Convenience method for comparing two files. */
 	public String diff(File src1, File src2) throws IOException {
-		return diff(new BufferedReader(new FileReader(src1)),
-				new BufferedReader(new FileReader(src2)) );
+		/* SCL-3087: change FileReaders to InputStreamReaders to use the current codepage */
+		return diff(new BufferedReader(new InputStreamReader(new FileInputStream(src1), Charset.forName(System.getProperty("file.encoding")))),
+				    new BufferedReader(new InputStreamReader(new FileInputStream(src2), Charset.forName(System.getProperty("file.encoding")))));
 	}
 
 	/** Convenience method for comparing an 'expect' file's contents to a result string. */
 	public String diff(File src1, String text) throws IOException {
-		return diff(new BufferedReader(new FileReader(src1)),
-				new BufferedReader(new StringReader(text)) );
+		/* SCL-3087: change FileReader to InputStreamReader to use the current codepage */
+		return diff(new BufferedReader(new InputStreamReader(new FileInputStream(src1), Charset.forName(System.getProperty("file.encoding")))),
+				    new BufferedReader(new StringReader(text)) );
 	}
 
 	public String diff(BufferedReader src1, BufferedReader src2) throws IOException {

@@ -17,6 +17,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.nio.charset.Charset;
 
 public class SocketListener implements Runnable {
 
@@ -94,7 +95,8 @@ public class SocketListener implements Runnable {
 			if (out!=null) try {
 				if (errmsg==null || errmsg.length()==0)
 					errmsg = e.toString();
-				byte [] bytes = errmsg.getBytes();
+				/* SCL-3087: getBytes now uses the current codepage */
+				byte [] bytes = errmsg.getBytes(Charset.forName(System.getProperty("file.encoding")));
 				out.writeInt(bytes.length * -1);
 				out.write(bytes);
 			} catch (Exception e2) {}

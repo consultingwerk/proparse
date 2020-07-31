@@ -9,8 +9,11 @@ import antlr.RecognitionException;
 
 import java.util.HashMap;
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 
 import org.prorefactor.core.JPNode;
 
@@ -307,7 +310,8 @@ public class ParserSupport {
 			// vendor libraries, etc.
 			return null;
 		}
-		BufferedReader ifstream = new BufferedReader(new FileReader(superFileName));
+		/* SCL-3087 : Replaced FileReader with InputStreamReader to use the current codepage */
+		BufferedReader ifstream = new BufferedReader(new InputStreamReader(new FileInputStream(superFileName), Charset.forName(System.getProperty("file.encoding"))));
 		DoParse superDoParse = new DoParse(superFileName, doParse);
 		superDoParse.inStream = ifstream;
 		superDoParse.doParse();

@@ -15,7 +15,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.io.FileReader;
+import java.nio.charset.Charset;
+import java.nio.charset.UnsupportedCharsetException;
+import java.io.InputStreamReader;
+import java.io.FileInputStream;
 
 import antlr.TokenStreamException;
 import antlr.RecognitionException;
@@ -105,7 +108,6 @@ public class DoParse {
 		doParse();
 	}
 
-
 	public void doParse()
 			throws IOException, TokenStreamException, RecognitionException {
 
@@ -115,7 +117,8 @@ public class DoParse {
 			inputReader = new StringReader(inputContent);
 		else if (fileName != null) {
 			try {
-				inputReader = new FileReader(fileName);
+				/* SCL-3087: replaced FileReader with InputStreamReader to use the current codepage */
+				inputReader = new InputStreamReader(new FileInputStream(fileName), Charset.forName(System.getProperty("file.encoding")));
 			} catch (FileNotFoundException fe) {
 				inputReader = new StringReader(fileName);
 				fileName = "dummy.p";
