@@ -312,7 +312,6 @@ public class ParserSupport {
 		}
 		/* SCL-3087 : Replaced FileReader with InputStreamReader to use the current codepage */
 		BufferedReader ifstream = new BufferedReader(new InputStreamReader(new FileInputStream(superFileName), Charset.forName(System.getProperty("file.encoding"))));
-		//BufferedReader ifstream = new BufferedReader(new FileReader(superFileName));
 		DoParse superDoParse = new DoParse(superFileName, doParse);
 		superDoParse.inStream = ifstream;
 		superDoParse.doParse();

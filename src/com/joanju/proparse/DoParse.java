@@ -120,7 +120,7 @@ public class DoParse {
 				/* SCL-3087: replaced FileReader with InputStreamReader to use the current codepage */
 				inputReader = new InputStreamReader(new FileInputStream(fileName), Charset.forName(System.getProperty("file.encoding")));
 			} catch (FileNotFoundException fe) {
-				inputReader = new StringReader(inputContent);
+				inputReader = new StringReader(fileName);
 				fileName = "dummy.p";
 			}
 		}
