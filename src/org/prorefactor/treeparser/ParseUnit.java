@@ -379,19 +379,4 @@ public class ParseUnit {
 		action.setParseUnit(this);
 		treeParser(tp);
 	}
-
-	private Charset getCharset(String codepage) {
-		
-		Charset set = Charset.defaultCharset();
-		try {
-			if(codepage != null && codepage != "")
-				set = Charset.forName(codepage);
-		}
-		catch(UnsupportedCharsetException e) {
-			set = Charset.defaultCharset();
-		}
-		
-		return set;
-	}
-	
 }
