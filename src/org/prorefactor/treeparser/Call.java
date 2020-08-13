@@ -103,7 +103,9 @@ public class Call extends SemanticRecord {
 	public boolean isPersistent() { return persistentHandleNode != null; }
 	
 	public boolean isInHandle() { return runHandleNode != null; }
-	
+
+	public JPNode getPersistentHandleNode() { return persistentHandleNode; }
+
 	public void setPersistentHandleNode(JPNode node) { persistentHandleNode = node; }
 
 
@@ -119,6 +121,9 @@ public class Call extends SemanticRecord {
 		persistentHandleVar = var;
 	}
 
+	public Variable getPersistentHandleVar() {
+		return persistentHandleVar;
+	}
 	
 	/** Sets runArgument: the parameter in run <fileName>,
 	 * which may be an explicit string or a string expression,
