@@ -1200,6 +1200,10 @@ public class TokenTypes implements TreeParser01TokenTypes, TokenTypesI {
 		// OpenEdge 12.2
 		allTokens[PACKAGEPROTECTED].keywordText = "PACKAGE-PROTECTED";
 		allTokens[PACKAGEPRIVATE].keywordText = "PACKAGE-PRIVATE";
-		
+
+		// OpenEdge 12.2
+		allTokens[EVENT_HANDLER].keywordText = "EVENT-HANDLER";
+		allTokens[EVENT_HANDLER_CONTEXT].keywordText = "EVENT-HANDLER-CONTEXT";
+
 	}
 }

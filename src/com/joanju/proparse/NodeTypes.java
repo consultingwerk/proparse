@@ -650,6 +650,8 @@ public class NodeTypes implements ProParserTokenTypes, TokenTypesI, Xferable {
 		add(ESCAPED_QUOTE, 0, "", TI.NO_FLAGS);
 		add(ETIME_KW, 5, "etime", TI.KEYWORD | TI.RESERVED | TI.MAY_BE_NO_ARG_FUNC | TI.MAY_BE_REGULAR_FUNC);
 		add(EVENT, 5, "event", TI.KEYWORD);
+		add(EVENT_HANDLER, 13, "event-handler", TI.KEYWORD);
+		add(EVENT_HANDLER_CONTEXT, 21, "event-handler-context", TI.KEYWORD);
 		add(EVENTPROCEDURE, 15, "event-procedure", TI.KEYWORD);
 		add(EVENTS, 6, "events", TI.KEYWORD);
 		add(EXCEPT, 6, "except", TI.KEYWORD | TI.RESERVED);

@@ -3640,7 +3640,7 @@ run_opt
 	|	run_set
 	|	ON^ (options{greedy=true;}: SERVER)? expression (options{greedy=true;}: TRANSACTION (options{greedy=true;}: DISTINCT)? )?
 	|	in_expr
-	|	ASYNCHRONOUS^ (options{greedy=true;}: run_set)? (options{greedy=true;}: run_event)? (options{greedy=true;}: in_expr)?
+	|	ASYNCHRONOUS^ (options{greedy=true;}: run_set)? (options{greedy=true;}: run_event)? (options{greedy=true;}: in_expr)? (options{greedy=true;}: run_event_oo)? (options{greedy=true;}: run_event_oo_context)?	
 	;
 run_event
 	:	EVENTPROCEDURE^ expression
@@ -3648,7 +3648,12 @@ run_event
 run_set
 	:	SET^ (options{greedy=true;}: field)?
 	;
-
+run_event_oo
+    :   EVENT_HANDLER^ expression
+    ;
+run_event_oo_context
+    :   EVENT_HANDLER_CONTEXT^ expression
+    ;
 runstoredprocedurestate
 	:	RUN^ STOREDPROCEDURE identifier (options{greedy=true;}: assign_equal)? (NOERROR_KW)? (parameterlist)? state_end
 		{sthd(##,STOREDPROCEDURE);}
@@ -4226,7 +4231,11 @@ ABSTRACT | DELEGATE | DYNAMICNEW | EVENT | FOREIGNKEYHIDDEN | SERIALIZEHIDDEN | 
 GETCLASS | SERIALIZABLE | TABLESCAN | MESSAGEDIGEST | ENUM | FLAGS | NON_SERIALIZABLE  | TENANT |
 	
 // 12.2
-PACKAGEPROTECTED | PACKAGEPRIVATE
+PACKAGEPROTECTED | PACKAGEPRIVATE |
+
+// 12.3
+EVENT_HANDLER | EVENT_HANDLER_CONTEXT 
+
 ;
 
 
