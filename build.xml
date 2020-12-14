@@ -32,14 +32,14 @@
 				<attribute name="Author" value="Joanju Software"/>
 				<attribute name="Class-Path" value=". ${lib.list}"/>
 				<section name="Proparse">
-					<attribute name="Author" value="Joanju Software" />
-					<attribute name="Home" value="joanju.com, oehive.org"/>
+					<attribute name="Author" value="Joanju Software, Consultingwerk Software Services Ltd." />
+					<attribute name="Home" value="joanju.com, oehive.org, github.com/consultingwerk/proparse"/>
 					<attribute name="Build" value="${build.number}"/>
 					<attribute name="Date" value="${TODAY}"/>
 				</section>
 				<section name="Copyright">
-					<attribute name="Copy" value="(C) Joanju Software 2002-2011"/>
-					<attribute name="License" value="Eclipse Public License version 1.0"/>
+					<attribute name="Copy" value="(C) Joanju Software, Consultingwerk Software Services Ltd. 2002-2020"/>
+					<attribute name="License" value="Eclipse Public License 2.0, and GNU Lesser General Public License v3.0"/>
 				</section>
 			</manifest>
 
