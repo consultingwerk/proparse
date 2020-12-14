@@ -10,10 +10,12 @@
 		</antlr>
 		<echo>Classpath: ${java.class.path}</echo>
 		<echo>Calling PostProcessor...</echo>
+<!--		
 		<java classname="org.prorefactor.treeparserbase.PostProcessor">
 			<classpath path="../../../../bin" />
 			<arg value="${outputfile}"/>
 		</java>
+-->		
 	</target>
 
 </project>

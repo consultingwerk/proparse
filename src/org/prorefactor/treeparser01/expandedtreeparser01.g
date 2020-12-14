@@ -7,12 +7,18 @@ header {
   
   import java.util.ArrayList;
 }
+
 options {
-  language= "Java";
+        language = "Java";
 }
 
+// Class preamble - anything here gets inserted in front of the class definition.
 {
-}class TreeParser01 extends TreeParser;
+} // Class preamble
+
+
+// class definition options
+class TreeParser01 extends TreeParser;
 
 options {
   importVocab= ProParser;
@@ -20,6 +26,7 @@ options {
   classHeaderSuffix= IJPTreeParser;
 }
 
+// This is added to top of the class definitions
 {
 
   // --- The following are required in all tree parsers ---
@@ -1442,6 +1449,8 @@ runstate :#(  r:RUN filenameorvalue { action.runBegin(#r); }
       | #(  ASYNCHRONOUS ( #(SET (fld[CQ.UPDATING])? ) )?
           (#(EVENTPROCEDURE expression ) )?
           (#(IN_KW expression))?
+          (#(EVENT_HANDLER expression ) )?
+          (#(EVENT_HANDLER_CONTEXT expression))?
         )
       )*
       (parameterlist)?

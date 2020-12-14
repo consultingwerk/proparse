@@ -1,4 +1,4 @@
-// $ANTLR : "expandedtreeparser01.g" -> "TreeParser01.java"$
+// $ANTLR 2.7.7 (20060906): "expandedtreeparser01.g" -> "TreeParser01.java"$
 
   package org.prorefactor.treeparser01;
 
@@ -1235,8 +1235,8 @@ public interface TreeParser01TokenTypes {
 	int TENANT_WHERE = 1229;
 	int SKIP_GROUP_DUPLICATES = 1230;
 	int PACKAGEPROTECTED = 1231;
-    int PACKAGEPRIVATE = 1232;
+	int PACKAGEPRIVATE = 1232;
 	int EVENT_HANDLER = 1233;
-    int EVENT_HANDLER_CONTEXT = 1234;
+	int EVENT_HANDLER_CONTEXT = 1234;
 	int Last_Token_Number = 1235;
 }

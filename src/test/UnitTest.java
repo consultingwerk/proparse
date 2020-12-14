@@ -277,7 +277,7 @@ public class UnitTest extends TestCase {
 		}
 	}
 	
-	public void test_run_procedurebased_event_handler() {
+	public void test_run_procedurebased_event_handler() throws Exception {
 		java.io.File file = new File("C:\\Work\\Proparse\\Github\\proparse\\src\\test\\run-procedure-based-handler.p");
 	
 		ParseUnit pu = new ParseUnit(file);
@@ -286,24 +286,17 @@ public class UnitTest extends TestCase {
 		// find RUN statement
 		// test for EVENT-HANDLER and EVENT-HANDLER-CONTEXT as children
 						
-		try {
-			pu.treeParser01();
-			
-			JPNode top = pu.getTopNode();
-			JPNode run = top.findDirectChild(NodeTypes.RUN);															
-			JPNode async = run.findDirectChild(NodeTypes.ASYNCHRONOUS);
-			
-			assertNotNull(async.findDirectChild(NodeTypes.EVENTPROCEDURE));
-			assertNotNull(async.findDirectChild(NodeTypes.IN_KW));						
-			
-		} catch (RefactorException e) {
-			System.out.println(e.getMessage());
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 		
+		pu.treeParser01();
+		
+		JPNode top = pu.getTopNode();
+		JPNode run = top.findDirectChild(NodeTypes.RUN);															
+		JPNode async = run.findDirectChild(NodeTypes.ASYNCHRONOUS);
+		
+		assertNotNull(async.findDirectChild(NodeTypes.EVENTPROCEDURE));
+		assertNotNull(async.findDirectChild(NodeTypes.IN_KW));							
 	}
 	
-	public void test_run_classbased_event_handler() {
+	public void test_run_classbased_event_handler() throws Exception {
 		java.io.File file = new File("C:\\Work\\Proparse\\Github\\proparse\\src\\test\\run-class-based-handler.p");
 	
 		ParseUnit pu = new ParseUnit(file);
@@ -312,21 +305,14 @@ public class UnitTest extends TestCase {
 		// find RUN statement
 		// test for EVENT-HANDLER and EVENT-HANDLER-CONTEXT as children
 						
-		try {
-			pu.treeParser01();
-			
-			JPNode top = pu.getTopNode();
-			JPNode run = top.findDirectChild(NodeTypes.RUN);															
-			assertNotNull(run.findDirectChild(NodeTypes.ASYNCHRONOUS));
-			
-			assertNotNull(run.findDirectChild(NodeTypes.EVENT_HANDLER));
-			assertNotNull(run.findDirectChild(NodeTypes.EVENT_HANDLER_CONTEXT));						
-			
-		} catch (RefactorException e) {
-			System.out.println(e.getMessage());
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 		
+		pu.treeParser01();
+		
+		JPNode top = pu.getTopNode();
+		JPNode run = top.findDirectChild(NodeTypes.RUN);															
+		JPNode async = run.findDirectChild(NodeTypes.ASYNCHRONOUS);
+		
+		assertNotNull(async.findDirectChild(NodeTypes.EVENT_HANDLER));
+		assertNotNull(async.findDirectChild(NodeTypes.EVENT_HANDLER_CONTEXT));								
 	}
 	
 	
