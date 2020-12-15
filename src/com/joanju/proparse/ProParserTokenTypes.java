@@ -1238,5 +1238,9 @@ public interface ProParserTokenTypes {
 	int PACKAGEPRIVATE = 1232;
 	int EVENT_HANDLER = 1233;
 	int EVENT_HANDLER_CONTEXT = 1234;
-	int Last_Token_Number = 1235;
+	int VAR = 1235;
+	int Last_Token_Number = 1236;
+	int TRUE = 1237;
+	int FALSE = 1238;
+	int NULL = 1239;
 }

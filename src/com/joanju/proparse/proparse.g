@@ -259,6 +259,7 @@ statement
 	|	ddesendstate | ddeterminatestate
 	|	declarecursorstate
 	|	definestatement
+	|	varStatement
 	|	destructorstate
 	|	dictionarystate
 	|	deletestatement
@@ -2335,6 +2336,32 @@ definevariablestate
 	:	VARIABLE n:new_identifier (fieldoption)* (triggerphrase)? state_end
 		{support.defVar(#n.getText());}
 	;
+
+varStatement
+	:   VAR^ datatype (varStatementSub2)?
+      	varStatementSub ( COMMA varStatementSub )* state_end
+  	;
+
+varStatementSub
+	:	n:new_identifier ( EQUAL varStatementInitialValue )?
+  	;
+
+varStatementSub2
+	:    LEFTBRACE (NUMBER)? RIGHTBRACE
+  	;
+
+varStatementInitialValue
+	:   varStatementInitialValueArray 
+	|	varStatementInitialValueSub
+  	;
+
+varStatementInitialValueArray
+	:    LEFTBRACE varStatementInitialValueSub ( COMMA varStatementInitialValueSub )* RIGHTBRACE
+  	;
+
+varStatementInitialValueSub
+	:    TODAY | NOW | TRUE | FALSE | YES | NO | UNKNOWNVALUE | QSTRING | LEXDATE | NUMBER | NULL
+  	;
 
 deletestatement
 // Ambiguous if you have a table named "procedure", "object", etc. Sheesh.
