@@ -1236,5 +1236,7 @@ public interface ProParserTokenTypes {
 	int SKIP_GROUP_DUPLICATES = 1230;
 	int PACKAGEPROTECTED = 1231;
 	int PACKAGEPRIVATE = 1232;
-	int Last_Token_Number = 1233;
+	int EVENT_HANDLER = 1233;
+	int EVENT_HANDLER_CONTEXT = 1234;
+	int Last_Token_Number = 1235;
 }

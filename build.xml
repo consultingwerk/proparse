@@ -61,7 +61,7 @@
 
 	<target name="make_dotnet">
 		<exec executable="C:\Work\Proparse\Github\proparse\ikvmbin\ikvmc.exe" dir="." failonerror="true">
-			<arg line="-out:proparse.net.dll -version:4.0.1.${build.number} -keyfile:proparse.snk proparse.jar lib\*.jar"/>
+			<arg line="-out:proparse.net.dll -version:4.1.0.${build.number} -keyfile:proparse.snk proparse.jar lib\*.jar"/>
 		</exec>
 		<delete dir="prorefactor/projects/unittest/pubs" />
 		<zip destfile="proparse.assemblies.zip">

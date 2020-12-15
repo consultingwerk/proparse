@@ -1,4 +1,4 @@
-// $ANTLR : expandedtreeparser01.g -> TreeParser01TokenTypes.txt$
+// $ANTLR 2.7.7 (20060906): expandedtreeparser01.g -> TreeParser01TokenTypes.txt$
 TreeParser01    // output token vocab name
 LEXDATE=4
 NAMEDOT=5
@@ -1223,4 +1223,8 @@ BUFFER_TENANT_NAME=1227
 TENANT=1228
 TENANT_WHERE=1229
 SKIP_GROUP_DUPLICATES=1230
-Last_Token_Number=1231
+PACKAGEPROTECTED=1231
+PACKAGEPRIVATE=1232
+EVENT_HANDLER=1233
+EVENT_HANDLER_CONTEXT=1234
+Last_Token_Number=1235

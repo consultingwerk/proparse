@@ -4,8 +4,11 @@ import java.io.*;
 import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.UnsupportedCharsetException;
 
+import org.prorefactor.core.JPNode;
 import org.prorefactor.refactor.RefactorException;
 import org.prorefactor.treeparser.*;
+
+import com.joanju.proparse.NodeTypes;
 
 import junit.framework.TestCase;
 
@@ -273,4 +276,44 @@ public class UnitTest extends TestCase {
 			e.printStackTrace();
 		}
 	}
+	
+	public void test_run_procedurebased_event_handler() throws Exception {
+		java.io.File file = new File("C:\\Work\\Proparse\\Github\\proparse\\src\\test\\run-procedure-based-handler.p");
+	
+		ParseUnit pu = new ParseUnit(file);
+		
+		// assert 
+		// find RUN statement
+		// test for EVENT-HANDLER and EVENT-HANDLER-CONTEXT as children
+						
+		pu.treeParser01();
+		
+		JPNode top = pu.getTopNode();
+		JPNode run = top.findDirectChild(NodeTypes.RUN);															
+		JPNode async = run.findDirectChild(NodeTypes.ASYNCHRONOUS);
+		
+		assertNotNull(async.findDirectChild(NodeTypes.EVENTPROCEDURE));
+		assertNotNull(async.findDirectChild(NodeTypes.IN_KW));							
+	}
+	
+	public void test_run_classbased_event_handler() throws Exception {
+		java.io.File file = new File("C:\\Work\\Proparse\\Github\\proparse\\src\\test\\run-class-based-handler.p");
+	
+		ParseUnit pu = new ParseUnit(file);
+		
+		// assert 
+		// find RUN statement
+		// test for EVENT-HANDLER and EVENT-HANDLER-CONTEXT as children
+						
+		pu.treeParser01();
+		
+		JPNode top = pu.getTopNode();
+		JPNode run = top.findDirectChild(NodeTypes.RUN);															
+		JPNode async = run.findDirectChild(NodeTypes.ASYNCHRONOUS);
+		
+		assertNotNull(async.findDirectChild(NodeTypes.EVENT_HANDLER));
+		assertNotNull(async.findDirectChild(NodeTypes.EVENT_HANDLER_CONTEXT));								
+	}
+	
+	
 }
