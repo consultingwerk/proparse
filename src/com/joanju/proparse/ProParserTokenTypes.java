@@ -1240,7 +1240,9 @@ public interface ProParserTokenTypes {
 	int EVENT_HANDLER_CONTEXT = 1234;
 	int VAR = 1235;
 	int Last_Token_Number = 1236;
-	int TRUE = 1237;
-	int FALSE = 1238;
-	int NULL = 1239;
+	int IN = 1237;
+	int UNSIGNEDINTEGER = 1238;
+	int TRUE = 1239;
+	int FALSE = 1240;
+	int NULL = 1241;
 }

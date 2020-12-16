@@ -887,11 +887,41 @@ defineworktablestate :#(  def:DEFINE (def_shared)? def_modifiers WORKTABLE id:ID
     )
   ;
 
-definevariablestate :#( def:DEFINE (def_shared)? def_modifiers VARIABLE
+definevariablestate :#( def:DEFINE (def_shared)? def_modifiers ( VARIABLE | VAR )
       id:ID { push(action.defineVariable(#def, #id)); }
       (fieldoption)* (triggerphrase)? state_end
     )
     { action.addToSymbolScope(pop()); }
+  ;
+
+varstate
+	:	#(VAR vardatatype (varStatementSub2)? id:ID ((COMMA ID)* | (varStatementSub)?) state_end )
+	;
+	
+varStatementSub
+	:	#(EQUAL varStatementInitialValue)
+  	;
+
+varStatementSub2
+	:    LEFTBRACE (NUMBER)? RIGHTBRACE
+  	;
+
+varStatementInitialValue
+	:   varStatementInitialValueArray 
+	|	varStatementInitialValueSub
+  	;
+
+varStatementInitialValueArray
+	:    LEFTBRACE varStatementInitialValueSub ( COMMA varStatementInitialValueSub )* RIGHTBRACE
+  	;
+  	
+varStatementInitialValueSub:
+    TODAY | NOW | TRUE | FALSE | YES | NO | UNKNOWNVALUE | QSTRING | LEXDATE | NUMBER | NULL
+  ;
+  
+vardatatype
+	:	CLASS TYPE_NAME 
+	| datatype_var 
   ;
 
 deletestate :#(DELETE_KW tbl[CQ.UPDATING] (#(VALIDATE funargs))? (NOERROR_KW)? state_end )
@@ -1847,6 +1877,7 @@ statement :aatracestatement
   | {state2(_t, TEMPTABLE)}?    definetemptablestate
   | {state2(_t, WORKTABLE)}?    defineworktablestate
   | {state2(_t, VARIABLE)}?   definevariablestate
+  | {state2(_t, VAR)}?   definevariablestate
   |           dictionarystate
   | {state2(_t, 0)}?      deletestate
   | {state2(_t, ALIAS)}?      deletealiasstate
@@ -1960,6 +1991,7 @@ statement :aatracestatement
   |           usestate
   |           usingstate
   |           validatestate
+  |			  varstate
   |           viewstate
   |           waitforstate
   ;
@@ -2568,8 +2600,9 @@ currentvaluefunc :#(CURRENTVALUE LEFTPAREN ID (COMMA ID)? (COMMA expression)? RI
   ;
 
 // inherited from grammar JPTreeParser
-datatype :CLASS TYPE_NAME
-  | datatype_var
+datatype 
+	:	CLASS TYPE_NAME 
+	| datatype_var 
   ;
 
 // inherited from grammar JPTreeParser

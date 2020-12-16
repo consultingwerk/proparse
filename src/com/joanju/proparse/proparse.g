@@ -259,7 +259,6 @@ statement
 	|	ddesendstate | ddeterminatestate
 	|	declarecursorstate
 	|	definestatement
-	|	varStatement
 	|	destructorstate
 	|	dictionarystate
 	|	deletestatement
@@ -317,7 +316,7 @@ statement
 	|	triggerprocedurestate
 	|	underlinestate  
 	|	undostate  | unloadstate  | unsubscribestate  | upstate  
-	|	updatestatement  | usestate | usingstate | validatestate  | viewstate  | waitforstate
+	|	updatestatement  | usestate | usingstate | validatestate | varStatement | viewstate  | waitforstate
 	;
 
 pseudfn
@@ -1080,7 +1079,7 @@ filename_part
 	;
 
 type_name
-	:	type_name2
+	:	type_name2 
 		{ support.typenameLookup(##); }
 	;
 type_name2
@@ -1840,6 +1839,7 @@ datatype
 options{generateAmbigWarnings=false;} // order of options is important.
 	:	CLASS type_name
 	|	datatype_var
+		
 	;
 
 datatype_com
@@ -1963,7 +1963,8 @@ definestatement
 		|	definesubmenustate	{sthd(##,SUBMENU);}
 		|	definetemptablestate	{sthd(##,TEMPTABLE);}
 		|	defineworktablestate	{sthd(##,WORKTABLE);}
-		|	definevariablestate	{sthd(##,VARIABLE);}
+		|	definevariablestate	{sthd(##,(VARIABLE));}
+		|	definevariablestate	{sthd(##,(VAR));}
 		)
 	;
 define_share
@@ -2333,25 +2334,29 @@ defineworktablestate
 	;
 
 definevariablestate
-	:	VARIABLE n:new_identifier (fieldoption)* (triggerphrase)? state_end
+	:	(VARIABLE | VAR) n:new_identifier (fieldoption)* (triggerphrase)? state_end
 		{support.defVar(#n.getText());}
 	;
 
 varStatement
-	:   VAR^ datatype (varStatementSub2)?
+	:   VAR^ varstate_datatype (varStatementSub2)?
       	varStatementSub ( COMMA varStatementSub )* state_end
   	;
 
 varStatementSub
-	:	n:new_identifier ( EQUAL varStatementInitialValue )?
+	:	n:new_identifier (varStatementEqualSub)?
   	;
+
+varStatementEqualSub
+	:	EQUAL^ varStatementInitialValue
+	;
 
 varStatementSub2
 	:    LEFTBRACE (NUMBER)? RIGHTBRACE
   	;
 
 varStatementInitialValue
-	:   varStatementInitialValueArray 
+	:   varStatementInitialValueArray
 	|	varStatementInitialValueSub
   	;
 
@@ -2359,6 +2364,49 @@ varStatementInitialValueArray
 	:    LEFTBRACE varStatementInitialValueSub ( COMMA varStatementInitialValueSub )* RIGHTBRACE
   	;
 
+varstate_datatype
+	:	CLASS typeName
+  	|	datatypeVar
+  ;
+
+// Ambig: An unreservedkeyword can be a class name (user defined type).
+datatypeVar:
+    CHARACTER
+  | COMHANDLE
+  | DATE
+  | DATETIME
+  | DATETIMETZ
+  | DECIMAL
+  | HANDLE
+  | INTEGER
+  | INT64
+  | LOGICAL
+  | LONGCHAR
+  | MEMPTR
+  | RAW
+  | RECID
+  | ROWID
+  | WIDGETHANDLE
+  | IN     // Works for INTEGER
+  | LOG    // Works for LOGICAL
+  | ROW    // Works for ROWID
+  | WIDGET // Works for WIDGET-HANDLE
+  | BLOB
+  | CLOB
+  | BYTE
+  | DOUBLE
+  | FLOAT
+  | LONG
+  | SHORT
+  | UNSIGNEDBYTE
+  | UNSIGNEDSHORT
+  | UNSIGNEDINTEGER
+  ;
+  
+typeName:
+    non_punctuating
+  ;
+	
 varStatementInitialValueSub
 	:    TODAY | NOW | TRUE | FALSE | YES | NO | UNKNOWNVALUE | QSTRING | LEXDATE | NUMBER | NULL
   	;
@@ -4261,7 +4309,7 @@ GETCLASS | SERIALIZABLE | TABLESCAN | MESSAGEDIGEST | ENUM | FLAGS | NON_SERIALI
 PACKAGEPROTECTED | PACKAGEPRIVATE |
 
 // 12.3
-EVENT_HANDLER | EVENT_HANDLER_CONTEXT 
+EVENT_HANDLER | EVENT_HANDLER_CONTEXT | VAR
 
 ;
 
