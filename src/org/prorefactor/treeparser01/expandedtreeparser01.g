@@ -895,10 +895,29 @@ definevariablestate :#( def:DEFINE (def_shared)? def_modifiers ( VARIABLE | VAR 
   ;
 
 varstate
-	:	#(VAR vardatatype (varStatementSub2)? id:ID ((COMMA ID)* | (varStatementSub)?) state_end )
+	:	#(VAR (varStateAccessMode)? (varStateOptions)? vardatatype 
+		(varStatementSub2)? varStatementSub (COMMA varStatementSub)* state_end )
+	;
+	
+varStateAccessMode
+	:	PRIVATE
+	|	PUBLIC
+	|	PROTECTED
+	|	PACKAGEPRIVATE
+	|	PACKAGEPROTECTED
+	;
+
+varStateOptions
+	:	STATIC
+	|	SERIALIZABLE
+	|	NON_SERIALIZABLE
 	;
 	
 varStatementSub
+	:	id:ID (varStatementEqualSub)?
+  	;
+
+varStatementEqualSub
 	:	#(EQUAL varStatementInitialValue)
   	;
 

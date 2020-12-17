@@ -2338,20 +2338,36 @@ definevariablestate
 		{support.defVar(#n.getText());}
 	;
 
+// https://docs.progress.com/de-DE/bundle/abl-reference/page/VAR-statement.html
 varStatement
-	:   VAR^ varstate_datatype (varStatementSub2)?
+	:   VAR^ (varStateAccessMode)? (varStateOptions)? varStateDataType 
       	varStatementSub ( COMMA varStatementSub )* state_end
   	;
 
+varStateAccessMode
+	:	PRIVATE
+	|	PUBLIC
+	|	PROTECTED
+	|	PACKAGEPRIVATE
+	|	PACKAGEPROTECTED
+	;
+
+varStateOptions
+	:	STATIC
+	|	SERIALIZABLE
+	|	NON_SERIALIZABLE
+	;
+
 varStatementSub
 	:	n:new_identifier (varStatementEqualSub)?
+		{support.defVar(#n.getText());}
   	;
 
 varStatementEqualSub
 	:	EQUAL^ varStatementInitialValue
 	;
 
-varStatementSub2
+varStateBraces
 	:    LEFTBRACE (NUMBER)? RIGHTBRACE
   	;
 
@@ -2364,44 +2380,30 @@ varStatementInitialValueArray
 	:    LEFTBRACE varStatementInitialValueSub ( COMMA varStatementInitialValueSub )* RIGHTBRACE
   	;
 
-varstate_datatype
-	:	CLASS typeName
+varStateDataType
+	:	
+	(	CLASS typeName
   	|	datatypeVar
+  	)	(varStateBraces)?
   ;
 
-// Ambig: An unreservedkeyword can be a class name (user defined type).
-datatypeVar:
-    CHARACTER
-  | COMHANDLE
-  | DATE
-  | DATETIME
-  | DATETIMETZ
-  | DECIMAL
-  | HANDLE
-  | INTEGER
-  | INT64
-  | LOGICAL
-  | LONGCHAR
-  | MEMPTR
-  | RAW
-  | RECID
-  | ROWID
-  | WIDGETHANDLE
-  | IN     // Works for INTEGER
-  | LOG    // Works for LOGICAL
-  | ROW    // Works for ROWID
-  | WIDGET // Works for WIDGET-HANDLE
-  | BLOB
-  | CLOB
-  | BYTE
-  | DOUBLE
-  | FLOAT
-  | LONG
-  | SHORT
-  | UNSIGNEDBYTE
-  | UNSIGNEDSHORT
-  | UNSIGNEDINTEGER
-  ;
+datatypeVar
+	:	CHARACTER
+  	| 	COMHANDLE
+  	| 	DATE
+  	| 	DATETIME
+  	| 	DATETIMETZ
+  	| 	DECIMAL
+  	| 	HANDLE
+  	| 	INTEGER
+  	| 	INT64
+  	| 	LOGICAL
+  	| 	LONGCHAR
+  	| 	MEMPTR
+  	| 	RAW
+  	| 	RECID
+  	| 	ROWID
+  	;
   
 typeName:
     non_punctuating
