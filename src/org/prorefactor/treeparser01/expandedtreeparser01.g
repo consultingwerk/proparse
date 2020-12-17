@@ -887,7 +887,7 @@ defineworktablestate :#(  def:DEFINE (def_shared)? def_modifiers WORKTABLE id:ID
     )
   ;
 
-definevariablestate :#( def:DEFINE (def_shared)? def_modifiers ( VARIABLE | VAR )
+definevariablestate :#( def:DEFINE (def_shared)? def_modifiers VARIABLE
       id:ID { push(action.defineVariable(#def, #id)); }
       (fieldoption)* (triggerphrase)? state_end
     )
@@ -895,7 +895,7 @@ definevariablestate :#( def:DEFINE (def_shared)? def_modifiers ( VARIABLE | VAR 
   ;
 
 varstate
-	:	#(VAR (varStateAccessMode)? (varStateOptions)? vardatatype 
+	:	#(VARIABLE (varStateAccessMode)? (varStateOptions)? vardatatype 
 		(varStatementSub2)? varStatementSub (COMMA varStatementSub)* state_end )
 	;
 	
@@ -1896,7 +1896,6 @@ statement :aatracestatement
   | {state2(_t, TEMPTABLE)}?    definetemptablestate
   | {state2(_t, WORKTABLE)}?    defineworktablestate
   | {state2(_t, VARIABLE)}?   definevariablestate
-  | {state2(_t, VAR)}?   definevariablestate
   |           dictionarystate
   | {state2(_t, 0)}?      deletestate
   | {state2(_t, ALIAS)}?      deletealiasstate

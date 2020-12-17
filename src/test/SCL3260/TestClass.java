@@ -43,7 +43,7 @@ public class TestClass extends TestCase {
 		this.assertValidAndType(node, "Code_block");
 		
 		node = node.firstChild();
-		this.assertValidAndType(node, "VAR");
+		this.assertValidAndType(node, "VARIABLE");
 		
 		node = node.firstChild();
 		this.assertValidAndType(node, "CHARACTER");
@@ -63,7 +63,7 @@ public class TestClass extends TestCase {
 		this.assertValidAndType(node, "Code_block");
 		
 		node = node.firstChild();
-		this.assertValidAndType(node, "VAR");
+		this.assertValidAndType(node, "VARIABLE");
 		
 		node = node.firstChild();
 		this.assertValidAndType(node, "INTEGER");
@@ -95,7 +95,7 @@ public class TestClass extends TestCase {
 		this.assertValidAndType(node, "Code_block");
 		
 		node = node.firstChild();
-		this.assertValidAndType(node, "VAR");
+		this.assertValidAndType(node, "VARIABLE");
 		
 		node = node.firstChild();
 		this.assertValidAndType(node, "CHARACTER");
@@ -120,7 +120,7 @@ public class TestClass extends TestCase {
 		this.assertValidAndType(node, "Code_block");
 		
 		node = node.firstChild();
-		this.assertValidAndType(node, "VAR");
+		this.assertValidAndType(node, "VARIABLE");
 		
 		node = node.firstChild();
 		this.assertValidAndType(node, "CHARACTER");
@@ -146,7 +146,7 @@ public class TestClass extends TestCase {
 		this.assertValidAndType(node, "Code_block");
 		
 		node = node.firstChild();
-		this.assertValidAndType(node, "VAR");
+		this.assertValidAndType(node, "VARIABLE");
 		
 		node = node.firstChild();
 		this.assertValidAndType(node, "INTEGER");
@@ -175,7 +175,7 @@ public class TestClass extends TestCase {
 		this.assertValidAndType(node, "Code_block");
 		
 		node = node.firstChild();
-		this.assertValidAndType(node, "VAR");
+		this.assertValidAndType(node, "VARIABLE");
 		
 		node = node.firstChild();
 		this.assertValidAndType(node, "INTEGER");
@@ -228,7 +228,7 @@ public class TestClass extends TestCase {
 		this.assertValidAndType(node, "DEFINE");
 		
 		node = node.firstChild();
-		this.assertValidAndType(node, "VAR");
+		this.assertValidAndType(node, "VARIABLE");
 		
 		node = node.nextSibling();
 		this.assertValidAndTypeAndText(node, "ID", "i");

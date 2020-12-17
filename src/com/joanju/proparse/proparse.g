@@ -1964,7 +1964,6 @@ definestatement
 		|	definetemptablestate	{sthd(##,TEMPTABLE);}
 		|	defineworktablestate	{sthd(##,WORKTABLE);}
 		|	definevariablestate	{sthd(##,(VARIABLE));}
-		|	definevariablestate	{sthd(##,(VAR));}
 		)
 	;
 define_share
@@ -2334,13 +2333,13 @@ defineworktablestate
 	;
 
 definevariablestate
-	:	(VARIABLE | VAR) n:new_identifier (fieldoption)* (triggerphrase)? state_end
+	:	VARIABLE n:new_identifier (fieldoption)* (triggerphrase)? state_end
 		{support.defVar(#n.getText());}
 	;
 
 // https://docs.progress.com/de-DE/bundle/abl-reference/page/VAR-statement.html
 varStatement
-	:   VAR^ (varStateAccessMode)? (varStateOptions)? varStateDataType 
+	:   VARIABLE^ (varStateAccessMode)? (varStateOptions)? varStateDataType 
       	varStatementSub ( COMMA varStatementSub )* state_end
   	;
 
@@ -4311,7 +4310,7 @@ GETCLASS | SERIALIZABLE | TABLESCAN | MESSAGEDIGEST | ENUM | FLAGS | NON_SERIALI
 PACKAGEPROTECTED | PACKAGEPRIVATE |
 
 // 12.3
-EVENT_HANDLER | EVENT_HANDLER_CONTEXT | VAR
+EVENT_HANDLER | EVENT_HANDLER_CONTEXT
 
 ;
 

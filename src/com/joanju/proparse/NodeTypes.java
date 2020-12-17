@@ -1502,8 +1502,7 @@ public class NodeTypes implements ProParserTokenTypes, TokenTypesI, Xferable {
 		add(VALUE, 5, "value", TI.KEYWORD | TI.RESERVED);
 		add(VALUECHANGED, 13, "value-changed", TI.KEYWORD | TI.RESERVED);
 		add(VALUES, 6, "values", TI.KEYWORD | TI.RESERVED);
-		add(VAR, 3, "var", TI.KEYWORD);
-		add(VARIABLE, 4, "variable", TI.KEYWORD);
+		add(VARIABLE, 3, "variable", TI.KEYWORD);
 		add(VERBOSE, 4, "verbose", TI.KEYWORD);
 		add(VERTICAL, 4, "vertical", TI.KEYWORD);
 		add(VIEW, 4, "view", TI.KEYWORD | TI.RESERVED);
