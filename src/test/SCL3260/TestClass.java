@@ -30,11 +30,6 @@ public class TestClass extends TestCase {
 		super.tearDown();
 	}
 	
-	// TODO remove test
-	public void test00_print() {
-		this.print(this.pu.getTopNode(), "");
-	}
-	
 	public void test01_SingleVariable() {
 		
 		JPNode node;
@@ -245,6 +240,186 @@ public class TestClass extends TestCase {
 		this.assertValidAndType(node, "PERIOD");
 	}
 	
+	public void test08_InitMultiArray() {
+		
+		JPNode node;
+		
+		node = this.getProcedureCodeBlock("InitMultiArray");
+		this.assertValidAndType(node, "Code_block");
+		
+		node = node.firstChild();
+		this.assertValidAndType(node, "VARIABLE");
+		
+		node = node.firstChild();
+		this.assertValidAndType(node, "INTEGER");
+		
+		node = node.nextSibling();
+		this.assertValidAndType(node, "LEFTBRACE");
+		
+		node = node.nextSibling();
+		this.assertValidAndType(node, "RIGHTBRACE");
+		
+		node = node.nextSibling();
+		this.assertValidAndTypeAndText(node, "ID", "iVar1");
+		
+		node = node.nextSibling();
+		this.assertValidAndType(node, "COMMA");
+		
+		node = node.nextSibling();
+		this.assertValidAndTypeAndText(node, "ID", "iVar2");
+		
+		node = node.nextSibling();
+		this.assertValidAndType(node, "EQUAL");
+		
+		node = node.firstChild();
+		this.assertValidAndType(node, "LEFTBRACE");
+		
+		node = node.nextSibling();
+		this.assertValidAndTypeAndText(node, "NUMBER", "1");
+		
+		node = node.nextSibling();
+		this.assertValidAndType(node, "COMMA");
+		
+		node = node.nextSibling();
+		this.assertValidAndTypeAndText(node, "NUMBER", "2");
+		
+		node = node.nextSibling();
+		this.assertValidAndType(node, "RIGHTBRACE");
+		
+		node = node.parent().nextSibling();
+		this.assertValidAndType(node, "COMMA");
+		
+		node = node.nextSibling();
+		this.assertValidAndTypeAndText(node, "ID", "iVar3");
+		
+		node = node.nextSibling();
+		this.assertValidAndType(node, "EQUAL");
+		
+		node = node.firstChild();
+		this.assertValidAndType(node, "LEFTBRACE");
+		
+		node = node.nextSibling();
+		this.assertValidAndTypeAndText(node, "NUMBER", "1");
+		
+		node = node.nextSibling();
+		this.assertValidAndType(node, "COMMA");
+		
+		node = node.nextSibling();
+		this.assertValidAndTypeAndText(node, "NUMBER", "2");
+		
+		node = node.nextSibling();
+		this.assertValidAndType(node, "COMMA");
+		
+		node = node.nextSibling();
+		this.assertValidAndTypeAndText(node, "NUMBER", "3");
+		
+		node = node.nextSibling();
+		this.assertValidAndType(node, "RIGHTBRACE");
+		
+		node = node.parent().nextSibling();
+		this.assertValidAndType(node, "COMMA");
+		
+		node = node.nextSibling();
+		this.assertValidAndTypeAndText(node, "ID", "iVar4");
+		
+		node = node.nextSibling();
+		this.assertValidAndType(node, "PERIOD");
+	}
+	
+	public void test09_InitMultiVar() {
+
+		JPNode node;
+		
+		node = this.getProcedureCodeBlock("InitMultiVar");
+		this.assertValidAndType(node, "Code_block");
+		
+		node = node.firstChild();
+		this.assertValidAndType(node, "VARIABLE");
+		
+		node = node.firstChild();
+		this.assertValidAndType(node, "CHARACTER");
+		
+		node = node.nextSibling();
+		this.assertValidAndTypeAndText(node, "ID", "cVar1");
+		
+		node = node.nextSibling();
+		this.assertValidAndType(node, "COMMA");
+		
+		node = node.nextSibling();
+		this.assertValidAndTypeAndText(node, "ID", "cVar2");
+		
+		node = node.nextSibling();
+		this.assertValidAndType(node, "EQUAL");
+		
+		this.assertValidAndTypeAndText(node.firstChild(), "QSTRING", "\"Hello\":U");
+		
+		node = node.nextSibling();
+		this.assertValidAndType(node, "COMMA");
+		
+		node = node.nextSibling();
+		this.assertValidAndTypeAndText(node, "ID", "cVar3");
+		
+		node = node.nextSibling();
+		this.assertValidAndType(node, "EQUAL");
+		
+		this.assertValidAndTypeAndText(node.firstChild(), "QSTRING", "\"World\":U");
+		
+		node = node.nextSibling();
+		this.assertValidAndType(node, "COMMA");
+		
+		node = node.nextSibling();
+		this.assertValidAndTypeAndText(node, "ID", "cVar4");
+		
+		node = node.nextSibling();
+		this.assertValidAndType(node, "PERIOD");
+	}
+
+	public void test10_SerializableVar() {
+		
+		JPNode node;
+		
+		node = this.getProcedureCodeBlock("SerializableVar");
+		this.assertValidAndType(node, "Code_block");
+		
+		node = node.firstChild();
+		this.assertValidAndType(node, "VARIABLE");
+		
+		node = node.firstChild();
+		this.assertValidAndType(node, "SERIALIZABLE");
+		
+		node = node.nextSibling();
+		this.assertValidAndType(node, "INTEGER");
+		
+		node = node.nextSibling();
+		this.assertValidAndTypeAndText(node, "ID", "iVar");
+		
+		node = node.nextSibling();
+		this.assertValidAndType(node, "PERIOD");
+	}
+	
+	public void test11_NonSerializable() {
+		
+		JPNode node;
+		
+		node = this.getProcedureCodeBlock("NonSerializable");
+		this.assertValidAndType(node, "Code_block");
+		
+		node = node.firstChild();
+		this.assertValidAndType(node, "VARIABLE");
+		
+		node = node.firstChild();
+		this.assertValidAndType(node, "NON_SERIALIZABLE");
+		
+		node = node.nextSibling();
+		this.assertValidAndType(node, "INTEGER");
+		
+		node = node.nextSibling();
+		this.assertValidAndTypeAndText(node, "ID", "iVar");
+		
+		node = node.nextSibling();
+		this.assertValidAndType(node, "PERIOD");
+	}
+	
 	private void assertValidAndType(JPNode node, String type) {
 		Assert.assertNotNull(("Invalid " + type + " node!"), node);
 		Assert.assertEquals((type + " node has wrong type!"), NodeTypes.getTypeNum(type), node.getType());
@@ -271,14 +446,5 @@ public class TestClass extends TestCase {
 		}
 		
 		return null;
-	}
-	
-	// TODO remove method
-	private void print(JPNode node, String format) {
-		System.out.println(format + node.toString());
-		if(node.firstChild() != null) 
-			this.print(node.firstChild(), format + "\t");
-		if (node.nextSibling() != null)
-			this.print(node.nextSibling(), format);
 	}
 }

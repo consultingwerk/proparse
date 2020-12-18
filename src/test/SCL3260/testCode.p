@@ -75,6 +75,12 @@ PROCEDURE InitMultiArray:
 
 END PROCEDURE.
 
+PROCEDURE InitMultiVar:
+
+	VAR CHAR cVar1, cVar2 = "Hello":U, cVar3 = "World":U, cVar4.
+
+END PROCEDURE.
+
 PROCEDURE DefVar:
 
 	DEF VAR i AS INT NO-UNDO.
