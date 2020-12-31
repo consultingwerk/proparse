@@ -894,6 +894,62 @@ definevariablestate :#( def:DEFINE (def_shared)? def_modifiers VARIABLE
     { action.addToSymbolScope(pop()); }
   ;
 
+varstate
+	:	#(var:VARIABLE (varStateAccessMode)? (varStateOptions)? vardatatype 
+		(varStatementSub2)? 
+		id:ID { 
+			push(action.defineVariable(#var, #id)); 
+			action.addToSymbolScope(pop()); 
+		} (varStatementEqualSub)?
+		 
+		(COMMA id2:ID { 
+			push(action.defineVariable(#var, #id2)); 
+			action.addToSymbolScope(pop()); 
+		} 
+		(varStatementEqualSub)?)* 
+		state_end )		
+	;
+	
+varStateAccessMode
+	:	PRIVATE
+	|	PUBLIC
+	|	PROTECTED
+	|	PACKAGEPRIVATE
+	|	PACKAGEPROTECTED
+	;
+
+varStateOptions
+	:	STATIC
+	|	SERIALIZABLE
+	|	NON_SERIALIZABLE
+	;
+	
+varStatementEqualSub
+	:	#(EQUAL varStatementInitialValue)
+  	;
+
+varStatementSub2
+	:    LEFTBRACE (NUMBER)? RIGHTBRACE
+  	;
+
+varStatementInitialValue
+	:   varStatementInitialValueArray 
+	|	varStatementInitialValueSub
+  	;
+
+varStatementInitialValueArray
+	:    LEFTBRACE varStatementInitialValueSub ( COMMA varStatementInitialValueSub )* RIGHTBRACE
+  	;
+  	
+varStatementInitialValueSub:
+    TODAY | NOW | TRUE | FALSE | YES | NO | UNKNOWNVALUE | QSTRING | LEXDATE | NUMBER | NULL
+  ;
+  
+vardatatype
+	:	CLASS TYPE_NAME 
+	| datatype_var 
+  ;
+
 deletestate :#(DELETE_KW tbl[CQ.UPDATING] (#(VALIDATE funargs))? (NOERROR_KW)? state_end )
   ;
 
@@ -1960,6 +2016,7 @@ statement :aatracestatement
   |           usestate
   |           usingstate
   |           validatestate
+  |			  varstate
   |           viewstate
   |           waitforstate
   ;
@@ -2568,8 +2625,9 @@ currentvaluefunc :#(CURRENTVALUE LEFTPAREN ID (COMMA ID)? (COMMA expression)? RI
   ;
 
 // inherited from grammar JPTreeParser
-datatype :CLASS TYPE_NAME
-  | datatype_var
+datatype 
+	:	CLASS TYPE_NAME 
+	| datatype_var 
   ;
 
 // inherited from grammar JPTreeParser

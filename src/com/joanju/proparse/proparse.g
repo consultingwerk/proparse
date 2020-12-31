@@ -316,7 +316,7 @@ statement
 	|	triggerprocedurestate
 	|	underlinestate  
 	|	undostate  | unloadstate  | unsubscribestate  | upstate  
-	|	updatestatement  | usestate | usingstate | validatestate  | viewstate  | waitforstate
+	|	updatestatement  | usestate | usingstate | validatestate | varStatement | viewstate  | waitforstate
 	;
 
 pseudfn
@@ -1079,7 +1079,7 @@ filename_part
 	;
 
 type_name
-	:	type_name2
+	:	type_name2 
 		{ support.typenameLookup(##); }
 	;
 type_name2
@@ -1839,6 +1839,7 @@ datatype
 options{generateAmbigWarnings=false;} // order of options is important.
 	:	CLASS type_name
 	|	datatype_var
+		
 	;
 
 datatype_com
@@ -1962,7 +1963,7 @@ definestatement
 		|	definesubmenustate	{sthd(##,SUBMENU);}
 		|	definetemptablestate	{sthd(##,TEMPTABLE);}
 		|	defineworktablestate	{sthd(##,WORKTABLE);}
-		|	definevariablestate	{sthd(##,VARIABLE);}
+		|	definevariablestate	{sthd(##,(VARIABLE));}
 		)
 	;
 define_share
@@ -2335,6 +2336,81 @@ definevariablestate
 	:	VARIABLE n:new_identifier (fieldoption)* (triggerphrase)? state_end
 		{support.defVar(#n.getText());}
 	;
+
+// https://docs.progress.com/de-DE/bundle/abl-reference/page/VAR-statement.html
+varStatement
+	:   VARIABLE^ (varStateAccessMode)? (varStateOptions)? varStateDataType 
+      	varStatementSub ( COMMA varStatementSub )* state_end
+  	;
+
+varStateAccessMode
+	:	PRIVATE
+	|	PUBLIC
+	|	PROTECTED
+	|	PACKAGEPRIVATE
+	|	PACKAGEPROTECTED
+	;
+
+varStateOptions
+	:	STATIC
+	|	SERIALIZABLE
+	|	NON_SERIALIZABLE
+	;
+
+varStatementSub
+	:	n:new_identifier (varStatementEqualSub)?
+		{support.defVar(#n.getText());}
+  	;
+
+varStatementEqualSub
+	:	EQUAL^ varStatementInitialValue
+	;
+
+varStateBraces
+	:    LEFTBRACE (NUMBER)? RIGHTBRACE
+  	;
+
+varStatementInitialValue
+	:   varStatementInitialValueArray
+	|	varStatementInitialValueSub
+  	;
+
+varStatementInitialValueArray
+	:    LEFTBRACE varStatementInitialValueSub ( COMMA varStatementInitialValueSub )* RIGHTBRACE
+  	;
+
+varStateDataType
+	:	
+	(	CLASS typeName
+  	|	datatypeVar
+  	)	(varStateBraces)?
+  ;
+
+datatypeVar
+	:	CHARACTER
+  	| 	COMHANDLE
+  	| 	DATE
+  	| 	DATETIME
+  	| 	DATETIMETZ
+  	| 	DECIMAL
+  	| 	HANDLE
+  	| 	INTEGER
+  	| 	INT64
+  	| 	LOGICAL
+  	| 	LONGCHAR
+  	| 	MEMPTR
+  	| 	RAW
+  	| 	RECID
+  	| 	ROWID
+  	;
+  
+typeName:
+    non_punctuating
+  ;
+	
+varStatementInitialValueSub
+	:    TODAY | NOW | TRUE | FALSE | YES | NO | UNKNOWNVALUE | QSTRING | LEXDATE | NUMBER | NULL
+  	;
 
 deletestatement
 // Ambiguous if you have a table named "procedure", "object", etc. Sheesh.
@@ -4234,7 +4310,7 @@ GETCLASS | SERIALIZABLE | TABLESCAN | MESSAGEDIGEST | ENUM | FLAGS | NON_SERIALI
 PACKAGEPROTECTED | PACKAGEPRIVATE |
 
 // 12.3
-EVENT_HANDLER | EVENT_HANDLER_CONTEXT 
+EVENT_HANDLER | EVENT_HANDLER_CONTEXT
 
 ;
 
