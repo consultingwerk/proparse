@@ -1,9 +1,11 @@
 package test.SCL3260;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import org.prorefactor.core.JPNode;
 import org.prorefactor.treeparser.ParseUnit;
+import org.prorefactor.treeparser.Symbol;
 
 import com.joanju.proparse.NodeTypes;
 
@@ -58,6 +60,22 @@ public class TestClass2 extends TestCase {
 		assertNotNull("var n", node.firstChild().firstChild().nextSibling().getSymbol().getDefineNode());		
 	}
 	
+	public void test02_symbolScope() {
+		
+		JPNode node;
+		
+		node = this.getProcedureCodeBlock("test-internal");
+		this.assertValidAndType(node, "Code_block");
+		
+		node = node.query("ASSIGN")[0];
+		
+		Symbol sym = node.firstChild().firstChild().getSymbol();
+		
+		ArrayList<Symbol> syms = sym.getScope().getAllSymbols(); 
+		
+		assertEquals(3, syms.size());
+	}
+
 	private void assertValidAndType(JPNode node, String type) {
 		Assert.assertNotNull(("Invalid " + type + " node!"), node);
 		Assert.assertEquals((type + " node has wrong type!"), NodeTypes.getTypeNum(type), node.getType());

@@ -895,8 +895,19 @@ definevariablestate :#( def:DEFINE (def_shared)? def_modifiers VARIABLE
   ;
 
 varstate
-	:	#(VARIABLE (varStateAccessMode)? (varStateOptions)? vardatatype 
-		(varStatementSub2)? varStatementSub (COMMA varStatementSub)* state_end )
+	:	#(var:VARIABLE (varStateAccessMode)? (varStateOptions)? vardatatype 
+		(varStatementSub2)? 
+		id:ID { 
+			push(action.defineVariable(#var, #id)); 
+			action.addToSymbolScope(pop()); 
+		} (varStatementEqualSub)?
+		 
+		(COMMA id2:ID { 
+			push(action.defineVariable(#var, #id2)); 
+			action.addToSymbolScope(pop()); 
+		} 
+		(varStatementEqualSub)?)* 
+		state_end )		
 	;
 	
 varStateAccessMode
@@ -913,10 +924,6 @@ varStateOptions
 	|	NON_SERIALIZABLE
 	;
 	
-varStatementSub
-	:	id:ID (varStatementEqualSub)?
-  	;
-
 varStatementEqualSub
 	:	#(EQUAL varStatementInitialValue)
   	;
