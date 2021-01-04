@@ -134,7 +134,15 @@ blockorstate
 		|	(field EQUAL DYNAMICNEW)=> dynamicnewstate
 		|	(pseudfn EQUAL)=> assignstate3
 		|	(widattr EQUAL)=> assignstate4
+		|	(widattr PLUS_EQUAL)=> assignstate4plus
+		|	(widattr MINUS_EQUAL)=> assignstate4minus
+		|	(widattr DIVIDE_EQUAL)=> assignstate4divide
+		|	(widattr MULTIPLY_EQUAL)=> assignstate4multiply
 		|	(field EQUAL)=> assignstate2
+		|	(field PLUS_EQUAL)=> assignstate2plus
+		|	(field MINUS_EQUAL)=> assignstate2minus
+		|	(field DIVIDE_EQUAL)=> assignstate2divide
+		|	(field MULTIPLY_EQUAL)=> assignstate2multiply
 		|	// Anything followed by an OBJCOLON is going to be an expression statement.
 			// We have to disambiguate, for example, THIS-OBJECT:whatever from the THIS-OBJECT statement.
 			// (I don't know why the lookahead didn't take care of that.)
@@ -1221,6 +1229,10 @@ assign_opt
 	;
 assign_opt2
 	:	. EQUAL^ expression
+	|	. PLUS_EQUAL^ expression
+	|	. MINUS_EQUAL^ expression
+	|	. DIVIDE_EQUAL^ expression
+	|	. MULTIPLY_EQUAL^ expression
 		{support.attrOp(##);}
 	;
 
@@ -1235,17 +1247,53 @@ assignment_list
 			{LA(2)==NAMEDOT || (!(support.isVar(LT(1).getText())))}?
 			record
 	|	(	(assign_equal)=> assign_equal (when_exp)?
+		|	(assign_plus_equal)=> assign_plus_equal (when_exp)?
+		|	(assign_minus_equal)=> assign_minus_equal (when_exp)?
+		|	(assign_divide_equal)=> assign_divide_equal (when_exp)?
+		|	(assign_multiply_equal)=> assign_multiply_equal (when_exp)?
 		|	assign_field (when_exp)?
 		)*
 	;
 assignstate2
-	:	field e:EQUAL^ expression
+	:	field e:EQUAL^ expression 
 		{support.attrOp(#e);}
 		{## = #([ASSIGN], ##);}
 		(NOERROR_KW)?
 		state_end
 		{sthd(##,0);}
 	;
+assignstate2plus
+	:	field e:PLUS_EQUAL^ expression {support.attrOp(#e);}
+		{support.attrOp(#e);}
+		{## = #([ASSIGN], ##);}
+		(NOERROR_KW)?
+		state_end
+		{sthd(##,0);}
+	;	
+assignstate2minus
+	:	field e:MINUS_EQUAL^ expression {support.attrOp(#e);}
+		{support.attrOp(#e);}
+		{## = #([ASSIGN], ##);}
+		(NOERROR_KW)?
+		state_end
+		{sthd(##,0);}
+	;	
+assignstate2divide
+	:	field e:DIVIDE_EQUAL^ expression {support.attrOp(#e);}
+		{support.attrOp(#e);}
+		{## = #([ASSIGN], ##);}
+		(NOERROR_KW)?
+		state_end
+		{sthd(##,0);}
+	;	
+assignstate2multiply
+	:	field e:MULTIPLY_EQUAL^ expression {support.attrOp(#e);}
+		{support.attrOp(#e);}
+		{## = #([ASSIGN], ##);}
+		(NOERROR_KW)?
+		state_end
+		{sthd(##,0);}
+	;		
 assignstate3
 	:	pseudfn e:EQUAL^ expression
 		{support.attrOp(#e);}
@@ -1255,22 +1303,73 @@ assignstate3
 		{sthd(##,0);}
 	;
 assignstate4
-	:	widattr e:EQUAL^ expression
+	:	widattr e:EQUAL^ expression 
 		{support.attrOp(#e);}
 		{## = #([ASSIGN], ##);}
 		(NOERROR_KW)?
 		state_end
 		{sthd(##,0);}
-	;
-assign_equal
+	;	
+assignstate4plus
+	:	widattr e:PLUS_EQUAL^ expression {support.attrOp(#e);}
+		{support.attrOp(#e);}
+		{## = #([ASSIGN], ##);}
+		(NOERROR_KW)?
+		state_end
+		{sthd(##,0);}
+	;	
+assignstate4minus
+	:	widattr e:MINUS_EQUAL^ expression {support.attrOp(#e);}
+		{support.attrOp(#e);}
+		{## = #([ASSIGN], ##);}
+		(NOERROR_KW)?
+		state_end
+		{sthd(##,0);}
+	;	
+assignstate4divide
+	:	widattr e:DIVIDE_EQUAL^ expression {support.attrOp(#e);}
+		{support.attrOp(#e);}
+		{## = #([ASSIGN], ##);}
+		(NOERROR_KW)?
+		state_end
+		{sthd(##,0);}
+	;	
+assignstate4multiply
+	:	widattr e:MULTIPLY_EQUAL^ expression {support.attrOp(#e);}
+		{support.attrOp(#e);}
+		{## = #([ASSIGN], ##);}
+		(NOERROR_KW)?
+		state_end
+		{sthd(##,0);}
+	;	
+assign_equal 
 	:	(pseudfn)=> pseudfn e1:EQUAL^ expression {support.attrOp(#e1);}
 	|	(widattr)=> widattr e3:EQUAL^ expression {support.attrOp(#e3);}
 	|	field e2:EQUAL^ expression {support.attrOp(#e2);}
 	;
+assign_plus_equal 
+	:	(pseudfn)=> pseudfn e1:PLUS_EQUAL^ expression {support.attrOp(#e1);}
+	|	(widattr)=> widattr e3:PLUS_EQUAL^ expression {support.attrOp(#e3);}
+	|	field e2:PLUS_EQUAL^ expression {support.attrOp(#e2);}
+	;
+assign_minus_equal 
+	:	(pseudfn)=> pseudfn e1:MINUS_EQUAL^ expression {support.attrOp(#e1);}
+	|	(widattr)=> widattr e3:MINUS_EQUAL^ expression {support.attrOp(#e3);}
+	|	field e2:MINUS_EQUAL^ expression {support.attrOp(#e2);}
+	;
+assign_divide_equal 
+	:	(pseudfn)=> pseudfn e1:DIVIDE_EQUAL^ expression {support.attrOp(#e1);}
+	|	(widattr)=> widattr e3:DIVIDE_EQUAL^ expression {support.attrOp(#e3);}
+	|	field e2:DIVIDE_EQUAL^ expression {support.attrOp(#e2);}
+	;
+assign_multiply_equal 
+	:	(pseudfn)=> pseudfn e1:MULTIPLY_EQUAL^ expression {support.attrOp(#e1);}
+	|	(widattr)=> widattr e3:MULTIPLY_EQUAL^ expression {support.attrOp(#e3);}
+	|	field e2:MULTIPLY_EQUAL^ expression {support.attrOp(#e2);}
+	;		
 assign_field
 	:	field {## = #([Assign_from_buffer], ##);}
 	;
-
 at_expr
 	:	AT^ expression
 	;
@@ -4310,7 +4409,7 @@ GETCLASS | SERIALIZABLE | TABLESCAN | MESSAGEDIGEST | ENUM | FLAGS | NON_SERIALI
 PACKAGEPROTECTED | PACKAGEPRIVATE |
 
 // 12.3
-EVENT_HANDLER | EVENT_HANDLER_CONTEXT
+EVENT_HANDLER | EVENT_HANDLER_CONTEXT 
 
 ;
 
