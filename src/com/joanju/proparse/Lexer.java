@@ -128,6 +128,10 @@ public class Lexer implements ProParserTokenTypes {
 					// slash (division) can only be followed by whitespace or '('
 					// ...that's what I found empirically, anyway. (jag 2003/05/09)
 					return makeToken(SLASH);
+				} else if (currChar=='=') {
+					append();
+					getChar();
+					return makeToken(DIVIDE_EQUAL);
 				} else {
 					append();
 					getChar();
@@ -178,7 +182,14 @@ public class Lexer implements ProParserTokenTypes {
 				return makeToken(SEMI);
 			case '*':
 				getChar();
-				return makeToken(STAR);
+				if(currChar == '=') {
+					append();
+					getChar();
+					return makeToken(MULTIPLY_EQUAL);
+				}
+				else {
+					return makeToken(STAR);
+				}
 			case '?':
 				getChar();
 				return makeToken(UNKNOWNVALUE);
@@ -229,10 +240,24 @@ public class Lexer implements ProParserTokenTypes {
 
 			case '+':
 				getChar();
-				return plusMinusStart(PLUS);
+				if(currChar == '=') {
+					append();
+					getChar();
+					return makeToken(PLUS_EQUAL);
+				}
+				else {
+					return plusMinusStart(PLUS);
+				}
 			case '-':
 				getChar();
-				return plusMinusStart(MINUS);
+				if(currChar == '=') {
+					append();
+					getChar();
+					return makeToken(MINUS_EQUAL);
+				}
+				else {
+					return plusMinusStart(MINUS);
+				}
 
 			case '#':
 			case '|':

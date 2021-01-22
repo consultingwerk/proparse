@@ -596,6 +596,7 @@ public class NodeTypes implements ProParserTokenTypes, TokenTypesI, Xferable {
 		add(DISPLAY, 4, "display", TI.KEYWORD | TI.RESERVED);
 		add(DISTINCT, 8, "distinct", TI.KEYWORD | TI.RESERVED);
 		add(DIVIDE, 0, "", TI.NO_FLAGS);
+		add(DIVIDE_EQUAL, 2, "/=", TI.NO_FLAGS);
 		add(DO, 2, "do", TI.KEYWORD | TI.RESERVED);
 		add(DOS, 3, "dos", TI.KEYWORD | TI.RESERVED);
 		add(DOT_COMMENT, 0, "", TI.NO_FLAGS);
@@ -969,6 +970,7 @@ public class NodeTypes implements ProParserTokenTypes, TokenTypesI, Xferable {
 		add(MINIMUM, 3, "minimum", TI.KEYWORD | TI.MAY_BE_REGULAR_FUNC);
 		add(MINSIZE, 8, "min-size", TI.KEYWORD);
 		add(MINUS, 0, "", TI.NO_FLAGS);
+		add(MINUS_EQUAL, 2, "-=", TI.NO_FLAGS);
 		add(MINVALUE, 7, "min-value", TI.KEYWORD);
 		add(MODULO, 3, "modulo", TI.KEYWORD);
 		add(MONTH, 5, "month", TI.KEYWORD | TI.MAY_BE_REGULAR_FUNC);
@@ -979,6 +981,7 @@ public class NodeTypes implements ProParserTokenTypes, TokenTypesI, Xferable {
 		add(MULTIPLE, 8, "multiple", TI.KEYWORD);
 		add(MULTIPLEKEY, 12, "multiple-key", TI.KEYWORD);
 		add(MULTIPLY, 0, "", TI.NO_FLAGS);
+		add(MULTIPLY_EQUAL, 2, "*=", TI.NO_FLAGS);
 		add(MUSTEXIST, 10, "must-exist", TI.KEYWORD);
 		add(Method_param_list, 0, "", TI.NO_FLAGS);
 		add(Method_parameter, 0, "", TI.NO_FLAGS);
@@ -1122,6 +1125,7 @@ public class NodeTypes implements ProParserTokenTypes, TokenTypesI, Xferable {
 		add(PINNABLE, 8, "pinnable", TI.KEYWORD);
 		add(PIPE, 0, "", TI.NO_FLAGS);
 		add(PLUS, 0, "", TI.NO_FLAGS);
+		add(PLUS_EQUAL, 2, "+=", TI.NO_FLAGS);
 		add(PLUSMINUSSTART, 0, "", TI.NO_FLAGS);
 		add(PORTRAIT, 8, "portrait", TI.KEYWORD);
 		add(POSITION, 8, "position", TI.KEYWORD);

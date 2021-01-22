@@ -323,12 +323,12 @@ assignment_list :tbl[CQ.UPDATING] (#(EXCEPT (fld1[CQ.SYMBOL])*))?
     )*
   ;
 
-assign_equal :#(EQUAL
-      ( pseudfn
-      | fld[CQ.UPDATING]
-      )
-      expression
-    )
+assign_equal 
+	:	#(EQUAL ( pseudfn | fld[CQ.UPDATING] ) expression )
+    |	#(PLUS_EQUAL ( pseudfn | fld[CQ.UPDATING] ) expression )
+    |	#(MINUS_EQUAL ( pseudfn | fld[CQ.UPDATING] ) expression )
+    |	#(DIVIDE_EQUAL ( pseudfn | fld[CQ.UPDATING] ) expression )
+    |	#(MULTIPLY_EQUAL ( pseudfn | fld[CQ.UPDATING] ) expression )
   ;
 
 referencepoint :fld[CQ.SYMBOL] ((PLUS|MINUS) expression)?
@@ -2391,9 +2391,14 @@ analyzestate :#(  ANALYZE filenameorvalue filenameorvalue
 // inherited from grammar JPTreeParser
 applystate :#(APPLY expression (#(TO gwidget ))? state_end )
   ;
-
+  
 // inherited from grammar JPTreeParser
-assign_opt :#(ASSIGN ( #(EQUAL . expression ) )+ )
+assign_opt 
+	:	#(ASSIGN ( #(EQUAL . expression ) )+ )
+	|	#(ASSIGN ( #(PLUS_EQUAL . expression ) )+ )
+	|	#(ASSIGN ( #(MINUS_EQUAL . expression ) )+ )
+	|	#(ASSIGN ( #(DIVIDE_EQUAL . expression ) )+ )
+	|	#(ASSIGN ( #(MULTIPLY_EQUAL . expression ) )+ )
   ;
 
 // inherited from grammar JPTreeParser

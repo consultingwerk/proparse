@@ -1238,8 +1238,12 @@ public interface ProParserTokenTypes {
 	int PACKAGEPRIVATE = 1232;
 	int EVENT_HANDLER = 1233;
 	int EVENT_HANDLER_CONTEXT = 1234;
-	int TRUE = 1235;
-	int FALSE = 1236;
-	int NULL = 1237;
-	int Last_Token_Number = 1238;
+	int PLUS_EQUAL = 1235;
+	int MINUS_EQUAL = 1236;
+	int DIVIDE_EQUAL = 1237;
+	int MULTIPLY_EQUAL = 1238;
+	int TRUE = 1239;
+	int FALSE = 1240;
+	int NULL = 1241;
+	int Last_Token_Number = 1242;
 }
