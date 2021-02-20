@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import com.joanju.proparse.NodeTypes;
 import org.prorefactor.core.IConstants;
 import org.prorefactor.core.JPNode;
 import org.prorefactor.core.TokenTypes;
@@ -57,8 +58,6 @@ import org.prorefactor.widgettypes.Browse;
 
 import antlr.SemanticException;
 import antlr.collections.AST;
-
-
 
 
 /**
@@ -967,10 +966,35 @@ if (result==null) return;
 				+ node.getLine()
 				+ " Could not resolve table: " + nodeText
 				);
+		
+		JPNode previous = node.prevNode();
+		
+		/* SCL-3301 : Special handling for DEFINED BUFFER b_Customer FOR TEMP-TABLE Customer 
+		 * when the Temp-Table Customer has the same name as a database table (remains a bad choice anyway)*/
+		if (previous.getType() == NodeTypes.TEMPTABLE) {
+			SymbolScopeRoot rootScope = buffer.getScope().getRootScope(); 
+		
+			Table tempTable = rootScope.findTempTable(nodeText);
+			
+			if (tempTable != null && buffer.getTable().getStoretype() != IConstants.ST_TTABLE) {
+				buffer.setTable(tempTable);
+				node.attrSet(IConstants.STORETYPE, IConstants.ST_TTABLE);
+			}
+		}
+				
 		Table table = buffer.getTable();
+		
+		if (table.getStoretype() == IConstants.ST_TTABLE && node.attrGet(IConstants.STORETYPE) == IConstants.ST_DBTABLE) {
+			node.attrSet(IConstants.STORETYPE, IConstants.ST_TTABLE);
+		}
+		
 		// If we get a mismatch between storetype here and the storetype determined
 		// by proparse.dll then there's a bug somewhere. This is just a double-check.
-		if (table.getStoretype() != node.attrGet(IConstants.STORETYPE) )
+		if (table.getStoretype() != node.attrGet(IConstants.STORETYPE) ) {
+			
+			int attr = node.attrGet(IConstants.STORETYPE);
+			int storeType = table.getStoretype();  
+			
 			throw new Error(
 				node.getFilename()
 				+ ":"
@@ -980,6 +1004,8 @@ if (result==null) return;
 				+ " " + node.attrGet(IConstants.STORETYPE)
 				+ " " + table.getStoretype()
 				);
+		}
+			
 		prevTableReferenced = lastTableReferenced;
 		lastTableReferenced = buffer;
 		// For an unnamed buffer, determine if it's abbreviated.
@@ -999,6 +1025,7 @@ if (result==null) return;
 		RecordNameNode recordNode = (RecordNameNode) anode;
 		recordNode.attrSet(IConstants.CONTEXT_QUALIFIER, contextQualifier);
 		TableBuffer buffer = null;
+						
 		switch (contextQualifier) {
 			case CQ.INIT :
 			case CQ.INITWEAK :

@@ -73,7 +73,13 @@ public class SymbolScopeRoot extends SymbolScope {
 		return bufferSymbol;
 	} // defineTable()
 
-	
+	/**
+	 * Find a Temp-Table by it's name
+	 */
+	public Table findTempTable (String name) {
+		Table table = tableMap.get(name.toLowerCase());
+		return table;
+	}
 	
 	/** Define a temp or work table field */
 	public FieldBuffer defineTableField(String name, TableBuffer buffer) {
