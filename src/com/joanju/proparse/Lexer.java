@@ -6,6 +6,7 @@ This file is made available under the terms of the Eclipse Public License v1.0.
 */
 package com.joanju.proparse;
 
+import java.io.Console;
 import java.io.IOException;
 
 
@@ -410,13 +411,16 @@ public class Lexer implements ProParserTokenTypes {
 
 		append(); // currChar=='/'
 		prepro.doingComment = true;
+		prepro.doingSingleLineComment = true; 
 		
 		while (true) {
 			getChar();
 			unEscapedAppend();
+			
 			// check if the preprocessor escaped the 4gl new line (~n, ~r)
 			if ((prepro.escapeCurrent == false && (currChar == '\r' || currChar == '\n')) || currInt == EOF_CHAR) {
 				prepro.doingComment = false;
+				prepro.doingSingleLineComment = false; 
 				return makeToken(COMMENT);
 			}
 		}

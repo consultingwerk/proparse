@@ -71,6 +71,7 @@ public class Preprocessor {
 
 	/** Are we in the middle of a comment? */
 	boolean doingComment = false;
+	boolean doingSingleLineComment = false; 
 
 	/** Would you append the currently returned character to escapeText
 	 * in order to see what the original code looked like before escape
@@ -354,6 +355,10 @@ public class Preprocessor {
 			case '\\':
 			case '~':
 			{
+				// SCL-3302 prevent escaping NL at the end of a single line comment
+				if (doingSingleLineComment) 
+					{ return currChar; }
+				
 				// Escapes are *always* processed, even inside strings and comments.
 				if (currChar=='\\' && env.opsysNum!=Environment.OPSYS_UNIX)
 					return currChar;
