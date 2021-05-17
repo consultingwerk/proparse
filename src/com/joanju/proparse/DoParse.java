@@ -153,13 +153,14 @@ public class DoParse {
 				filter.hide(NodeTypes.WS);
 				filter.hide(NodeTypes.COMMENT);
 				filter.hide(NodeTypes.AMPMESSAGE);
+				filter.hide(NodeTypes.INCLUDEFILEREFERENCE);
 				filter.hide(NodeTypes.AMPANALYZESUSPEND);
 				filter.hide(NodeTypes.AMPANALYZERESUME);
 				filter.hide(NodeTypes.AMPGLOBALDEFINE);
 				filter.hide(NodeTypes.AMPSCOPEDDEFINE);
 				filter.hide(NodeTypes.AMPUNDEFINE);
 			}
-
+			
 			// Create the parser, with the filter as the input.
 			parser = new ProParser(filter);
 			parser.init(this);

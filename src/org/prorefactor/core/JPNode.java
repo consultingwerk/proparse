@@ -881,6 +881,7 @@ public class JPNode extends BaseAST implements IJPNode, Xferable {
 	 */
 	public String toStringFulltext() {return TreeUtils.fullPreproText(this);}
 
+	public String toStringSourceText() {return TreeUtils.fullSourceText(this);}
 
 	/** Walk the tree from the input node down. */
 	public void walk(ICallback callback) {

@@ -5,6 +5,10 @@ package org.prorefactor.core;
 
 import java.util.ArrayList;
 
+import antlr.CommonHiddenStreamToken;
+import antlr.Token;
+
+import com.joanju.proparse.NodeTypes;
 import com.joanju.proparse.ProToken;
 
 
@@ -66,6 +70,19 @@ public class TreeUtils {
 		return bldr.toString();
 	}
 	
+	public static String fullSourceText(JPNode top) {
+		ArrayList<JPNode> list = flatList(top);
+		StringBuilder bldr = new StringBuilder();
+		for (JPNode node : list) {
+			for (ProToken t = node.getHiddenFirst(); t!=null; t = t.getNext()) {
+				if(t.getFileIndex() == 0)
+					bldr.append(t.getText());
+			}
+			if(node.getFileIndex() == 0)
+				bldr.append(node.getText());
+		}
+		return bldr.toString();
+	}
 	
 	/** Get an array of nodes, such that the array index matches the node number. */
 	public static JPNode [] nodeArray(JPNode top) {

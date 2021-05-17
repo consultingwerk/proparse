@@ -68,6 +68,9 @@ public class Preprocessor {
 	int currFile;
 	int currLine;
 	int currSourceNum;
+	
+	String incRefText;
+	boolean newIncRefText;
 
 	/** Are we in the middle of a comment? */
 	boolean doingComment = false;
@@ -782,7 +785,8 @@ public class Preprocessor {
 					argNum++;
 				}
 			}
-
+			this.incRefText = refText;
+			this.newIncRefText = true;
 		} // include file reference
 
 	} // macroReference()

@@ -72,6 +72,16 @@ public class Lexer implements ProParserTokenTypes {
 				} // switch
 			}
 
+			if(prepro.newIncRefText)
+			{
+				prepro.newIncRefText = false;
+				textStartFile = prepro.textStartFile;
+				textStartLine = prepro.textStartLine;
+				textStartCol = prepro.textStartCol;
+				textStartSource = prepro.textStartSourceNum;
+				return makeToken(INCLUDEFILEREFERENCE, prepro.incRefText + "\n");
+			}
+			
 			// Proparse Directive
 			// Check this before setting currText...
 			// we don't want BEGIN_PROPARSE_DIRECTIVE in the text

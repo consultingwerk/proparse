@@ -1213,5 +1213,6 @@ public interface ProEvalTokenTypes {
 	int GETCODEPAGE = 1212;
 	int HEIGHTCHARS = 1213;
 	int HEIGHTPIXELS = 1214;
-	int Last_Token_Number = 1215;
+	int INCLUDEFILEREFERENCE = 1215;
+	int Last_Token_Number = 1216;
 }
