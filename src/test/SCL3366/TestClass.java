@@ -36,6 +36,7 @@ public class TestClass extends TestCase {
 		FileWriter fw = new FileWriter(target);
 		BufferedReader br_source = new BufferedReader(new FileReader(this.source));
 		BufferedReader br_target = new BufferedReader(new FileReader(target));
+		int line = 0;
 		
 		node = pu.getTopNode();
 		txt = node.toStringSourceText();
@@ -48,10 +49,11 @@ public class TestClass extends TestCase {
 		txt_target = br_target.readLine();
 		while(txt_source != null && txt_target != null)
 		{
-			assertEquals(txt_source, txt_target);
+			assertEquals("Error in Line " + line, txt_source, txt_target);
 			
 			txt_source = br_source.readLine();
 			txt_target = br_target.readLine();
+			line++;
 		}
 		assertNull(txt_source);
 		assertNull(txt_target);

@@ -785,7 +785,14 @@ public class Preprocessor {
 					argNum++;
 				}
 			}
-			this.incRefText = refText;
+			if(currentInclude.namedArgsIn.size() > 0)
+				this.incRefText = '\b' + refText;
+			else if(currentInclude.namedArgsIn.size() == 0 && currentInclude.numdArgs.size() == 1)
+			{
+				this.incRefText = '\b' + refText + '\n' + '\n';
+			}
+			else
+				this.incRefText = refText;
 			this.newIncRefText = true;
 		} // include file reference
 

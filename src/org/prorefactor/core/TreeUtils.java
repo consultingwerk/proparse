@@ -81,7 +81,44 @@ public class TreeUtils {
 			if(node.getFileIndex() == 0)
 				bldr.append(node.getText());
 		}
-		return bldr.toString();
+		return fixString(bldr.toString());
+	}
+	
+	private static String fixString(String in)
+	{
+		String out = "";
+		
+		Character c0;
+		Character c1;
+		Character c2;
+		
+		for(int i = 0; i < in.length(); i++)
+		{
+			c0 = in.charAt(i);
+			if (i + 1 < in.length())
+				c1 = in.charAt(i + 1);
+			else
+				c1 = null;
+			if (i + 2 < in.length())
+				c2 = in.charAt(i + 2);
+			else
+				c2 = null;
+			
+			if(c2 == null && c1 != null)
+			{
+				if(c0 != '\b' && c1 != '\b')
+					out += c0;
+			}
+			else if(c1 == null)
+			{
+				if(c0 != '\b')
+					out += c0;
+			}
+			else if(c0 != '\b' && c1 != '\b' && c2 != '\b')
+				out += c0;
+		}
+
+		return out;
 	}
 	
 	/** Get an array of nodes, such that the array index matches the node number. */

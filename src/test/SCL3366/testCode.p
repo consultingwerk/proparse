@@ -16,38 +16,25 @@
 
 BLOCK-LEVEL ON ERROR UNDO, THROW.
 
-USING Consultingwerk.Framework.Collections.* FROM PROPATH.
-
 /* ********************  Preprocessor Definitions  ******************** */
 
 
 /* ***************************  Main Block  *************************** */
 
-DEFINE VARIABLE oList AS CharacterList NO-UNDO .
+MESSAGE "Test":U
+	VIEW-AS ALERT-BOX.
 
 {C:\Work\Proparse\GitHub\proparse\src\test\SCL3366\incEmpty.i}
 
-MESSAGE "Some Code":U
-    VIEW-AS ALERT-BOX.
+MESSAGE "Test":U
+	VIEW-AS ALERT-BOX.
 
 {C:\Work\Proparse\GitHub\proparse\src\test\SCL3366\inc1.i &GREETING="'Hello'" &NAME="'World'"}
-{C:\Work\Proparse\GitHub\proparse\src\test\SCL3366\inc2.i "'Hello'" "'World'"}
 
 MESSAGE "Some more code":U
     VIEW-AS ALERT-BOX.
 
-&IF TRUE &THEN
-
-MESSAGE "TRUE":U
-    VIEW-AS ALERT-BOX.
-
-&ELSE
-
-MESSAGE "FALSE":U
-    VIEW-AS ALERT-BOX.
-
-&ENDIF
+{C:\Work\Proparse\GitHub\proparse\src\test\SCL3366\inc2.i "'Hello'" "'World'"}
 
 MESSAGE "Even more code":U
     VIEW-AS ALERT-BOX.
-

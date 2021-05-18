@@ -79,7 +79,7 @@ public class Lexer implements ProParserTokenTypes {
 				textStartLine = prepro.textStartLine;
 				textStartCol = prepro.textStartCol;
 				textStartSource = prepro.textStartSourceNum;
-				return makeToken(INCLUDEFILEREFERENCE, prepro.incRefText + "\n");
+				return makeToken(INCLUDEFILEREFERENCE, prepro.incRefText);
 			}
 			
 			// Proparse Directive
