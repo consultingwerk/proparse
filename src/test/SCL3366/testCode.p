@@ -31,8 +31,10 @@ MESSAGE "Test":U
 
 {C:\Work\Proparse\GitHub\proparse\src\test\SCL3366\inc1.i &GREETING="'Hello'" &NAME="'World'"}
 
+&IF TRUE &THEN
 MESSAGE "Some more code":U
     VIEW-AS ALERT-BOX.
+&ENDIF
 
 {C:\Work\Proparse\GitHub\proparse\src\test\SCL3366\inc2.i "'Hello'" "'World'"}
 

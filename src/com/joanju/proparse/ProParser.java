@@ -58630,6 +58630,8 @@ inputState.guessing--;
 		"TRUE",
 		"FALSE",
 		"NULL",
+		"INCLUDEFILEREFERENCE",
+		"CONDITIONALCOMPILATION",
 		"Last_Token_Number"
 	};
 	

@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.LinkedList;
 import java.io.IOException;
 
+import org.prorefactor.refactor.RefactorException;
 import org.prorefactor.treeparser.Call;
 import org.prorefactor.treeparser.FieldContainer;
 import org.prorefactor.treeparser.Symbol;
@@ -881,7 +882,7 @@ public class JPNode extends BaseAST implements IJPNode, Xferable {
 	 */
 	public String toStringFulltext() {return TreeUtils.fullPreproText(this);}
 
-	public String toStringSourceText() {return TreeUtils.fullSourceText(this);}
+	public String toStringSourceText() throws RefactorException {return TreeUtils.fullSourceText(this);}
 
 	/** Walk the tree from the input node down. */
 	public void walk(ICallback callback) {

@@ -5,10 +5,13 @@ package org.prorefactor.core;
 
 import java.util.ArrayList;
 
+import org.prorefactor.refactor.RefactorException;
+
 import antlr.CommonHiddenStreamToken;
 import antlr.Token;
 
 import com.joanju.proparse.NodeTypes;
+import com.joanju.proparse.ProParserTokenTypes;
 import com.joanju.proparse.ProToken;
 
 
@@ -70,18 +73,23 @@ public class TreeUtils {
 		return bldr.toString();
 	}
 	
-	public static String fullSourceText(JPNode top) {
+	public static String fullSourceText(JPNode top) throws RefactorException {
 		ArrayList<JPNode> list = flatList(top);
 		StringBuilder bldr = new StringBuilder();
+		String txt;
 		for (JPNode node : list) {
 			for (ProToken t = node.getHiddenFirst(); t!=null; t = t.getNext()) {
+				if(t.getType() == ProParserTokenTypes.CONDITIONALCOMPILATION)
+					throw new RefactorException("The method JPNode.fullSourceText() does not support conditional compilation (&IF ... &THEN ... &ELSE)!");
 				if(t.getFileIndex() == 0)
 					bldr.append(t.getText());
 			}
 			if(node.getFileIndex() == 0)
 				bldr.append(node.getText());
 		}
-		return fixString(bldr.toString());
+		txt = fixString(bldr.toString());
+		
+		return txt;
 	}
 	
 	private static String fixString(String in)

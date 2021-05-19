@@ -154,6 +154,7 @@ public class DoParse {
 				filter.hide(NodeTypes.COMMENT);
 				filter.hide(NodeTypes.AMPMESSAGE);
 				filter.hide(NodeTypes.INCLUDEFILEREFERENCE);
+				filter.hide(NodeTypes.CONDITIONALCOMPILATION);
 				filter.hide(NodeTypes.AMPANALYZESUSPEND);
 				filter.hide(NodeTypes.AMPANALYZERESUME);
 				filter.hide(NodeTypes.AMPGLOBALDEFINE);

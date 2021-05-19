@@ -45,7 +45,7 @@ public class Lexer implements ProParserTokenTypes {
 
 	private static final int EOF_CHAR = Preprocessor.EOF_CHAR;
 
-
+	private Boolean condToggle = false;
 	
 
 //////////////// Lexical productions listed first, support functions follow.
@@ -154,8 +154,17 @@ public class Lexer implements ProParserTokenTypes {
 				return colon();
 
 			case '&':
-				getChar();
-				return ampText();
+				if(!condToggle)
+				{
+					condToggle = true;
+					return makeToken(CONDITIONALCOMPILATION, "");
+				}
+				else
+				{
+					condToggle = false;
+					getChar();
+					return ampText();
+				}
 			case '@':
 				getChar();
 				if (currIsSpace())
