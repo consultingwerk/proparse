@@ -71,6 +71,9 @@ public class Preprocessor {
 	
 	String incRefText;
 	boolean newIncRefText;
+	
+	String makroRef;
+	boolean newMakroRef;
 
 	/** Are we in the middle of a comment? */
 	boolean doingComment = false;
@@ -666,6 +669,10 @@ public class Preprocessor {
 		else if (refText.startsWith("{&")) {
 			String argName = refText.substring(2, closingCurly).trim().toLowerCase();
 			newMacroRef(argName, refPos);
+			
+			makroRef = refText;
+			newMakroRef = true;
+			
 			return;
 		}
 

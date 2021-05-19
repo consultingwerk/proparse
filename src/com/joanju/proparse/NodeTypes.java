@@ -1561,6 +1561,7 @@ public class NodeTypes implements ProParserTokenTypes, TokenTypesI, Xferable {
 		add(YOF, 4, "y-of", TI.KEYWORD);
 		add(INCLUDEFILEREFERENCE, 0, "", TI.NO_FLAGS);
 		add(CONDITIONALCOMPILATION, 0, "", TI.NO_FLAGS);
+		add(MAKROREFERENCE, 0, "", TI.NO_FLAGS);
 	}
 
 

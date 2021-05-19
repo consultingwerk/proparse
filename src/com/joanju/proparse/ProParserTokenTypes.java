@@ -1247,5 +1247,6 @@ public interface ProParserTokenTypes {
 	int NULL = 1241;
 	int INCLUDEFILEREFERENCE = 1242;
 	int CONDITIONALCOMPILATION = 1243;
-	int Last_Token_Number = 1244;
+	int MAKROREFERENCE = 1244;
+	int Last_Token_Number = 1245;
 }

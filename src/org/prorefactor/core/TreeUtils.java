@@ -77,15 +77,28 @@ public class TreeUtils {
 		ArrayList<JPNode> list = flatList(top);
 		StringBuilder bldr = new StringBuilder();
 		String txt;
-		for (JPNode node : list) {
-			for (ProToken t = node.getHiddenFirst(); t!=null; t = t.getNext()) {
-				if(t.getType() == ProParserTokenTypes.CONDITIONALCOMPILATION)
-					throw new RefactorException("The method JPNode.fullSourceText() does not support conditional compilation (&IF ... &THEN ... &ELSE)!");
+		Boolean skipNode = false;
+		for (JPNode node : list) 
+		{
+			for (ProToken t = node.getHiddenFirst(); t!=null; t = t.getNext()) 
+			{
 				if(t.getFileIndex() == 0)
+				{
+					if(t.getType() == ProParserTokenTypes.MAKROREFERENCE)
+						skipNode = true;
+					if(t.getType() == ProParserTokenTypes.CONDITIONALCOMPILATION)
+						throw new RefactorException("The method JPNode.fullSourceText() does not support conditional compilation (&IF ... &THEN ... &ELSE)!");
+					
 					bldr.append(t.getText());
+				}
 			}
-			if(node.getFileIndex() == 0)
-				bldr.append(node.getText());
+			if(!skipNode)
+			{
+				if(node.getFileIndex() == 0)
+					bldr.append(node.getText());
+			}
+			else
+				skipNode = false;
 		}
 		txt = fixString(bldr.toString());
 		

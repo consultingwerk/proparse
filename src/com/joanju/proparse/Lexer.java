@@ -82,6 +82,16 @@ public class Lexer implements ProParserTokenTypes {
 				return makeToken(INCLUDEFILEREFERENCE, prepro.incRefText);
 			}
 			
+			if(prepro.newMakroRef)
+			{
+				prepro.newMakroRef = false;
+				textStartFile = prepro.textStartFile;
+				textStartLine = prepro.textStartLine;
+				textStartCol = prepro.textStartCol;
+				textStartSource = prepro.textStartSourceNum;
+				return makeToken(MAKROREFERENCE, prepro.makroRef);
+			}
+			
 			// Proparse Directive
 			// Check this before setting currText...
 			// we don't want BEGIN_PROPARSE_DIRECTIVE in the text
@@ -154,7 +164,12 @@ public class Lexer implements ProParserTokenTypes {
 				return colon();
 
 			case '&':
-				if(!condToggle)
+				if((!condToggle) &&
+					currText.toString().matches("&IF*") ||
+					currText.toString().matches("&THEN*") ||
+					currText.toString().matches("&ELSE*") ||
+					currText.toString().matches("&ELSEIF*") ||
+					currText.toString().matches("&ENDIF*"))
 				{
 					condToggle = true;
 					return makeToken(CONDITIONALCOMPILATION, "");

@@ -18,6 +18,8 @@ BLOCK-LEVEL ON ERROR UNDO, THROW.
 
 /* ********************  Preprocessor Definitions  ******************** */
 
+&GLOBAL-DEFINE GLOBAL_MAKRO "GlobalMakro":U
+&SCOPED-DEFINE SCOPED_MAKRO "ScopedMakro":U
 
 /* ***************************  Main Block  *************************** */
 
@@ -40,3 +42,6 @@ MESSAGE "Some more code":U
 
 MESSAGE "Even more code":U
     VIEW-AS ALERT-BOX.
+    
+MESSAGE {&GLOBAL_MAKRO} {&SCOPED_MAKRO}
+	VIEW-AS ALERT-BOX.    
