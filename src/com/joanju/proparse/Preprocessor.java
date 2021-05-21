@@ -364,7 +364,6 @@ public class Preprocessor {
 				// SCL-3302 prevent escaping NL at the end of a single line comment
 				if (doingSingleLineComment) 
 					{ return currChar; }
-				
 				// Escapes are *always* processed, even inside strings and comments.
 				if (currChar=='\\' && env.opsysNum!=Environment.OPSYS_UNIX)
 					return currChar;
@@ -792,14 +791,7 @@ public class Preprocessor {
 					argNum++;
 				}
 			}
-			if(currentInclude.namedArgsIn.size() > 0)
-				this.incRefText = '\b' + refText;
-			else if(currentInclude.namedArgsIn.size() == 0 && currentInclude.numdArgs.size() == 1)
-			{
-				this.incRefText = '\b' + refText + '\n' + '\n';
-			}
-			else
-				this.incRefText = refText;
+			this.incRefText = refText;
 			this.newIncRefText = true;
 		} // include file reference
 

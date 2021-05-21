@@ -45,8 +45,8 @@ public class Lexer implements ProParserTokenTypes {
 
 	private static final int EOF_CHAR = Preprocessor.EOF_CHAR;
 
-	private Boolean condToggle = false;
-	
+	private ProToken ampTextToken = null;
+	private ProToken newToken = null;
 
 //////////////// Lexical productions listed first, support functions follow.
 
@@ -104,6 +104,13 @@ public class Lexer implements ProParserTokenTypes {
 				return makeToken(PROPARSEDIRECTIVE, prepro.proparseDirectiveText);
 			}
 
+			if(ampTextToken != null)
+			{
+				newToken = ampTextToken;
+				ampTextToken = null;
+				return newToken;
+			}
+			
 			textStartFile = prepro.getFileIndex();
 			textStartLine = prepro.getLine();
 			textStartCol = prepro.getColumn();
@@ -164,21 +171,20 @@ public class Lexer implements ProParserTokenTypes {
 				return colon();
 
 			case '&':
-				if((!condToggle) &&
-					currText.toString().matches("&IF*") ||
-					currText.toString().matches("&THEN*") ||
-					currText.toString().matches("&ELSE*") ||
-					currText.toString().matches("&ELSEIF*") ||
-					currText.toString().matches("&ENDIF*"))
+				getChar();
+				ampTextToken = ampText();
+				switch(ampTextToken.getType())
 				{
-					condToggle = true;
-					return makeToken(CONDITIONALCOMPILATION, "");
-				}
-				else
-				{
-					condToggle = false;
-					getChar();
-					return ampText();
+					case ProParserTokenTypes.AMPIF:
+					case ProParserTokenTypes.AMPTHEN:
+					case ProParserTokenTypes.AMPELSE:
+					case ProParserTokenTypes.AMPELSEIF:
+					case ProParserTokenTypes.AMPENDIF:
+						return makeToken(CONDITIONALCOMPILATION, "");
+					default:
+						newToken = ampTextToken;
+						ampTextToken = null;
+						return newToken;
 				}
 			case '@':
 				getChar();
@@ -384,6 +390,7 @@ public class Lexer implements ProParserTokenTypes {
 
 
 	ProToken whitespace() throws IOException {
+		int fileIdx;
 		loop:
 		for (;;) {
 			switch (currChar) {
@@ -393,7 +400,10 @@ public class Lexer implements ProParserTokenTypes {
 			case '\n':
 			case '\r':
 				append();
+				fileIdx = prepro.currFile;
 				getChar();
+				if(prepro.newIncRefText || fileIdx != prepro.currFile)
+					break loop;
 				break;
 			default:
 				break loop;
