@@ -3,6 +3,9 @@
  */
 package org.prorefactor.core;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 
 import org.prorefactor.refactor.RefactorException;
@@ -83,7 +86,8 @@ public class TreeUtils {
 		ArrayList<JPNode> list = flatList(top);
 		StringBuilder bldr = new StringBuilder();
 		Boolean skipNode = false;
-		
+		Boolean skipNextSpace = false;
+
 		for (JPNode node : list) 
 		{
 			for (ProToken t = node.getHiddenFirst(); t!=null; t = t.getNext()) 
@@ -94,8 +98,19 @@ public class TreeUtils {
 						skipNode = true;
 					if(t.getType() == ProParserTokenTypes.CONDITIONALCOMPILATION)
 						throw new RefactorException("The method JPNode.fullSourceText() does not support conditional compilation (&IF ... &THEN ... &ELSE)!");
-					
-					bldr.append(t.getText());
+
+					if(skipNextSpace)
+					{
+						if(t.getType() == ProParserTokenTypes.WS)
+							bldr.append(t.getText().substring(1));
+						else
+							bldr.append(t.getText());
+						skipNextSpace = false;
+					}
+					else
+						bldr.append(t.getText());
+					if(t.getType() == ProParserTokenTypes.INCLUDEFILEREFERENCE)
+						skipNextSpace = true;
 				}
 			}
 			if(!skipNode)
@@ -109,7 +124,7 @@ public class TreeUtils {
 		
 		return bldr.toString();
 	}
-
+	
 	/** Get an array of nodes, such that the array index matches the node number. */
 	public static JPNode [] nodeArray(JPNode top) {
 		TreeUtils instance = new TreeUtils();

@@ -16,8 +16,8 @@ public class TestClass_StringIndexOutOfBounds
 	extends TestCase 
 {
 	
-	com.joanju.proparse.Environment proparseEnv = null;		
-	org.prorefactor.core.schema.Schema proparseSchema = null;	
+	private com.joanju.proparse.Environment proparseEnv = null;		
+	private org.prorefactor.core.schema.Schema proparseSchema = null;	
 	
 	@Override
 	protected void setUp() throws Exception {
@@ -109,6 +109,8 @@ public class TestClass_StringIndexOutOfBounds
 		assertTrue(orig.canRead());
 		assertNotNull(copy);
 		
+		int i = 0;
+		
 		try 
 		{
 			brOrig = new BufferedReader(new FileReader(orig));
@@ -116,17 +118,20 @@ public class TestClass_StringIndexOutOfBounds
 			
 			assertNotNull(brOrig);
 			assertNotNull(brCopy);
-			assertEquals(brOrig.lines().count(), brCopy.lines().count());
 			
 			lineOrig = brOrig.readLine();
 			lineCopy = brCopy.readLine();
+
 			while(lineOrig != null && lineCopy != null)
 			{
-				assertEquals(lineOrig, lineCopy);
+				assertEquals("Error in Line " + i , lineOrig, lineCopy);
 				
 				lineOrig = brOrig.readLine();
 				lineCopy = brCopy.readLine();
+				i++;
 			}
+			assertNull(lineOrig);
+			assertNull(lineCopy);
 		} 
 		catch (IOException e) 
 		{
