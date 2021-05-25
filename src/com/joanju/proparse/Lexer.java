@@ -180,7 +180,7 @@ public class Lexer implements ProParserTokenTypes {
 					case ProParserTokenTypes.AMPELSE:
 					case ProParserTokenTypes.AMPELSEIF:
 					case ProParserTokenTypes.AMPENDIF:
-						return makeToken(CONDITIONALCOMPILATION, "");
+						return makeToken(CONDITIONALCOMPILATION, ampTextToken.getText());
 					default:
 						newToken = ampTextToken;
 						ampTextToken = null;

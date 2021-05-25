@@ -1245,5 +1245,8 @@ public interface TreeParser01TokenTypes {
 	int TRUE = 1239;
 	int FALSE = 1240;
 	int NULL = 1241;
-	int Last_Token_Number = 1242;
+	int INCLUDEFILEREFERENCE = 1242;
+	int CONDITIONALCOMPILATION = 1243;
+	int MAKROREFERENCE = 1244;
+	int Last_Token_Number = 1245;
 }
