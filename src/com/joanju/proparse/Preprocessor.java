@@ -35,6 +35,9 @@ import java.util.regex.Pattern;
 import java.io.*;
 import java.nio.charset.Charset;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import static com.joanju.proparse.StringFuncs.escapeLineBreaks;
 
 
@@ -579,6 +582,9 @@ public class Preprocessor {
 
 
 	private void macroReference() throws IOException {
+		
+		JSONObject macroReference;
+		
 		textStartFile = currFile;
 		textStartLine = currLine;
 		textStartCol = currCol;
@@ -669,7 +675,23 @@ public class Preprocessor {
 			String argName = refText.substring(2, closingCurly).trim().toLowerCase();
 			newMacroRef(argName, refPos);
 			
-			makroRef = refText;
+			try
+			{
+				if(getArgText(argName) != null && getArgText(argName).length() > 0)
+				{
+					macroReference = new JSONObject();
+					macroReference.put("refName", refText);
+					macroReference.put("refText", getArgText(argName));
+				
+					makroRef = macroReference.toString();
+				}
+				else
+					makroRef = refText;
+			}
+			catch(JSONException e)
+			{
+				makroRef = refText;
+			}
 			newMakroRef = true;
 			
 			return;

@@ -6,7 +6,6 @@ This file is made available under the terms of the Eclipse Public License v1.0.
 */
 package com.joanju.proparse;
 
-import java.io.Console;
 import java.io.IOException;
 
 

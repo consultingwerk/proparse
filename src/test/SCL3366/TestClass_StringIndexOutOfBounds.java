@@ -68,6 +68,7 @@ public class TestClass_StringIndexOutOfBounds
 		node = pu.getTopNode();
 		
 		assertNotNull(node);
+
 		compare(source, node.toStringSourceText());
 	}
 	

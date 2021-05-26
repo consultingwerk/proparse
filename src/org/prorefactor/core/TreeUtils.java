@@ -3,18 +3,7 @@
  */
 package org.prorefactor.core;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
-
-import org.prorefactor.refactor.RefactorException;
-
-import antlr.CommonHiddenStreamToken;
-import antlr.Token;
-
-import com.joanju.proparse.NodeTypes;
-import com.joanju.proparse.ProParserTokenTypes;
 import com.joanju.proparse.ProToken;
 
 
@@ -73,55 +62,6 @@ public class TreeUtils {
 			}
 			bldr.append(node.getText());
 		}
-		return bldr.toString();
-	}
-	
-	/**
-	 * Get the full source text from a node.
-	 * When run on top node, the result is the source-code.
-	 * Conditional compilation causes a RefactorException as
-	 * it currently can not be processed.
-	 */
-	public static String fullSourceText(JPNode top) throws RefactorException {
-		ArrayList<JPNode> list = flatList(top);
-		StringBuilder bldr = new StringBuilder();
-		Boolean skipNode = false;
-		Boolean skipNextSpace = false;
-
-		for (JPNode node : list) 
-		{
-			for (ProToken t = node.getHiddenFirst(); t!=null; t = t.getNext()) 
-			{
-				if(t.getFileIndex() == 0)
-				{
-					if(t.getType() == ProParserTokenTypes.MAKROREFERENCE)
-						skipNode = true;
-					if(t.getType() == ProParserTokenTypes.CONDITIONALCOMPILATION)
-						throw new RefactorException("The method JPNode.fullSourceText() does not support conditional compilation (&IF ... &THEN ... &ELSE)!");
-
-					if(skipNextSpace)
-					{
-						if(t.getType() == ProParserTokenTypes.WS)
-							bldr.append(t.getText().substring(1));
-						else
-							bldr.append(t.getText());
-						skipNextSpace = false;
-					}
-					else
-						bldr.append(t.getText());
-					if(t.getType() == ProParserTokenTypes.INCLUDEFILEREFERENCE)
-						skipNextSpace = true;
-				}
-			}
-			if(!skipNode)
-			{
-				if(node.getFileIndex() == 0)
-					bldr.append(node.getText());
-			}
-			else
-				skipNode = false;
-		}
-		
 		return bldr.toString();
 	}
 	

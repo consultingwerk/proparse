@@ -69,7 +69,9 @@ public class TestClass extends TestCase {
 			fw.close();
 			
 			this.compare(source, txt);
-		} catch (RefactorException e) {
+		} 
+		catch (RefactorException e) 
+		{
 			System.out.println("Caught RefactorException: " + e.getMessage());
 			for(StackTraceElement ste: e.getStackTrace())
 			{

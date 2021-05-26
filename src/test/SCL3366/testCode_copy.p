@@ -25,12 +25,20 @@ BLOCK-LEVEL ON ERROR UNDO, THROW.
 
 &SCOPED-DEFINE HELLOWORLD MESSAGE "Hello World":U VIEW-AS ALERT-BOX.
 
+&GLOBAL-DEFINE MACRO_A "Text1":U
+&GLOBAL-DEFINE MACRO_B "Test2":U "Text1":U
+{&MACRO_A}
+@Description (description="Test code") .
+
 /* ***************************  Main Block  *************************** */
 
 DEFINE VARIABLE oList AS CharacterList NO-UNDO .
 DEFINE VARIABLE oConfig AS Consultingwerk.Framework.IConfigurationProvider NO-UNDO.
+DEFINE VARIABLE cText AS CHARACTER NO-UNDO INITIAL "Hello ":U.
 
 oConfig = {Consultingwerk/get-service.i Consultingwerk.Framework.IConfigurationProvider "NEW Consultingwerk.Framework.ConfigurationProvider ('.applicationsettings':U)"}.
+
+ASSIGN cText = cText + "World".
 
 {Consultingwerk/foreachPrimitiveList.i Character c in oList} MESSAGE c . END.
 
@@ -53,6 +61,8 @@ MESSAGE "Some more code":U
 
 MESSAGE "Even more code":U
     VIEW-AS ALERT-BOX.
+	
+{&HELLOWORLD}	
 	
 MESSAGE {&GLOBAL_MAKRO} {&SCOPED_MAKRO}
 	VIEW-AS ALERT-BOX.
