@@ -102,8 +102,9 @@ public class NodeTextUtils
 	 * Replaces macro-text with their references
 	 * @param txt The source code with macro-text
 	 * @return The source code with macro-references
+	 * @throws RefactorException 
 	 */
-	private String replaceMacros(String txt)
+	private String replaceMacros(String txt) throws RefactorException
 	{
 		int line;
 		JSONObject json;
@@ -122,7 +123,7 @@ public class NodeTextUtils
 		}
 		catch(JSONException e)
 		{
-			e.printStackTrace();
+			throw new RefactorException(e);
 		}
 		return txt;
 	}
@@ -132,23 +133,35 @@ public class NodeTextUtils
 	 * @param txt The source code line with the macro-text
 	 * @param macro The info about the macro as JSON
 	 * @return The source code line with the macro-reference
-	 * @throws JSONException 
+	 * @throws RefactorException 
 	 */
-	private String replaceMacro(String txt, JSONObject macro) throws JSONException
+	private String replaceMacro(String txt, JSONObject macro) throws RefactorException
 	{
-		int col = macro.getInt("col");
-		String name = macro.getString("refName");
-		String text = this.fixRegexEscape(macro.getString("refText"));
+		int col;
+		String name;
+		String text;
 
-		return (txt.substring(0, col) + txt.substring(col).replaceFirst(text, name));
+		try
+		{
+			col = macro.getInt("col");
+			name = macro.getString("refName");
+			text = this.fixRegexEscape(macro.getString("refText"));
+			
+			return (txt.substring(0, col) + txt.substring(col).replaceFirst(text, name));
+		}
+		catch(JSONException e)
+		{
+			throw new RefactorException(e);
+		}
 	}
 	
 	/**
 	 * Helper method to turn source-code into a list of lines
 	 * @param txt The source code
 	 * @return The list of lines
+	 * @throws RefactorException 
 	 */
-	private ArrayList<String> stringToLines(String txt)
+	private ArrayList<String> stringToLines(String txt) throws RefactorException
 	{
 		ArrayList<String> lines = new ArrayList<String>();
 		BufferedReader br;
@@ -162,7 +175,7 @@ public class NodeTextUtils
 		}
 		catch(IOException e)
 		{
-			e.printStackTrace();
+			throw new RefactorException(e);
 		}
 		
 		return lines;
@@ -362,7 +375,7 @@ public class NodeTextUtils
 					}
 					catch(JSONException e)
 					{
-						e.printStackTrace();
+						throw new RefactorException(e);
 					}
 				}
 				
