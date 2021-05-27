@@ -26,8 +26,8 @@ BLOCK-LEVEL ON ERROR UNDO, THROW.
 &SCOPED-DEFINE HELLOWORLD MESSAGE "Hello World":U VIEW-AS ALERT-BOX.
 
 &GLOBAL-DEFINE MACRO_A "Text1":U
-&GLOBAL-DEFINE MACRO_B "Test2":U "Text1":U
-{&MACRO_A}
+&GLOBAL-DEFINE MACRO_B "Text2":U {&MACRO_A} "Text3":U
+
 @Description (description="Test code") .
 
 /* ***************************  Main Block  *************************** */
@@ -38,22 +38,20 @@ DEFINE VARIABLE cText AS CHARACTER NO-UNDO INITIAL "Hello ":U.
 
 oConfig = {Consultingwerk/get-service.i Consultingwerk.Framework.IConfigurationProvider "NEW Consultingwerk.Framework.ConfigurationProvider ('.applicationsettings':U)"}.
 
-ASSIGN cText = cText + "World".
+ASSIGN cText = cText + "World":U.
 
 {Consultingwerk/foreachPrimitiveList.i Character c in oList} MESSAGE c . END.
 
 MESSAGE "Test":U
 	VIEW-AS ALERT-BOX.
 
-{C:\Work\Proparse\GitHub\proparse\src\test\SCL3366\include.i}
-
-MESSAGE "Test":U
+MESSAGE {&MACRO_A} {&INC_MACRO}
 	VIEW-AS ALERT-BOX.
 
 {C:\Work\Proparse\GitHub\proparse\src\test\SCL3366\inc1.i &GREETING="'Hello'" &NAME="'World'"}
 /*
 &IF TRUE &THEN
-MESSAGE "Some more code":U
+MESSAGE "Some more code":U 
     VIEW-AS ALERT-BOX.
 &ENDIF
 */

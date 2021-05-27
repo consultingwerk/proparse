@@ -15,17 +15,12 @@ import junit.framework.TestCase;
 
 public class TestClass extends TestCase {
 
-	private File source;
-	private ParseUnit pu;
-	
 	private com.joanju.proparse.Environment proparseEnv = null;		
 	private org.prorefactor.core.schema.Schema proparseSchema = null;
 	
 	protected void setUp() throws Exception {
 		
 		super.setUp();
-		
-		this.source = new File("C:\\Work\\Proparse\\GitHub\\proparse\\src\\test\\SCL3366\\testCode.p");
 		
 		try
 		{
@@ -47,18 +42,55 @@ public class TestClass extends TestCase {
 			e.printStackTrace();
 			fail("Failed to initialize Proparse: " + e.getMessage());
 		}
-		
-		this.pu = new ParseUnit(source);
-		
-		pu.treeParser01();
 	}	
 	
-	public void test() throws IOException
+	public void test_01() throws IOException, RefactorException
 	{
+		File source;
+		ParseUnit pu;
+		
 		JPNode node;
 		String txt;
 		File target = new File("C:\\Work\\Proparse\\GitHub\\proparse\\src\\test\\SCL3366\\testCode_copy.p");
 		FileWriter fw = new FileWriter(target);
+		
+		source = new File("C:\\Work\\Proparse\\GitHub\\proparse\\src\\test\\SCL3366\\testCode.p");
+		pu = new ParseUnit(source);
+		pu.treeParser01();
+		
+		node = pu.getTopNode();
+		try{
+			txt = node.toStringSourceText();
+	
+			fw.write(txt);
+			fw.flush();
+			fw.close();
+			
+			this.compare(source, txt);
+		} 
+		catch (RefactorException e) 
+		{
+			System.out.println("Caught RefactorException: " + e.getMessage());
+			for(StackTraceElement ste: e.getStackTrace())
+			{
+				System.out.println(ste.toString());
+			}
+		}
+	}
+	
+	public void test_02() throws IOException, RefactorException
+	{
+		File source;
+		ParseUnit pu;
+		
+		JPNode node;
+		String txt;
+		File target = new File("C:\\Work\\Proparse\\GitHub\\proparse\\src\\test\\SCL3366\\c-customer_copy.w");
+		FileWriter fw = new FileWriter(target);
+		
+		source = new File("C:\\Work\\Proparse\\GitHub\\proparse\\src\\test\\SCL3366\\c-customer.w");
+		pu = new ParseUnit(source);
+		pu.treeParser01();
 		
 		node = pu.getTopNode();
 		try{

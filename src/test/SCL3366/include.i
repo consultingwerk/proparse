@@ -1,6 +1,6 @@
 
 /*------------------------------------------------------------------------
-    File        : inc1.i
+    File        : inc1ude.i
     Purpose     :
 
     Syntax      :
@@ -19,3 +19,5 @@
 
 
 /* ***************************  Main Block  *************************** */
+
+&GLOBAL-DEFINE INC_MACRO "Macro in include-file":U

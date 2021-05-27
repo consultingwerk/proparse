@@ -351,7 +351,6 @@ public class Preprocessor {
 		return "";
 	}
 
-
 	int getChar() throws IOException {
 		wasEscape = false;
 		for (;;) {
@@ -677,20 +676,22 @@ public class Preprocessor {
 			
 			try
 			{
-				if(getArgText(argName) != null && getArgText(argName).length() > 0)
-				{
-					macroReference = new JSONObject();
-					macroReference.put("refName", refText);
-					macroReference.put("refText", getArgText(argName));
-				
-					makroRef = macroReference.toString();
-				}
+				macroReference = new JSONObject();
+				macroReference.put("refName", refText);
+				macroReference.put("refText", getArgText(argName));
+				macroReference.put("file", refPos.file);
+				macroReference.put("line", refPos.line - 1);
+
+				if((refPos.col - 2) < 0 || (getArgText(argName).length() == 0))
+					macroReference.put("col", refPos.col - 1);
 				else
-					makroRef = refText;
+					macroReference.put("col", refPos.col - 2);
+			
+				makroRef = macroReference.toString();
 			}
 			catch(JSONException e)
 			{
-				makroRef = refText;
+				e.printStackTrace();
 			}
 			newMakroRef = true;
 			

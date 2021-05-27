@@ -1,7 +1,12 @@
 package org.prorefactor.core;
 
 import com.joanju.proparse.ProToken;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.prorefactor.refactor.RefactorException;
@@ -14,7 +19,7 @@ public class NodeTextUtils
 	private final JPNode rootNode;
 	private JPNode currNode;
 	private HashMap<Integer, JPNode> nodeMap;
-	private HashMap<String, String> macros;
+	private JSONArray macros;
 	private boolean hideIncludeFileText = false;
 	private Boolean skipNextSpace = false;
 	
@@ -27,7 +32,7 @@ public class NodeTextUtils
 		this.rootNode = top;
 		
 		this.mapNodes();
-		this.macros = new HashMap<String, String>();
+		this.macros = new JSONArray();
 	}
 	
 	/**
@@ -100,21 +105,71 @@ public class NodeTextUtils
 	 */
 	private String replaceMacros(String txt)
 	{
-		String pattern;
+		int line;
+		JSONObject json;
+		ArrayList<String> lines;
 		
-		for(String key : macros.keySet())
+		try
 		{
-			pattern = macros.get(key);
-			pattern = this.fixRegexEscape(pattern);
-
-			txt = txt.replaceAll(pattern, key);
+			lines = this.stringToLines(txt);
+			for(int i = this.macros.length() - 1; i >= 0; i--)
+			{
+				json = this.macros.getJSONObject(i);
+				line = json.getInt("line");
+				lines.set(line, this.replaceMacro(lines.get(line), json));
+			}
+			txt = this.linesToString(lines);
 		}
-		
+		catch(JSONException e)
+		{
+			e.printStackTrace();
+		}
 		return txt;
 	}
 	
 	/**
-	 * Excepes characters used by regex
+	 * Replaces a macros text with the reference
+	 * @param txt The source code line with the macro-text
+	 * @param macro The info about the macro as JSON
+	 * @return The source code line with the macro-reference
+	 * @throws JSONException 
+	 */
+	private String replaceMacro(String txt, JSONObject macro) throws JSONException
+	{
+		int col = macro.getInt("col");
+		String name = macro.getString("refName");
+		String text = this.fixRegexEscape(macro.getString("refText"));
+
+		return (txt.substring(0, col) + txt.substring(col).replaceFirst(text, name));
+	}
+	
+	/**
+	 * Helper method to turn source-code into a list of lines
+	 * @param txt The source code
+	 * @return The list of lines
+	 */
+	private ArrayList<String> stringToLines(String txt)
+	{
+		ArrayList<String> lines = new ArrayList<String>();
+		BufferedReader br;
+		
+		try
+		{
+			br = new BufferedReader(new StringReader(txt));
+			for(String line = br.readLine(); line != null; line = br.readLine())
+				lines.add(line + "\n");
+			br.close();
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return lines;
+	}
+	
+	/**
+	 * Escapes characters used by regex
 	 * @param txt The pattern for regex
 	 * @return The fixed pattern
 	 */
@@ -134,7 +189,20 @@ public class NodeTextUtils
 		txt = txt.replace("*", "\\*");
 		txt = txt.replace("+", "\\+");
 		txt = txt.replace(".", "\\.");
-		
+
+		return txt;
+	}
+	
+	/**
+	 * Helper method to turn a list of lines into source-code
+	 * @param lines The list of lines
+	 * @return The source-code
+	 */
+	private String linesToString(ArrayList<String> lines)
+	{
+		String txt = "";
+		for(String line: lines)
+			txt += line;
 		return txt;
 	}
 	
@@ -209,6 +277,10 @@ public class NodeTextUtils
 		JPNode begin = null;
 		JPNode end = null;
 		
+		// An EQUAL node does not necessarily have children
+		// e.g. in assignments in annotations EQUAL is in a sibling
+		// relationship with the sides of the assignment
+		// before and after itself.
 		if(node.firstChild() == null)
 		{
 			bldr.append(this.getHiddenText(node));
@@ -269,29 +341,32 @@ public class NodeTextUtils
 		StringBuilder bldr = new StringBuilder();
 		JSONObject json;
 		
+		// Iterating the nodes hidden tokens
 		for (ProToken t = node.getHiddenFirst(); t!=null; t = t.getNext()) 
 		{
-			if(t.getFileIndex() == 0 && this.hideIncludeFileText)
+			// Only the top-most file
+			if((t.getFileIndex() == 0 || t.getType() == TokenTypes.MAKROREFERENCE) && this.hideIncludeFileText)
 			{
+				// &IF ... &THEN ... &ENDIF cannot be processed
 				if(t.getType() == TokenTypes.CONDITIONALCOMPILATION)
 					throw new RefactorException("The method JPNode.fullSourceText() does not support conditional compilation (&IF ... &THEN ... &ELSE)!");
 
+				// Remember macros to replace them later
 				if(t.getType() == TokenTypes.MAKROREFERENCE)
 				{
 					try
 					{
 						json = new JSONObject(t.getText());
-						if(!this.macros.containsKey(json.getString("refName")))
-							this.macros.put(json.getString("refName"), json.getString("refName") + json.getString("refText"));
-
-						bldr.append(json.getString("refName"));
+						if(json.getInt("file") == 0)
+							macros.put(json);
 					}
 					catch(JSONException e)
 					{
-						bldr.append(t.getText());
+						e.printStackTrace();
 					}
 				}
 				
+				// Skip additional space after an include-file
 				else if(skipNextSpace)
 				{
 					if(t.getType() == TokenTypes.WS)
