@@ -1560,6 +1560,9 @@ public class NodeTypes implements ProParserTokenTypes, TokenTypesI, Xferable {
 		add(YESNO, 6, "yes-no", TI.KEYWORD);
 		add(YESNOCANCEL, 13, "yes-no-cancel", TI.KEYWORD);
 		add(YOF, 4, "y-of", TI.KEYWORD);
+		add(INCLUDEFILEREFERENCE, 0, "", TI.NO_FLAGS);
+		add(CONDITIONALCOMPILATION, 0, "", TI.NO_FLAGS);
+		add(MAKROREFERENCE, 0, "", TI.NO_FLAGS);
 	}
 
 

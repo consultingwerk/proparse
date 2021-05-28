@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.LinkedList;
 import java.io.IOException;
 
+import org.prorefactor.refactor.RefactorException;
 import org.prorefactor.treeparser.Call;
 import org.prorefactor.treeparser.FieldContainer;
 import org.prorefactor.treeparser.Symbol;
@@ -881,7 +882,18 @@ public class JPNode extends BaseAST implements IJPNode, Xferable {
 	 */
 	public String toStringFulltext() {return TreeUtils.fullPreproText(this);}
 
-
+	/**
+	 * Get the full source text from a node.
+	 * When run on top node, the result is the source-code.
+	 * Conditional compilation causes a RefactorException as
+	 * it currently can not be processed.
+	 */
+	public String toStringSourceText() throws RefactorException 
+	{
+		NodeTextUtils util = new NodeTextUtils(this);
+		return util.getFullSourceText();
+	}
+	
 	/** Walk the tree from the input node down. */
 	public void walk(ICallback callback) {
 		callback.run(this);

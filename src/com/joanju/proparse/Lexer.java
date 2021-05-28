@@ -6,7 +6,6 @@ This file is made available under the terms of the Eclipse Public License v1.0.
 */
 package com.joanju.proparse;
 
-import java.io.Console;
 import java.io.IOException;
 
 
@@ -45,8 +44,8 @@ public class Lexer implements ProParserTokenTypes {
 
 	private static final int EOF_CHAR = Preprocessor.EOF_CHAR;
 
-
-	
+	private ProToken ampTextToken = null;
+	private ProToken newToken = null;
 
 //////////////// Lexical productions listed first, support functions follow.
 
@@ -72,6 +71,26 @@ public class Lexer implements ProParserTokenTypes {
 				} // switch
 			}
 
+			if(prepro.newIncRefText)
+			{
+				prepro.newIncRefText = false;
+				textStartFile = prepro.textStartFile;
+				textStartLine = prepro.textStartLine;
+				textStartCol = prepro.textStartCol;
+				textStartSource = prepro.textStartSourceNum;
+				return makeToken(INCLUDEFILEREFERENCE, prepro.incRefText);
+			}
+			
+			if(prepro.newMakroRef)
+			{
+				prepro.newMakroRef = false;
+				textStartFile = prepro.textStartFile;
+				textStartLine = prepro.textStartLine;
+				textStartCol = prepro.textStartCol;
+				textStartSource = prepro.textStartSourceNum;
+				return makeToken(MAKROREFERENCE, prepro.makroRef);
+			}
+			
 			// Proparse Directive
 			// Check this before setting currText...
 			// we don't want BEGIN_PROPARSE_DIRECTIVE in the text
@@ -84,6 +103,13 @@ public class Lexer implements ProParserTokenTypes {
 				return makeToken(PROPARSEDIRECTIVE, prepro.proparseDirectiveText);
 			}
 
+			if(ampTextToken != null)
+			{
+				newToken = ampTextToken;
+				ampTextToken = null;
+				return newToken;
+			}
+			
 			textStartFile = prepro.getFileIndex();
 			textStartLine = prepro.getLine();
 			textStartCol = prepro.getColumn();
@@ -145,7 +171,20 @@ public class Lexer implements ProParserTokenTypes {
 
 			case '&':
 				getChar();
-				return ampText();
+				ampTextToken = ampText();
+				switch(ampTextToken.getType())
+				{
+					case ProParserTokenTypes.AMPIF:
+					case ProParserTokenTypes.AMPTHEN:
+					case ProParserTokenTypes.AMPELSE:
+					case ProParserTokenTypes.AMPELSEIF:
+					case ProParserTokenTypes.AMPENDIF:
+						return makeToken(CONDITIONALCOMPILATION, ampTextToken.getText());
+					default:
+						newToken = ampTextToken;
+						ampTextToken = null;
+						return newToken;
+				}
 			case '@':
 				getChar();
 				if (currIsSpace())
@@ -350,6 +389,7 @@ public class Lexer implements ProParserTokenTypes {
 
 
 	ProToken whitespace() throws IOException {
+		int fileIdx;
 		loop:
 		for (;;) {
 			switch (currChar) {
@@ -359,7 +399,10 @@ public class Lexer implements ProParserTokenTypes {
 			case '\n':
 			case '\r':
 				append();
+				fileIdx = prepro.currFile;
 				getChar();
+				if(prepro.newIncRefText || fileIdx != prepro.currFile)
+					break loop;
 				break;
 			default:
 				break loop;

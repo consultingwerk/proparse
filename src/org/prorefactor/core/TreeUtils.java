@@ -4,7 +4,6 @@
 package org.prorefactor.core;
 
 import java.util.ArrayList;
-
 import com.joanju.proparse.ProToken;
 
 
@@ -65,7 +64,6 @@ public class TreeUtils {
 		}
 		return bldr.toString();
 	}
-	
 	
 	/** Get an array of nodes, such that the array index matches the node number. */
 	public static JPNode [] nodeArray(JPNode top) {

@@ -1245,6 +1245,9 @@ public interface ProParserTokenTypes {
 	int TRUE = 1239;
 	int FALSE = 1240;
 	int NULL = 1241;
-	int XOR = 1242;
-	int Last_Token_Number = 1243;
+	int INCLUDEFILEREFERENCE = 1242;
+	int CONDITIONALCOMPILATION = 1243;
+	int MAKROREFERENCE = 1244;
+	int XOR = 1245;
+	int Last_Token_Number = 1246;
 }
