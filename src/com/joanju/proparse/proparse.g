@@ -754,7 +754,10 @@ lockhow
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 expression
-	:	orExpression
+	:	xorExpression
+	;
+xorExpression
+	:	orExpression (options{greedy=true;}: XOR^ orExpression {support.attrOp(##);} )*
 	;
 orExpression
 	:	andExpression (options{greedy=true;}: OR^ andExpression {support.attrOp(##);} )*
@@ -4468,7 +4471,7 @@ reservedkeyword:
  | UNLESSHIDDEN | UP | UPDATE | USEINDEX | USERID | USING | V6FRAME | VALUE 
  | VALUECHANGED | VALUES | VIEW | VIEWAS | WAITFOR | WHEN | WHERE | WHILE | WINDOW 
  | WINDOWDELAYEDMINIMIZE | WINDOWMAXIMIZED | WINDOWMINIMIZED | WINDOWNORMAL | WITH 
- | WORKTABLE | WRITE | XCODE | XREF | YES 
+ | WORKTABLE | WRITE | XCODE | XREF | XOR | YES 
 ;
 
 

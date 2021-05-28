@@ -1234,4 +1234,5 @@ MULTIPLY_EQUAL = 1238
 TRUE = 1239
 FALSE = 1240
 NULL = 1241
-Last_Token_Number = 1242
+XOR = 1242
+Last_Token_Number = 1243
