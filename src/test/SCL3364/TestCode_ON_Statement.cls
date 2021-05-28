@@ -1,0 +1,12 @@
+
+BLOCK-LEVEL ON ERROR UNDO, THROW.
+
+USING Progress.Lang.*.
+
+CLASS test.SCL3364.TestCode_ON_Statement:
+
+	ON "ENTRY":U ANYWHERE DO:
+		MESSAGE "ENTRY":U.
+	END.
+
+END CLASS.

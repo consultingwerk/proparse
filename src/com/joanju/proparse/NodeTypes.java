@@ -1551,6 +1551,7 @@ public class NodeTypes implements ProParserTokenTypes, TokenTypesI, Xferable {
 		add(XMLNODETYPE, 13, "xml-node-type", TI.KEYWORD);
 		add(XNODEREF, 9, "x-noderef", TI.KEYWORD);
 		add(XOF, 4, "x-of", TI.KEYWORD);
+		add(XOR, 3, "xor", TI.KEYWORD | TI.RESERVED);
 		add(XREF, 4, "xref", TI.KEYWORD | TI.RESERVED);
 		add(XREFXML, 8, "xref-xml", TI.KEYWORD);
 		add(Y, 1, "y", TI.KEYWORD);
