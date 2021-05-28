@@ -2501,6 +2501,7 @@ datatypeVar
   	| 	RAW
   	| 	RECID
   	| 	ROWID
+  	|	type_name
   	;
   
 typeName:
@@ -2508,7 +2509,7 @@ typeName:
   ;
 	
 varStatementInitialValueSub
-	:    TODAY | NOW | TRUE | FALSE | YES | NO | UNKNOWNVALUE | QSTRING | LEXDATE | NUMBER | NULL
+	:    TODAY | NOW | TRUE | FALSE | YES | NO | UNKNOWNVALUE | QSTRING | LEXDATE | NUMBER | NULL | expression
   	;
 
 deletestatement
