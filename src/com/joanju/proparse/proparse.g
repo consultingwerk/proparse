@@ -754,7 +754,10 @@ lockhow
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 expression
-	:	orExpression
+	:	xorExpression
+	;
+xorExpression
+	:	orExpression (options{greedy=true;}: XOR^ orExpression {support.attrOp(##);} )*
 	;
 orExpression
 	:	andExpression (options{greedy=true;}: OR^ andExpression {support.attrOp(##);} )*
@@ -2501,6 +2504,7 @@ datatypeVar
   	| 	RAW
   	| 	RECID
   	| 	ROWID
+  	|	type_name
   	;
   
 typeName:
@@ -2508,7 +2512,7 @@ typeName:
   ;
 	
 varStatementInitialValueSub
-	:    TODAY | NOW | TRUE | FALSE | YES | NO | UNKNOWNVALUE | QSTRING | LEXDATE | NUMBER | NULL
+	:    TODAY | NOW | TRUE | FALSE | YES | NO | UNKNOWNVALUE | QSTRING | LEXDATE | NUMBER | NULL | expression
   	;
 
 deletestatement
@@ -4467,7 +4471,7 @@ reservedkeyword:
  | UNLESSHIDDEN | UP | UPDATE | USEINDEX | USERID | USING | V6FRAME | VALUE 
  | VALUECHANGED | VALUES | VIEW | VIEWAS | WAITFOR | WHEN | WHERE | WHILE | WINDOW 
  | WINDOWDELAYEDMINIMIZE | WINDOWMAXIMIZED | WINDOWMINIMIZED | WINDOWNORMAL | WITH 
- | WORKTABLE | WRITE | XCODE | XREF | YES 
+ | WORKTABLE | WRITE | XCODE | XREF | XOR | YES 
 ;
 
 

@@ -942,7 +942,7 @@ varStatementInitialValueArray
   	;
   	
 varStatementInitialValueSub:
-    TODAY | NOW | TRUE | FALSE | YES | NO | UNKNOWNVALUE | QSTRING | LEXDATE | NUMBER | NULL
+    TODAY | NOW | TRUE | FALSE | YES | NO | UNKNOWNVALUE | QSTRING | LEXDATE | NUMBER | NULL | expression
   ;
   
 vardatatype
@@ -2299,6 +2299,7 @@ lockhow :SHARELOCK | EXCLUSIVELOCK | NOLOCK
 // inherited from grammar JPTreeParser
 expression :#(OR expression expression )
   | #(AND expression expression )
+  | #(XOR expression expression )
   | #(NOT expression )
   | #(MATCHES expression expression )
   | #(BEGINS expression expression )
