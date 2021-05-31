@@ -72,12 +72,9 @@ public class Preprocessor {
 	int currLine;
 	int currSourceNum;
 	
-	String incRefText;
-	boolean newIncRefText;
+	ArrayList<String> incRef = new ArrayList<String>();
+	ArrayList<String> makroRef = new ArrayList<String>();
 	
-	String makroRef;
-	boolean newMakroRef;
-
 	/** Are we in the middle of a comment? */
 	boolean doingComment = false;
 	boolean doingSingleLineComment = false; 
@@ -686,15 +683,13 @@ public class Preprocessor {
 					macroReference.put("col", refPos.col - 1);
 				else
 					macroReference.put("col", refPos.col - 2);
-			
-				makroRef = macroReference.toString();
+				makroRef.add(macroReference.toString());
 			}
 			catch(JSONException e)
 			{
 				e.printStackTrace();
 			}
-			newMakroRef = true;
-			
+
 			return;
 		}
 
@@ -814,8 +809,7 @@ public class Preprocessor {
 					argNum++;
 				}
 			}
-			this.incRefText = refText;
-			this.newIncRefText = true;
+			incRef.add(refText);
 		} // include file reference
 
 	} // macroReference()

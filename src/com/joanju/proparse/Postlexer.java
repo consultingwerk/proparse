@@ -16,8 +16,6 @@ import java.util.LinkedList;
 import java.util.ArrayList;
 import java.io.IOException;
 
-import org.prorefactor.core.TokenTypes;
-
 
 public class Postlexer implements antlr.TokenStream, ProParserTokenTypes {
 
