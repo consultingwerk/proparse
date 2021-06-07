@@ -112,6 +112,40 @@ public class TestClass extends TestCase {
 		}
 	}
 	
+	public void test_03() throws IOException, RefactorException
+	{
+		File source;
+		ParseUnit pu;
+		
+		JPNode node;
+		String txt;
+		File target = new File("C:\\Work\\Proparse\\GitHub\\proparse\\src\\test\\SCL3366\\wWin_copy.w");
+		FileWriter fw = new FileWriter(target);
+		
+		source = new File("C:\\Work\\Proparse\\GitHub\\proparse\\src\\test\\SCL3366\\wWin.w");
+		pu = new ParseUnit(source);
+		pu.treeParser01();
+		
+		node = pu.getTopNode();
+		try{
+			txt = node.toStringSourceText();
+	
+			fw.write(txt);
+			fw.flush();
+			fw.close();
+			
+			this.compare(source, txt);
+		} 
+		catch (RefactorException e) 
+		{
+			System.out.println("Caught RefactorException: " + e.getMessage());
+			for(StackTraceElement ste: e.getStackTrace())
+			{
+				System.out.println(ste.toString());
+			}
+		}
+	}
+	
 	private void compare(File orig, String copy)
 	{
 		BufferedReader brOrig;

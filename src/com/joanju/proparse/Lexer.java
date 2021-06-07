@@ -52,6 +52,9 @@ public class Lexer implements ProParserTokenTypes {
 
 	ProToken nextToken() throws IOException {
 
+		String makroText;
+		String incRefText;
+		
 		for (;;) {
 
 			if (preserve) {
@@ -71,24 +74,30 @@ public class Lexer implements ProParserTokenTypes {
 				} // switch
 			}
 
-			if(prepro.newIncRefText)
+			if(!prepro.incRef.isEmpty())
 			{
-				prepro.newIncRefText = false;
 				textStartFile = prepro.textStartFile;
 				textStartLine = prepro.textStartLine;
 				textStartCol = prepro.textStartCol;
 				textStartSource = prepro.textStartSourceNum;
-				return makeToken(INCLUDEFILEREFERENCE, prepro.incRefText);
+				
+				incRefText = prepro.incRef.get(0);
+				prepro.incRef.remove(0);
+				
+				return makeToken(INCLUDEFILEREFERENCE, incRefText);
 			}
 			
-			if(prepro.newMakroRef)
+			if(!prepro.makroRef.isEmpty())
 			{
-				prepro.newMakroRef = false;
 				textStartFile = prepro.textStartFile;
 				textStartLine = prepro.textStartLine;
 				textStartCol = prepro.textStartCol;
 				textStartSource = prepro.textStartSourceNum;
-				return makeToken(MAKROREFERENCE, prepro.makroRef);
+				
+				makroText = prepro.makroRef.get(0);
+				prepro.makroRef.remove(0);
+				
+				return makeToken(MAKROREFERENCE, makroText);
 			}
 			
 			// Proparse Directive
@@ -401,7 +410,7 @@ public class Lexer implements ProParserTokenTypes {
 				append();
 				fileIdx = prepro.currFile;
 				getChar();
-				if(prepro.newIncRefText || fileIdx != prepro.currFile)
+				if((!prepro.incRef.isEmpty()) || fileIdx != prepro.currFile)
 					break loop;
 				break;
 			default:
