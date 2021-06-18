@@ -5,7 +5,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,7 +17,6 @@ public class NodeTextUtils
 {
 	private final JPNode rootNode;
 	private JPNode currNode;
-	private HashMap<Integer, JPNode> nodeMap;
 	private JSONArray macros;
 	private boolean hideIncludeFileText = false;
 	private Boolean skipNextSpace = false;
@@ -31,32 +29,7 @@ public class NodeTextUtils
 	{
 		this.rootNode = top;
 		
-		this.mapNodes();
 		this.macros = new JSONArray();
-	}
-	
-	/**
-	 * Helper method to map all nodes for easier access
-	 */
-	private void mapNodes()
-	{
-		nodeMap = new HashMap<Integer, JPNode>();
-		this.mapNodes(rootNode);
-	}
-	
-	/**
-	 * Recursive worker method for mapNodes()
-	 * @param node current node
-	 */
-	private void mapNodes(JPNode node)
-	{
-		if(!nodeMap.containsKey(node.getNodeNum()))
-			nodeMap.put(node.getNodeNum(), node);
-		
-		if(node.firstChild() != null)
-			this.mapNodes(node.firstChild());
-		if(node.nextSibling() != null)
-			this.mapNodes(node.nextSibling());
 	}
 	
 	/**
@@ -66,9 +39,27 @@ public class NodeTextUtils
 	 */
 	private JPNode getNextNode(JPNode node)
 	{
-		if(node == null || !nodeMap.containsKey(node.getNodeNum() + 1))
+		JPNode parent;
+		
+		if(node == null)
 			return null;
-		return nodeMap.get(node.getNodeNum() + 1);
+		
+		if(node.firstChild() != null)
+			return node.firstChild();
+		
+		if(node.nextSibling() != null)
+			return node.nextSibling();
+		
+		if(node.parent() != null)
+		{
+			parent = node.parent();
+			while(parent != null && parent.nextSibling() == null)
+				parent = parent.parent();
+			if(parent != null)
+				return parent.nextSibling();
+		}
+		
+		return null;
 	}
 	
 	/**
@@ -335,11 +326,21 @@ public class NodeTextUtils
 	{
 		StringBuilder bldr = new StringBuilder();
 		
-		for(this.currNode = begin; 
-			this.currNode.getNodeNum() <= end.getNodeNum(); 
-			this.currNode = this.getNextNode(this.currNode))
-			bldr.append(this.getText(this.currNode));
-			
+		if(this.getNextNode(end) != null)
+		{
+			end = this.getNextNode(end);
+			for(this.currNode = begin; 
+				this.currNode.getNodeNum() != end.getNodeNum(); 
+				this.currNode = this.getNextNode(this.currNode))
+				bldr.append(this.getText(this.currNode));
+		}	
+		else
+		{
+			for(this.currNode = begin; 
+					this.currNode != null; 
+					this.currNode = this.getNextNode(this.currNode))
+					bldr.append(this.getText(this.currNode));
+		}
 		return bldr.toString();
 	}
 	
