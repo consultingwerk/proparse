@@ -11,12 +11,14 @@ import org.prorefactor.core.JPNode;
 
 import java.util.ArrayList;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
+import java.nio.file.AccessDeniedException;
 import java.io.InputStreamReader;
 import java.io.FileInputStream;
 
@@ -215,6 +217,9 @@ public class DoParse {
 			if (prepro !=null) {
 				// If we are listing, then we want to list all file indexes.
 				if (prepro.listing) {
+					File listingFile = new File (env.configGet("listing-file"));
+					if(!listingFile.canWrite())
+						throw new AccessDeniedException (listingFile.getAbsolutePath(), null, "Missing write permissions for prorefactor/temp directory!");
 					int i = 0;
 					while (isValidIndex(i)) {
 						StringBuilder bldr = new StringBuilder();
