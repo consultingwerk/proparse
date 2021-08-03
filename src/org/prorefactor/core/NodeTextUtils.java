@@ -1,10 +1,12 @@
 package org.prorefactor.core;
 
+import com.joanju.proparse.ConditionalCompilationToken;
 import com.joanju.proparse.ProToken;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,6 +22,7 @@ public class NodeTextUtils
 	private JSONArray macros;
 	private boolean hideIncludeFileText = false;
 	private Boolean skipNextSpace = false;
+	private int consuming = 0;
 	
 	/**
 	 * Constructor for the NodeTextUtils class
@@ -43,7 +46,7 @@ public class NodeTextUtils
 		
 		if(node == null)
 			return null;
-		
+
 		if(node.firstChild() != null)
 			return node.firstChild();
 		
@@ -68,7 +71,7 @@ public class NodeTextUtils
 	 * Conditional compilation causes a RefactorException as
 	 * it currently can not be processed.
 	 * @return The text as it is in the source file
-	 * @throws RefactorException If conditional compilation is found (&IF..&THEN..&ENDIF etc.).
+	 * @throws RefactorException If an error occurred
 	 */
 	public String getFullSourceText() throws RefactorException
 	{
@@ -215,12 +218,12 @@ public class NodeTextUtils
 	 * also brings operators in the correct order
 	 * @param node The node whose text is sought
 	 * @return The nodes text
-	 * @throws RefactorException If conditional compilation is found (&IF..&THEN..&ENDIF etc.).
+	 * @throws RefactorException If an error occurred
 	 */
 	private String getText(JPNode node) throws RefactorException
 	{
 		StringBuilder bldr = new StringBuilder();
-		
+
 		if (   node.getType() == TokenTypes.PLUS
 			|| node.getType() == TokenTypes.MINUS
 			|| node.getType() == TokenTypes.MULTIPLY
@@ -249,7 +252,7 @@ public class NodeTextUtils
 		else
 		{
 			bldr.append(getHiddenText(node));
-			if(this.hideIncludeFileText && node.getFileIndex() == 0)
+			if(this.hideIncludeFileText && node.getFileIndex() == 0 && this.consuming == 0)
 				bldr.append(node.getText());
 			this.currNode = node;
 		}
@@ -273,7 +276,7 @@ public class NodeTextUtils
 	 * Returns an operators text in the correct order
 	 * @param node The operator node
 	 * @return The nodes text
-	 * @throws RefactorException If conditional compilation is found (&IF..&THEN..&ENDIF etc.).
+	 * @throws RefactorException If an error occurred
 	 */
 	private String getOperatorText(JPNode node) throws RefactorException
 	{
@@ -302,7 +305,8 @@ public class NodeTextUtils
 		
 		// Get the operators text
 		bldr.append(this.getHiddenText(node));
-		bldr.append(node.getText());
+		if(this.consuming == 0)
+			bldr.append(node.getText());
 
 		// Get the text on the right side of the operator
 		begin = node.firstChild().nextSibling();
@@ -320,7 +324,7 @@ public class NodeTextUtils
 	 * @param begin The node from which to begin
 	 * @param end The node at which to end
 	 * @return The Text between begin and end
-	 * @throws RefactorException If conditional compilation is found (&IF..&THEN..&ENDIF etc.).
+	 * @throws RefactorException If an error occurred
 	 */
 	private String getText(JPNode begin, JPNode end) throws RefactorException
 	{
@@ -336,10 +340,10 @@ public class NodeTextUtils
 		}	
 		else
 		{
-			for(this.currNode = begin; 
-					this.currNode != null; 
-					this.currNode = this.getNextNode(this.currNode))
-					bldr.append(this.getText(this.currNode));
+			for(this.currNode  = begin; 
+				this.currNode != null; 
+				this.currNode  = this.getNextNode(this.currNode))
+				bldr.append(this.getText(this.currNode));
 		}
 		return bldr.toString();
 	}
@@ -348,7 +352,7 @@ public class NodeTextUtils
 	 * Returns the text of a nodes hidden tokens
 	 * @param node The node whose hidden text is sought
 	 * @return The nodes hidden text
-	 * @throws RefactorException If conditional compilation is found (&IF..&THEN..&ENDIF etc.).
+	 * @throws RefactorException If an error occurred
 	 */
 	private String getHiddenText(JPNode node) throws RefactorException
 	{
@@ -361,9 +365,18 @@ public class NodeTextUtils
 			// Only the top-most file
 			if((t.getFileIndex() == 0 || t.getType() == TokenTypes.MAKROREFERENCE) && this.hideIncludeFileText)
 			{
-				// &IF ... &THEN ... &ENDIF cannot be processed
-				if(t.getType() == TokenTypes.CONDITIONALCOMPILATION)
-					throw new RefactorException("The method JPNode.fullSourceText() does not support conditional compilation (&IF ... &THEN ... &ELSE)!");
+				
+				// &IF .. &THEN .. &ELSEIF .. &ELSE .. &ENDIF
+				if(t instanceof ConditionalCompilationToken)
+				{
+					if (((ConditionalCompilationToken)t).isOpening())
+					{
+						this.consuming++;
+						bldr.append(((ConditionalCompilationToken)t).getEnclosedText());
+					}
+					else
+						this.consuming--;
+				}
 
 				// Remember macros to replace them later
 				if(t.getType() == TokenTypes.MAKROREFERENCE)
@@ -383,13 +396,13 @@ public class NodeTextUtils
 				// Skip additional space after an include-file
 				else if(skipNextSpace)
 				{
-					if(t.getType() == TokenTypes.WS)
+					if(t.getType() == TokenTypes.WS && this.consuming == 0)
 						bldr.append(t.getText().substring(1));
-					else
+					else if (this.consuming == 0)
 						bldr.append(t.getText());
 					skipNextSpace = false;
 				}
-				else
+				else if (this.consuming == 0)
 					bldr.append(t.getText());
 				if(t.getType() == TokenTypes.INCLUDEFILEREFERENCE)
 					skipNextSpace = true;

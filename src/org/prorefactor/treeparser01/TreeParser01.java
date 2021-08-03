@@ -325,7 +325,7 @@ public TreeParser01() {
 			_loop1526:
 			do {
 				if (_t==null) _t=ASTNULL;
-				if (((_t.getType() >= LEXDATE && _t.getType() <= XOR))) {
+				if (((_t.getType() >= LEXDATE && _t.getType() <= Last_Token_Number))) {
 					AST tmp8_AST_in = (AST)_t;
 					if ( _t==null ) throw new MismatchedTokenException();
 					_t = _t.getNextSibling();
@@ -26626,7 +26626,7 @@ inputState.guessing--;
 				_t = _retTree;
 				}
 			}
-			else if (((_t.getType() >= LEXDATE && _t.getType() <= XOR))) {
+			else if (((_t.getType() >= LEXDATE && _t.getType() <= Last_Token_Number))) {
 			}
 			else {
 				throw new NoViableAltException(_t);
@@ -27207,7 +27207,7 @@ inputState.guessing--;
 		else {
 			boolean synPredMatched1107 = false;
 			if (_t==null) _t=ASTNULL;
-			if ((((_t.getType() >= LEXDATE && _t.getType() <= XOR)))) {
+			if ((((_t.getType() >= LEXDATE && _t.getType() <= Last_Token_Number)))) {
 				AST __t1107 = _t;
 				synPredMatched1107 = true;
 				inputState.guessing++;
@@ -42231,7 +42231,7 @@ inputState.guessing--;
 				valueexpression(_t);
 				_t = _retTree;
 			}
-			else if (((_t.getType() >= LEXDATE && _t.getType() <= XOR))) {
+			else if (((_t.getType() >= LEXDATE && _t.getType() <= Last_Token_Number))) {
 				AST tmp2487_AST_in = (AST)_t;
 				if ( _t==null ) throw new MismatchedTokenException();
 				_t = _t.getNextSibling();
@@ -43360,7 +43360,7 @@ inputState.guessing--;
 			gwidget(_t);
 			_t = _retTree;
 		}
-		else if (((_t.getType() >= LEXDATE && _t.getType() <= XOR))) {
+		else if (((_t.getType() >= LEXDATE && _t.getType() <= Last_Token_Number))) {
 		}
 		else {
 			throw new NoViableAltException(_t);
@@ -45556,6 +45556,9 @@ inputState.guessing--;
 		"TRUE",
 		"FALSE",
 		"NULL",
+		"INCLUDEFILEREFERENCE",
+		"CONDITIONALCOMPILATION",
+		"MAKROREFERENCE",
 		"XOR",
 		"Last_Token_Number"
 	};
@@ -45628,7 +45631,7 @@ inputState.guessing--;
 		data[16]=9197085240081350022L;
 		data[17]=5764609754271717120L;
 		data[18]=-8059190304818853887L;
-		data[19]=134221807L;
+		data[19]=536874991L;
 		return data;
 	}
 	public static final BitSet _tokenSet_2 = new BitSet(mk_tokenSet_2());
@@ -45653,7 +45656,7 @@ inputState.guessing--;
 		data[16]=9197085240081350022L;
 		data[17]=5764609754271717120L;
 		data[18]=-8059190304818853887L;
-		data[19]=134221807L;
+		data[19]=536874991L;
 		return data;
 	}
 	public static final BitSet _tokenSet_3 = new BitSet(mk_tokenSet_3());
@@ -45853,7 +45856,7 @@ inputState.guessing--;
 		for (int i = 1; i<=13; i++) { data[i]=-1L; }
 		data[14]=-5L;
 		for (int i = 15; i<=18; i++) { data[i]=-1L; }
-		data[19]=268435455L;
+		data[19]=2147483647L;
 		return data;
 	}
 	public static final BitSet _tokenSet_13 = new BitSet(mk_tokenSet_13());
@@ -45907,7 +45910,7 @@ inputState.guessing--;
 		data[16]=9197085240081350022L;
 		data[17]=5764609754271717120L;
 		data[18]=-8059190304818853887L;
-		data[19]=134221807L;
+		data[19]=536874991L;
 		return data;
 	}
 	public static final BitSet _tokenSet_16 = new BitSet(mk_tokenSet_16());
@@ -46031,7 +46034,7 @@ inputState.guessing--;
 		data[16]=9197085240081350022L;
 		data[17]=5764609754271717120L;
 		data[18]=-8059190304818853887L;
-		data[19]=192942063L;
+		data[19]=595595247L;
 		return data;
 	}
 	public static final BitSet _tokenSet_24 = new BitSet(mk_tokenSet_24());
@@ -46216,7 +46219,7 @@ inputState.guessing--;
 		data[16]=9197085240081350022L;
 		data[17]=5764609754271717120L;
 		data[18]=-8059190303745112063L;
-		data[19]=134221807L;
+		data[19]=536874991L;
 		return data;
 	}
 	public static final BitSet _tokenSet_35 = new BitSet(mk_tokenSet_35());
@@ -46325,7 +46328,7 @@ inputState.guessing--;
 		data[16]=9197085240081350022L;
 		data[17]=5764609754271717120L;
 		data[18]=-8059190304818853887L;
-		data[19]=134221807L;
+		data[19]=536874991L;
 		return data;
 	}
 	public static final BitSet _tokenSet_40 = new BitSet(mk_tokenSet_40());
@@ -46350,7 +46353,7 @@ inputState.guessing--;
 		data[16]=9197085240081350022L;
 		data[17]=5764609754271717120L;
 		data[18]=-8059190304818853887L;
-		data[19]=134221807L;
+		data[19]=536874991L;
 		return data;
 	}
 	public static final BitSet _tokenSet_41 = new BitSet(mk_tokenSet_41());
@@ -46375,7 +46378,7 @@ inputState.guessing--;
 		data[16]=9197085240081350022L;
 		data[17]=5764609754271717120L;
 		data[18]=-8059190304818853887L;
-		data[19]=134221807L;
+		data[19]=536874991L;
 		return data;
 	}
 	public static final BitSet _tokenSet_42 = new BitSet(mk_tokenSet_42());
@@ -46395,7 +46398,7 @@ inputState.guessing--;
 		for (int i = 11; i<=12; i++) { data[i]=-1L; }
 		data[13]=-65L;
 		for (int i = 14; i<=18; i++) { data[i]=-1L; }
-		data[19]=268435455L;
+		data[19]=2147483647L;
 		return data;
 	}
 	public static final BitSet _tokenSet_44 = new BitSet(mk_tokenSet_44());
@@ -46428,7 +46431,7 @@ inputState.guessing--;
 		data[16]=9197085240081350022L;
 		data[17]=5764609754271717120L;
 		data[18]=-8059190304818853887L;
-		data[19]=134221807L;
+		data[19]=536874991L;
 		return data;
 	}
 	public static final BitSet _tokenSet_46 = new BitSet(mk_tokenSet_46());
@@ -46453,7 +46456,7 @@ inputState.guessing--;
 		data[16]=9197085240081350022L;
 		data[17]=5764609754271717120L;
 		data[18]=-8059190304818853887L;
-		data[19]=134221807L;
+		data[19]=536874991L;
 		return data;
 	}
 	public static final BitSet _tokenSet_47 = new BitSet(mk_tokenSet_47());
@@ -46478,7 +46481,7 @@ inputState.guessing--;
 		data[16]=9197085240081350022L;
 		data[17]=5764609754271717120L;
 		data[18]=-8059190304818853887L;
-		data[19]=134221807L;
+		data[19]=536874991L;
 		return data;
 	}
 	public static final BitSet _tokenSet_48 = new BitSet(mk_tokenSet_48());
@@ -46503,7 +46506,7 @@ inputState.guessing--;
 		data[16]=9197085240081350022L;
 		data[17]=5764609754271717120L;
 		data[18]=-8059190304818853887L;
-		data[19]=134221807L;
+		data[19]=536874991L;
 		return data;
 	}
 	public static final BitSet _tokenSet_49 = new BitSet(mk_tokenSet_49());
@@ -46528,7 +46531,7 @@ inputState.guessing--;
 		data[16]=9197085240081350022L;
 		data[17]=5764609754271717120L;
 		data[18]=-8059190304818853887L;
-		data[19]=134221807L;
+		data[19]=536874991L;
 		return data;
 	}
 	public static final BitSet _tokenSet_50 = new BitSet(mk_tokenSet_50());

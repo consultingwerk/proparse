@@ -7,6 +7,9 @@ This file is made available under the terms of the Eclipse Public License v1.0.
 package com.joanju.proparse;
 
 import java.io.IOException;
+import java.util.Stack;
+
+import org.prorefactor.core.TokenTypes;
 
 
 public class Lexer implements ProParserTokenTypes {
@@ -46,7 +49,10 @@ public class Lexer implements ProParserTokenTypes {
 
 	private ProToken ampTextToken = null;
 	private ProToken newToken = null;
-
+	
+	private Stack<ConditionalCompilationToken> condComp = new Stack<ConditionalCompilationToken>();
+	private ConditionalCompilationToken condToken = null;
+	
 //////////////// Lexical productions listed first, support functions follow.
 
 
@@ -54,6 +60,7 @@ public class Lexer implements ProParserTokenTypes {
 
 		String makroText;
 		String incRefText;
+		ConditionalCompilationToken token;
 		
 		for (;;) {
 
@@ -74,6 +81,13 @@ public class Lexer implements ProParserTokenTypes {
 				} // switch
 			}
 
+			if(this.condToken != null)
+			{
+				token = this.condToken;
+				this.condToken = null;
+				return token;
+			}
+			
 			if(!prepro.incRef.isEmpty())
 			{
 				textStartFile = prepro.textStartFile;
@@ -184,11 +198,20 @@ public class Lexer implements ProParserTokenTypes {
 				switch(ampTextToken.getType())
 				{
 					case ProParserTokenTypes.AMPIF:
-					case ProParserTokenTypes.AMPTHEN:
-					case ProParserTokenTypes.AMPELSE:
-					case ProParserTokenTypes.AMPELSEIF:
+						token = new ConditionalCompilationToken(filenameList, textStartFile, textStartLine, textStartCol, textStartSource);
+						token.setAmpIf(ampTextToken);
+						this.condComp.push(token);
+						newToken = token;
+						return newToken;
+						
 					case ProParserTokenTypes.AMPENDIF:
-						return makeToken(CONDITIONALCOMPILATION, ampTextToken.getText());
+						token = this.condComp.pop();
+						token.setEndIf(ampTextToken);
+						newToken = ampTextToken;
+						ampTextToken = null;
+						this.condToken = new ConditionalCompilationToken(token);						
+						return newToken;
+						
 					default:
 						newToken = ampTextToken;
 						ampTextToken = null;

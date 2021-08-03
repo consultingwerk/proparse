@@ -158,6 +158,11 @@ public class DoParse {
 				filter.hide(NodeTypes.INCLUDEFILEREFERENCE);
 				filter.hide(NodeTypes.MAKROREFERENCE);
 				filter.hide(NodeTypes.CONDITIONALCOMPILATION);
+				filter.hide(NodeTypes.AMPIF);
+				filter.hide(NodeTypes.AMPTHEN);
+				filter.hide(NodeTypes.AMPELSEIF);
+				filter.hide(NodeTypes.AMPELSE);
+				filter.hide(NodeTypes.AMPENDIF);
 				filter.hide(NodeTypes.AMPANALYZESUSPEND);
 				filter.hide(NodeTypes.AMPANALYZERESUME);
 				filter.hide(NodeTypes.AMPGLOBALDEFINE);
