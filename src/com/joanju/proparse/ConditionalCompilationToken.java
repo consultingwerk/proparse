@@ -88,7 +88,6 @@ public class ConditionalCompilationToken
 	public void setEndIf (ProToken ampEndIf)
 	{
 		this.ampEndIf = ampEndIf;
-
 		this.setEnclosedText ();
 	}
 	
@@ -133,12 +132,11 @@ public class ConditionalCompilationToken
 		beginCol  	  = this.ampIf.getColumn() - 1;
 		beginFilename = this.ampIf.getFilename();
 		
-		endLine 	= this.ampEndIf.getLine();
-		endCol 		= this.ampEndIf.getColumn() + this.ampEndIf.getText().length() - 1;
+		endLine 	= this.ampEndIf.getLine() + ((this.ampIf.getLine() == this.ampEndIf.getLine()) ? -1 : 0) ;
+		endCol 		= this.ampEndIf.getColumn() + this.ampEndIf.getText().length();
 		endFilename = this.ampEndIf.getFilename();
 		
 		this.enclosedText = "";
-		
 		if (beginFilename.equals(endFilename))
 		{
 			lines = this.getLines(beginFilename);
@@ -178,7 +176,7 @@ public class ConditionalCompilationToken
 			}
 		}
 		// Remove last new Line
-		this.enclosedText = this.enclosedText.substring(0, this.enclosedText.length() - System.lineSeparator().length());
+		this.enclosedText = this.enclosedText.substring(0, this.enclosedText.length() + ((this.ampIf.getLine() == this.ampEndIf.getLine()) ? -1 : -2));
 	}
 	
 	/**
