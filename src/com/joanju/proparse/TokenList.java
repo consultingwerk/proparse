@@ -106,7 +106,7 @@ public class TokenList implements antlr.TokenStream, ProParserTokenTypes {
 			}
 			if (list.get(index-1).getType() == NAMEDOT) {
 				index = index - 2;
-			} else if(list.get(index).getText().charAt(0)=='.') {
+			} else if(list.get(index).getText().length() > 0 && list.get(index).getText().charAt(0)=='.') {
 				index = index - 1;
 			} else {
 				break;
