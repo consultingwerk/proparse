@@ -38372,6 +38372,14 @@ inputState.guessing--;
 				match(RECURSIVE);
 				break;
 			}
+			case FOREIGNKEYHIDDEN:
+			{
+				JPNode tmp2201_AST = null;
+				tmp2201_AST = (JPNode)astFactory.create(LT(1));
+				astFactory.addASTChild(currentAST, tmp2201_AST);
+				match(FOREIGNKEYHIDDEN);
+				break;
+			}
 			default:
 			{
 				break _loop781;
