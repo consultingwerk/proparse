@@ -87,13 +87,36 @@ public class Postlexer implements antlr.TokenStream, ProParserTokenTypes {
 		// Progress DEFINED() returns a single digit: 0,1,2, or 3.
 		// The text between the parens can be pretty arbitrary, and can
 		// have embedded comments, so this calls a specific lexer function for it.
+		// We may have macro usage inside the preprocessor string, which we need to skip
+		// lexer.getAmpIfDefArg returns expansed name  
 		getNextToken();
 		if (currToken.getType() == WS)
 			getNextToken();
 		if (currToken.getType() != LEFTPAREN)
 			throwMessage("Bad DEFINED function in &IF preprocessor condition");
+
+		// in case the token starts with a preprocessor we skip it. need to get to preprocessed value, 
+		for (;currToken.getType() == MAKROREFERENCE;)
+			getNextToken();
+
 		ProToken argToken = lexer.getAmpIfDefArg();
+
+		// when preprocessor variable to check starts with a preprocessor include,
+		// we take next one   
+		for (;argToken.getType() == MAKROREFERENCE;)
+			argToken = lexer.getAmpIfDefArg();
+
+		// skip other preprocessors 
+		for (;currToken.getType() == MAKROREFERENCE;)
+			getNextToken();
+
 		getNextToken();
+
+		// consume last preprocessors
+		for (;currToken.getType() == MAKROREFERENCE;){
+			getNextToken();
+		}		
+
 		if (currToken.getType() != RIGHTPAREN)
 			throwMessage("Bad DEFINED function in &IF preprocessor condition");
 		return new ProToken(filenameList, NUMBER, prepro.defined(argToken.getText().trim().toLowerCase()));
