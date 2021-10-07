@@ -46,6 +46,7 @@ public class RefactorSession {
 
 	private static RefactorSession theInstance;
 
+	private static String listingFile = null;
 	
 	
 	
@@ -127,9 +128,20 @@ public class RefactorSession {
 
 	/** Get the listing file name, makes sure the directory exists. */
 	public static String getListingFileName() {
-		String ret = getContextDirName() + "prorefactor/temp/listingfile.txt";
-		(new File(ret)).getParentFile().mkdirs();
-		return ret;
+		
+		if (listingFile!=null )
+			return listingFile;
+		
+		StringBuilder bldr = new StringBuilder();
+		bldr
+			.append(getContextDirName())
+			.append("prorefactor/temp/listingfile.")
+			.append(System.currentTimeMillis())
+			.append(".txt")
+			;
+        listingFile = bldr.toString();
+		(new File(listingFile)).getParentFile().mkdirs();
+		return listingFile;
 	}
 
 	public static String getMessagesFileName() {
