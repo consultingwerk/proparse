@@ -232,8 +232,15 @@ public class ListingParser {
 
 
 	public void parse() throws IOException, RefactorException {
+		
+		// Simplify debugging through more meaningful stack-trace 
+		String charsetName = System.getProperty("file.encoding");
+		Charset charset = Charset.forName(charsetName);
+		FileInputStream fis = new FileInputStream(listingFile);
+		InputStreamReader inp = new InputStreamReader(fis, charset);
+		
 		/* SCL-3087 : Replaced FileReader with InputStreamReader to use the current codepage */
-		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(listingFile), Charset.forName(System.getProperty("file.encoding"))));
+		BufferedReader reader = new BufferedReader(inp);
 		createRootNode();
 		while (true) {
 			String currLine = reader.readLine();
