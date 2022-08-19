@@ -10,21 +10,15 @@
  */
 package org.prorefactor.macrolevel;
 
-
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Arrays;
-
 import org.prorefactor.refactor.RefactorException;
-
-
 
 /** For parsing Proparse's "preprocessor listing" file.
  * Generates a "macro tree". The macro tree's root is
@@ -240,39 +234,44 @@ public class ListingParser {
 		InputStreamReader inp = new InputStreamReader(fis, charset);
 		
 		/* SCL-3087 : Replaced FileReader with InputStreamReader to use the current codepage */
-		BufferedReader reader = new BufferedReader(inp);
-		createRootNode();
-		while (true) {
-			String currLine = reader.readLine();
-			if (currLine==null) break;
-			listingFileLine++;
-			String [] parts = currLine.split("\\s", 6);
-			String token = parts[3].intern();
-			if (token=="globdef") { globdef(parts); continue; }
-			if (token=="scopdef") { scopdef(parts); continue; }
-			if (token=="macroref") { macroref(parts); continue; }
-			if (token=="macrorefend") { macrorefend(parts); continue; }
-			if (token=="undef") { undef(parts); continue; }
-			if (token=="include") { include(parts); continue; }
-			if (token=="incarg") { incarg(parts); continue; }
-			if (token=="incend") { incend(parts); continue; }
-			if (token=="ampif") { ampif(parts); continue; }
-			if (token=="ampelseif") { ampelseif(parts); continue; }
-			if (token=="ampelse") { ampelse(parts); continue; }
-			if (token=="ampendif") { ampendif(parts); continue; }
-			if (token=="fileindex") { fileindex(parts); continue; }
-			// We might just be at an empty line at the end of the file.
-			if (currLine.trim().length()==0) continue;
-			throw new RefactorException(
-				"Invalid token in Proparse listing file."
-				+ " Token: " + token
-				+ " Line: " + (new Integer(listingFileLine)).toString()
-				);
+		BufferedReader reader = null;
+		
+		try {			
+			reader = new BufferedReader (inp);
+			createRootNode();
+			while (true) {
+				String currLine = reader.readLine();
+				if (currLine==null) break;
+				listingFileLine++;
+				String [] parts = currLine.split("\\s", 6);
+				String token = parts[3].intern();
+				if (token=="globdef") { globdef(parts); continue; }
+				if (token=="scopdef") { scopdef(parts); continue; }
+				if (token=="macroref") { macroref(parts); continue; }
+				if (token=="macrorefend") { macrorefend(parts); continue; }
+				if (token=="undef") { undef(parts); continue; }
+				if (token=="include") { include(parts); continue; }
+				if (token=="incarg") { incarg(parts); continue; }
+				if (token=="incend") { incend(parts); continue; }
+				if (token=="ampif") { ampif(parts); continue; }
+				if (token=="ampelseif") { ampelseif(parts); continue; }
+				if (token=="ampelse") { ampelse(parts); continue; }
+				if (token=="ampendif") { ampendif(parts); continue; }
+				if (token=="fileindex") { fileindex(parts); continue; }
+				// We might just be at an empty line at the end of the file.
+				if (currLine.trim().length()==0) continue;
+				throw new RefactorException(
+						"Invalid token in Proparse listing file."
+								+ " Token: " + token
+								+ " Line: " + (new Integer(listingFileLine)).toString()
+						);
+			}
 		}
-		reader.close();
-		//fileReader.close();
+		finally {
+			if (reader != null)
+				reader.close();
+		}
 	}
-
 
 	/** Proparse's preprocess listing replaces '\n' with "\\n",
 	 * '\r' with "\\r", and '\\' with "\\\\".
