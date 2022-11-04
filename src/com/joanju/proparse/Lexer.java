@@ -223,8 +223,8 @@ public class Lexer implements ProParserTokenTypes {
 					return makeToken(LEXAT);
 				else
 					append();
-					getChar();
-					return id(ANNOTATION);
+				getChar();
+				return id(ANNOTATION);
 			case '[':
 				getChar();
 				return makeToken(LEFTBRACE);
@@ -886,6 +886,13 @@ public class Lexer implements ProParserTokenTypes {
 				if (ttype==ID) ttype = FILENAME;
 				break;
 			default:
+				if (   currChar == '.'
+					&& ! Character.isDigit(currChar) 
+					&& prepro.nameDot) {
+					append();
+					getChar();
+					break;
+				}
 				if (currInt >= 128 && currInt <= 255) {
 					append();
 					getChar();
@@ -1178,35 +1185,35 @@ public class Lexer implements ProParserTokenTypes {
 
 
 	ProToken makeToken(int ttype) {
-		return new ProToken(
-			filenameList
-			, ttype
-			, currText.toString()
-			, textStartFile
-			, textStartLine
-			, textStartCol
-			, textStartSource
-			);
+		return new ProToken (filenameList, 
+							 ttype, 
+							 currText.toString(), 
+							 textStartFile, 
+							 textStartLine, 
+							 textStartCol, 
+							 textStartSource);
 	}
 
 
 	ProToken makeToken(int ttype, String text) {
-		return new ProToken(
-			filenameList, ttype, text, textStartFile, textStartLine, textStartCol, textStartSource
-			);
+		return new ProToken (filenameList, 
+							 ttype, 
+							 text, 
+							 textStartFile, 
+							 textStartLine, 
+							 textStartCol, 
+							 textStartSource);
 	}
 
 
 	ProToken makeToken(int ttype, char text) {
-		return new ProToken(
-			filenameList
-			, ttype
-			, Character.toString(text)
-			, textStartFile
-			, textStartLine
-			, textStartCol
-			, textStartSource
-			);
+		return new ProToken (filenameList, 
+							 ttype, 
+							 Character.toString(text), 
+							 textStartFile, 
+							 textStartLine, 
+							 textStartCol, 
+							 textStartSource);
 	}
 
 
