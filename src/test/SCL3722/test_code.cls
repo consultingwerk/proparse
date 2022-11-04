@@ -19,4 +19,8 @@ class test.SCL3722.test_code:
 	method public void test_method_4 ():
 	end method.
 
+	@Test (stringattribute="attribute", integerattribute=12345).
+	method public void test_method_5 ():
+	end method.
+
 end class.
