@@ -91,12 +91,15 @@ public class TestAnnotations extends TestCase {
 		
 		anno = anno.firstChild();
 		Assert.assertNotNull(anno);
+		Assert.assertEquals(NodeTypes.FILE, anno.getType());
+		anno = anno.nextSibling();
+		Assert.assertNotNull(anno);
 		Assert.assertEquals(NodeTypes.LEFTPAREN, anno.getType());
 		
 		anno = anno.nextSibling();
 		Assert.assertNotNull(anno);
 		Assert.assertEquals(NodeTypes.ID, anno.getType());
-		Assert.assertEquals("some", anno.getText());
+		Assert.assertEquals("type", anno.getText());
 		
 		anno = anno.nextSibling();
 		Assert.assertNotNull(anno);
@@ -105,7 +108,61 @@ public class TestAnnotations extends TestCase {
 		anno = anno.nextSibling();
 		Assert.assertNotNull(anno);
 		Assert.assertEquals(NodeTypes.QSTRING, anno.getType());
-		Assert.assertEquals("\"text\"", anno.getText());
+		Assert.assertEquals("\"REST\"", anno.getText());
+		
+		anno = anno.nextSibling();
+		Assert.assertNotNull(anno);
+		Assert.assertEquals(NodeTypes.COMMA, anno.getType());
+		
+		anno = anno.nextSibling();
+		Assert.assertNotNull(anno);
+		Assert.assertEquals(NodeTypes.ID, anno.getType());
+		Assert.assertEquals("executionMode", anno.getText());
+		
+		anno = anno.nextSibling();
+		Assert.assertNotNull(anno);
+		Assert.assertEquals(NodeTypes.EQUAL, anno.getType());
+		
+		anno = anno.nextSibling();
+		Assert.assertNotNull(anno);
+		Assert.assertEquals(NodeTypes.QSTRING, anno.getType());
+		Assert.assertEquals("\"singleton\"", anno.getText());
+		
+		anno = anno.nextSibling();
+		Assert.assertNotNull(anno);
+		Assert.assertEquals(NodeTypes.COMMA, anno.getType());
+		
+		anno = anno.nextSibling();
+		Assert.assertNotNull(anno);
+		Assert.assertEquals(NodeTypes.ID, anno.getType());
+		Assert.assertEquals("useReturnValue", anno.getText());
+		
+		anno = anno.nextSibling();
+		Assert.assertNotNull(anno);
+		Assert.assertEquals(NodeTypes.EQUAL, anno.getType());
+		
+		anno = anno.nextSibling();
+		Assert.assertNotNull(anno);
+		Assert.assertEquals(NodeTypes.QSTRING, anno.getType());
+		Assert.assertEquals("\"false\"", anno.getText());
+		
+		anno = anno.nextSibling();
+		Assert.assertNotNull(anno);
+		Assert.assertEquals(NodeTypes.COMMA, anno.getType());
+		
+		anno = anno.nextSibling();
+		Assert.assertNotNull(anno);
+		Assert.assertEquals(NodeTypes.ID, anno.getType());
+		Assert.assertEquals("writeDataSetBeforeImage", anno.getText());
+		
+		anno = anno.nextSibling();
+		Assert.assertNotNull(anno);
+		Assert.assertEquals(NodeTypes.EQUAL, anno.getType());
+		
+		anno = anno.nextSibling();
+		Assert.assertNotNull(anno);
+		Assert.assertEquals(NodeTypes.QSTRING, anno.getType());
+		Assert.assertEquals("\"false\"", anno.getText());
 		
 		anno = anno.nextSibling();
 		Assert.assertNotNull(anno);

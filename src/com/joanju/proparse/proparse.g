@@ -1218,7 +1218,7 @@ annotation
 	;
 
 anno_att_list
-	:	LEFTPAREN anno_att (COMMA anno_att)* RIGHTPAREN
+	:	(FILE)? LEFTPAREN anno_att (COMMA anno_att)* RIGHTPAREN
 	;
 	
 anno_att
