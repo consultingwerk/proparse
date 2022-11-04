@@ -1,6 +1,6 @@
 block-level on error undo, throw.
 
-@Test (some="text", display="test").
+@openapi.openedge.export FILE(type="REST", executionMode="singleton", useReturnValue="false", writeDataSetBeforeImage="false", display="test").
 class test.SCL3722.test_code: 
 
 	@Test (message="single attribute").
