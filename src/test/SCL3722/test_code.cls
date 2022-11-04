@@ -11,4 +11,12 @@ class test.SCL3722.test_code:
 	method public void test_method_2 ():
 	end method.
 
+	@Test.testy.test.
+	method public void test_method_3 ():
+	end method.
+	
+	@Test.testy.test (att1="value1", att2="value.value2").
+	method public void test_method_4 ():
+	end method.
+
 end class.

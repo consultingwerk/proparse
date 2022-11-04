@@ -13,7 +13,7 @@ import com.joanju.proparse.NodeTypes;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 
-public class TestAnnotationAttributes extends TestCase {
+public class TestAnnotations extends TestCase {
 
 	private com.joanju.proparse.Environment proparseEnv = null;		
 	private org.prorefactor.core.schema.Schema proparseSchema = null;
@@ -48,7 +48,7 @@ public class TestAnnotationAttributes extends TestCase {
 			
 			node = pu.getTopNode();
 		} 
-		catch (IOException e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 			fail("Failed to initialize Proparse: " + e.getMessage());
