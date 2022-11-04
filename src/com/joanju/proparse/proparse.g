@@ -1222,7 +1222,7 @@ anno_att_list
 	;
 	
 anno_att
-	:	new_identifier EQUAL QSTRING
+	:	new_identifier EQUAL constant
 	;
 
 applystate
