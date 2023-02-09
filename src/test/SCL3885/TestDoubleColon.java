@@ -52,17 +52,6 @@ public class TestDoubleColon extends TestCase
 		pu = new ParseUnit(file, "ISO8859-1");
 		pu.treeParser01();
 		
-		this.printTree ("", pu.getTopNode());
-	}
-	
-	private void printTree (String indent, JPNode node) 
-	{
-		System.out.println(indent + node.toString());
-		
-		if (node.firstChild() != null)
-			this.printTree (indent + "  ", node.firstChild());
-		if (node.nextSibling() != null)
-			this.printTree (indent, node.nextSibling());
 	}
 
 	private String getPropath()
