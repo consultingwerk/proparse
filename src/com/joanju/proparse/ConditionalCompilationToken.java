@@ -1,10 +1,7 @@
 package com.joanju.proparse;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.prorefactor.core.TokenTypes;
 
@@ -13,6 +10,9 @@ public class ConditionalCompilationToken
 {
 	protected ProToken ampIf;
 	protected ProToken ampEndIf;
+	
+	protected final ArrayList<ProToken> tokens;
+	protected final HashMap<ProToken, ConditionalCompilationToken> children;
 	
 	protected String enclosedText;
 	
@@ -34,6 +34,8 @@ public class ConditionalCompilationToken
 		this.setAmpIf(token.getAmpIf());
 		this.setEndIf(token.getEndIf());
 		this.open = false;
+		this.tokens = new ArrayList<ProToken>();
+		this.children = new HashMap<ProToken, ConditionalCompilationToken>();
 	}
 	
 	/**
@@ -52,6 +54,23 @@ public class ConditionalCompilationToken
 	{
 		super (filenameList, TokenTypes.CONDITIONALCOMPILATION, "", file, textStartLine, textStartCol, textStartSource);
 		this.open = true;
+		this.tokens = new ArrayList<ProToken>();
+		this.children = new HashMap<ProToken, ConditionalCompilationToken>();
+	}
+	
+	public void addToken (ProToken token)
+	{
+		if (!this.tokens.contains(token))
+		{
+			this.tokens.add(token);
+			token.addedToArrayList(this.tokens);
+		}
+	}
+	
+	public void addChild (ConditionalCompilationToken token)
+	{
+		if (!this.children.containsKey(token.getAmpIf()))
+			this.children.put (token.getAmpIf(), token);
 	}
 	
 	/**
@@ -88,7 +107,6 @@ public class ConditionalCompilationToken
 	public void setEndIf (ProToken ampEndIf)
 	{
 		this.ampEndIf = ampEndIf;
-		this.setEnclosedText ();
 	}
 	
 	/**
@@ -104,104 +122,37 @@ public class ConditionalCompilationToken
 	 * Returns the text between &IF and &ENDIF
 	 * @return The text between &IF and &ENDIF
 	 */
-	public String getEnclosedText ()
+	public String getEnclosedText (int level, ArrayList<ProToken> processed)
 	{
-		return this.enclosedText;
-	}
-	
-	/**
-	 * Sets the enclosedText attribute as the text between &IF and &ENDIF
-	 */
-	protected void setEnclosedText () 
-	{
-		int beginLine;
-		int beginCol;
-		int endLine;
-		int endCol;
+		StringBuilder sb = new StringBuilder ();
 		
-		String beginFilename;
-		String endFilename;
-		
-		ArrayList<String> lines;
-		
-		if (   this.ampIf == null
-			|| this.ampEndIf == null)
-			return;
-		
-		beginLine 	  = this.ampIf.getLine() - 1;
-		beginCol  	  = this.ampIf.getColumn() - 1;
-		beginFilename = this.ampIf.getFilename();
-		
-		endLine 	= this.ampEndIf.getLine() + ((this.ampIf.getLine() == this.ampEndIf.getLine()) ? -1 : 0) ;
-		endCol 		= this.ampEndIf.getColumn() + this.ampEndIf.getText().length();
-		endFilename = this.ampEndIf.getFilename();
-		
-		this.enclosedText = "";
-		if (beginFilename.equals(endFilename))
+		if (!processed.contains(this.ampIf))
 		{
-			lines = this.getLines(beginFilename);
-			if(beginLine == endLine)
-				this.enclosedText = lines.get(beginLine).substring (beginCol, endCol);
-			else
-			{
-				for (int i = beginLine; i < endLine; i++)
-				{
-					if (i == beginLine)
-						this.enclosedText += lines.get(i).substring (beginCol);
-					else if (i == endLine)
-						this.enclosedText += lines.get(i).substring (0, endCol);
-					else
-						this.enclosedText += lines.get(i);
-				}
-			}
+			sb.append(this.ampIf.getText());
+			processed.add(this.ampIf);
 		}
 		else
+			return "";
+		
+		for (ProToken token: this.tokens)
 		{
-			lines = this.getLines(beginFilename);
-			for (int i = beginLine; i < lines.size(); i++)
+			if (token.equals(this.ampEndIf))
+				break;
+			if (!processed.contains(token))
 			{
-				if (i == beginLine)
-					this.enclosedText += lines.get(i).substring (beginCol);
-				else
-					this.enclosedText += lines.get(i);
-			}
-			
-			lines = this.getLines(endFilename);
-			for (int i = 0; i < endLine; i++)
-			{
-				if (i == endLine)
-					this.enclosedText += lines.get(i).substring (0, endCol);
-				else
-					this.enclosedText += lines.get(i);
+				if (this.children.containsKey(token))
+					sb.append(this.children.get(token).getEnclosedText(level + 1, processed));
+				else 
+					sb.append(token.getText());
 			}
 		}
-		// Remove last new Line
-		this.enclosedText = this.enclosedText.substring(0, this.enclosedText.length() + ((this.ampIf.getLine() == this.ampEndIf.getLine()) ? -1 : -2));
-	}
-	
-	/**
-	 * Reads a file as a list of lines
-	 * @param filename Name of the file to read
-	 * @return The files text as list of lines
-	 */
-	private ArrayList<String> getLines (String filename)
-	{
-		BufferedReader in;
-		String line;
-		ArrayList<String> lines = new ArrayList<String>();
-		try 
+
+		if (!processed.contains(this.ampEndIf))
 		{
-			in = new BufferedReader (new FileReader (new File (filename)));
-			while ((line = in.readLine()) != null)
-				lines.add(line + System.lineSeparator());
-			in.close();
-			
-			return lines;
-		} 
-		catch (IOException e) 
-		{
-			e.printStackTrace();
-			return new ArrayList<String>();
+			sb.append (this.ampEndIf.getText());
+			processed.add(this.ampEndIf);
 		}
+		
+		return sb.toString();
 	}
 }

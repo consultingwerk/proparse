@@ -1,6 +1,7 @@
 package org.prorefactor.core;
 
 import com.joanju.proparse.ConditionalCompilationToken;
+import com.joanju.proparse.ProParserTokenTypes;
 import com.joanju.proparse.ProToken;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -358,6 +359,7 @@ public class NodeTextUtils
 	{
 		StringBuilder bldr = new StringBuilder();
 		JSONObject json;
+		ArrayList<ProToken> processed = new ArrayList<ProToken>();
 		
 		// Iterating the nodes hidden tokens
 		for (ProToken t = node.getHiddenFirst(); t!=null; t = t.getNext()) 
@@ -365,14 +367,17 @@ public class NodeTextUtils
 			// Only the top-most file
 			if((t.getFileIndex() == 0 || t.getType() == TokenTypes.MAKROREFERENCE) && this.hideIncludeFileText)
 			{
-				
 				// &IF .. &THEN .. &ELSEIF .. &ELSE .. &ENDIF
 				if(t instanceof ConditionalCompilationToken)
 				{
 					if (((ConditionalCompilationToken)t).isOpening())
 					{
 						this.consuming++;
-						bldr.append(((ConditionalCompilationToken)t).getEnclosedText());
+						if (!processed.contains(t))
+						{
+							bldr.append(((ConditionalCompilationToken)t).getEnclosedText(0, processed));
+							processed.add(t);
+						}
 					}
 					else
 						this.consuming--;

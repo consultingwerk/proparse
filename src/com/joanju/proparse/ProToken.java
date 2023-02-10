@@ -9,16 +9,22 @@ import com.joanju.Xferable;
 import com.joanju.DataXferStream;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 public class ProToken extends antlr.CommonHiddenStreamToken implements Xferable {
 
+	protected final ArrayList<ArrayList<ProToken>> containedIn;
+	
 	/** Only to be used for persistence/serialization. */
-	public ProToken() {}
+	public ProToken() {
+		this.containedIn = new ArrayList<ArrayList<ProToken>>();
+	}
 
 	public ProToken(IntegerIndex<String> filenameList, int type, String s) {
 		super(type, s);
 		this.filenameList = filenameList;
+		this.containedIn = new ArrayList<ArrayList<ProToken>>();
 	}
 
 	public ProToken(IntegerIndex<String> filenameList, int type, String txt, int file, int line, int col, int macroSourceNum) {
@@ -28,6 +34,7 @@ public class ProToken extends antlr.CommonHiddenStreamToken implements Xferable 
 		this.macroSourceNum = macroSourceNum;
 		this.line = line;
 		this.col = col;
+		this.containedIn = new ArrayList<ArrayList<ProToken>>();
 	}
 
 	public ProToken(ProToken orig) {
@@ -37,8 +44,21 @@ public class ProToken extends antlr.CommonHiddenStreamToken implements Xferable 
 		this.macroSourceNum = orig.macroSourceNum;
 		this.line = orig.line;
 		this.col = orig.col;
+		this.containedIn = new ArrayList<ArrayList<ProToken>>();
 	}
-
+	
+	protected void addedToArrayList (ArrayList<ProToken> list)
+	{
+		if (!this.containedIn.contains(list))
+			this.containedIn.add(list);
+	}
+	
+	public void replaceInArrayLists (ProToken newToken)
+	{
+		for (ArrayList<ProToken> list: this.containedIn)
+			if (list.contains(this))
+				list.set(list.indexOf(this), newToken);
+	}
 
 	int fileIndex;
 	int macroSourceNum;

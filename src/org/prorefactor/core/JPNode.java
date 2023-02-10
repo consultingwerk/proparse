@@ -961,7 +961,8 @@ public class JPNode extends BaseAST implements IJPNode, Xferable {
 	 * @return The ProToken instance of the Node (fluent style)
 	 */
 	public ProToken setToken (ProToken newToken) {
+		this.token.replaceInArrayLists(newToken);
 		this.token = newToken;
-		return newToken;
+		return this.token;
 	}
 }
