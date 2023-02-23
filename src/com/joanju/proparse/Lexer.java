@@ -200,6 +200,8 @@ public class Lexer implements ProParserTokenTypes {
 					case ProParserTokenTypes.AMPIF:
 						token = new ConditionalCompilationToken(filenameList, textStartFile, textStartLine, textStartCol, textStartSource);
 						token.setAmpIf(ampTextToken);
+						if (!this.condComp.isEmpty())
+							this.condComp.peek().addChild (token);
 						this.condComp.push(token);
 						newToken = token;
 						return newToken;
@@ -1178,7 +1180,7 @@ public class Lexer implements ProParserTokenTypes {
 
 
 	ProToken makeToken(int ttype) {
-		return new ProToken(
+		ProToken token = new ProToken(
 			filenameList
 			, ttype
 			, currText.toString()
@@ -1187,18 +1189,26 @@ public class Lexer implements ProParserTokenTypes {
 			, textStartCol
 			, textStartSource
 			);
+		
+		if (!this.condComp.isEmpty())
+			this.condComp.peek().addToken(token);
+		return token;
 	}
 
 
 	ProToken makeToken(int ttype, String text) {
-		return new ProToken(
+		ProToken token = new ProToken(
 			filenameList, ttype, text, textStartFile, textStartLine, textStartCol, textStartSource
 			);
+
+		if (!this.condComp.isEmpty())
+			this.condComp.peek().addToken(token);
+		return token;
 	}
 
 
 	ProToken makeToken(int ttype, char text) {
-		return new ProToken(
+		ProToken token = new ProToken(
 			filenameList
 			, ttype
 			, Character.toString(text)
@@ -1207,6 +1217,10 @@ public class Lexer implements ProParserTokenTypes {
 			, textStartCol
 			, textStartSource
 			);
+
+		if (!this.condComp.isEmpty())
+			this.condComp.peek().addToken(token);
+		return token;
 	}
 
 
