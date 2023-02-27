@@ -1214,7 +1214,15 @@ analyzestate2
 	;
 
 annotation
-	:	ANNOTATION^ (not_state_end)* state_end {sthd(##,0);}
+	:	ANNOTATION^ (anno_att_list)? state_end {sthd(##,0);}
+	;
+
+anno_att_list
+	:	(FILE)? LEFTPAREN anno_att (COMMA anno_att)* RIGHTPAREN
+	;
+	
+anno_att
+	:	new_identifier EQUAL constant
 	;
 
 applystate
