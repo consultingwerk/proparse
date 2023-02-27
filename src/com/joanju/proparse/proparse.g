@@ -671,7 +671,7 @@ parameter
 		// and BUFFER sports2000.customer:whatever
 		( { LA(3)!=OBJCOLON && (LA(3)!=NAMEDOT || LA(5)!=OBJCOLON) }?
 		  BUFFER record
-		)=> BUFFER^ record
+		)=> BUFFER^ record (DOUBLECOLON field)?
 	|	(options{greedy=true;}: p1:OUTPUT^|p2:INPUTOUTPUT^|p3:INPUT^)?
 		(	// Ambiguous on expression, for a few of these.
 			options{generateAmbigWarnings=false;}
