@@ -260,10 +260,10 @@ public class ParseUnit {
 			e.printStackTrace(pw);
 			String sStackTrace = sw.toString();
 			
-			throw new RefactorException(errmsg + 
-										"Original Exception: " + e.getMessage() + System.lineSeparator() + System.lineSeparator() + 
-//										"Exception Type: " + e.getClass().getName() + System.lineSeparator() +
-										sStackTrace, e);
+			throw new RefactorException(errmsg 
+										+ ((e.getMessage() == null) ? "" : "Original Exception: " + e.getMessage() + System.lineSeparator() + System.lineSeparator()) 
+										+ sStackTrace
+										, e);
 		}
 		
 		try {
@@ -286,10 +286,10 @@ public class ParseUnit {
 			e.printStackTrace(pw);
 			String sStackTrace = sw.toString();			
 			
-			throw new RefactorException(errmsg + 	
-										"Original Exception: " + e.getMessage() + System.lineSeparator() + System.lineSeparator() +
-//										"Exception Type: " + e.getClass().getName() + System.lineSeparator() +
-										sStackTrace, e);
+			throw new RefactorException(errmsg 
+										+ ((e.getMessage() == null) ? "" : "Original Exception: " + e.getMessage() + System.lineSeparator() + System.lineSeparator()) 
+										+ sStackTrace
+										, e);
 		}
 		
 		try {
@@ -301,10 +301,10 @@ public class ParseUnit {
 			e.printStackTrace(pw);
 			String sStackTrace = sw.toString();
 						
-			throw new RefactorException (errmsg + 
-										 "Original Exception: " + e.getMessage() + System.lineSeparator() + System.lineSeparator() +
-// 										 "Exception Type: " + e.getClass().getName() + System.lineSeparator() +
-										 sStackTrace, e);
+			throw new RefactorException(errmsg 
+										+ ((e.getMessage() == null) ? "" : "Original Exception: " + e.getMessage() + System.lineSeparator() + System.lineSeparator()) 
+										+ sStackTrace
+										, e);
 		}
 	}
 
