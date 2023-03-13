@@ -225,24 +225,7 @@ public class NodeTextUtils
 	{
 		StringBuilder bldr = new StringBuilder();
 
-		if (   node.getType() == TokenTypes.PLUS
-			|| node.getType() == TokenTypes.MINUS
-			|| node.getType() == TokenTypes.MULTIPLY
-			|| node.getType() == TokenTypes.DIVIDE
-			|| node.getType() == TokenTypes.MODULO
-			|| node.getType() == TokenTypes.EQUAL
-			|| node.getType() == TokenTypes.OR
-			|| node.getType() == TokenTypes.AND
-			|| node.getType() == TokenTypes.LTHAN
-			|| node.getType() == TokenTypes.GTHAN
-			|| node.getType() == TokenTypes.LE
-			|| node.getType() == TokenTypes.GE
-			|| node.getType() == TokenTypes.EQ
-			|| node.getType() == TokenTypes.NE
-			|| node.getType() == TokenTypes.PLUS_EQUAL
-			|| node.getType() == TokenTypes.MINUS_EQUAL
-			|| node.getType() == TokenTypes.DIVIDE_EQUAL
-			|| node.getType() == TokenTypes.MULTIPLY_EQUAL)
+		if (this.isOperator(node))
 		{
 			if(this.hideIncludeFileText && node.getFileIndex() == 0)
 			{
@@ -252,12 +235,44 @@ public class NodeTextUtils
 		}
 		else
 		{
-			bldr.append(getHiddenText(node));
-			if(this.hideIncludeFileText && node.getFileIndex() == 0 && this.consuming == 0)
+			if(this.hideIncludeFileText && node.getFileIndex() == 0 && this.consuming == 0) {
+				bldr.append(getHiddenText(node));
 				bldr.append(node.getText());
+			}
 			this.currNode = node;
 		}
 		return bldr.toString();
+	}
+	
+	/**
+	 * Returns whether the given node is an operator node
+	 * @param node The node to test
+	 * @return Whether the node is an operator
+	 */
+	private boolean isOperator (JPNode node) {
+		
+		return node.getType() == TokenTypes.PLUS
+			|| node.getType() == TokenTypes.MINUS
+			|| node.getType() == TokenTypes.MULTIPLY
+			|| node.getType() == TokenTypes.DIVIDE
+			|| node.getType() == TokenTypes.MODULO
+			|| node.getType() == TokenTypes.EQ
+			|| node.getType() == TokenTypes.EQUAL
+			|| node.getType() == TokenTypes.OR
+			|| node.getType() == TokenTypes.AND
+			|| node.getType() == TokenTypes.XOR
+			|| node.getType() == TokenTypes.LTHAN
+			|| node.getType() == TokenTypes.GTHAN
+			|| node.getType() == TokenTypes.LE
+			|| node.getType() == TokenTypes.GE
+			|| node.getType() == TokenTypes.NE
+			|| node.getType() == TokenTypes.PLUS_EQUAL
+			|| node.getType() == TokenTypes.MINUS_EQUAL
+			|| node.getType() == TokenTypes.DIVIDE_EQUAL
+			|| node.getType() == TokenTypes.MULTIPLY_EQUAL
+			|| node.getType() == TokenTypes.BEGINS
+			|| node.getType() == TokenTypes.MATCHES
+			|| node.getType() == TokenTypes.CONTAINS;
 	}
 	
 	/**

@@ -495,7 +495,8 @@ public class Lexer implements ProParserTokenTypes {
 			unEscapedAppend();
 			
 			// check if the preprocessor escaped the 4gl new line (~n, ~r)
-			if ((prepro.escapeCurrent == false && (currChar == '\r' || currChar == '\n')) || currInt == EOF_CHAR) {
+			if ((prepro.escapeCurrent == false && (currChar == '\n')) || currInt == EOF_CHAR) {
+				getChar();
 				prepro.doingComment = false;
 				prepro.doingSingleLineComment = false; 
 				return makeToken(COMMENT);
