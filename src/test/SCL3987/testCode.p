@@ -119,3 +119,4 @@ iNum *= 42.
 // DIVIDE_EQUAL
 iNum /= 42.
 
+{Consultingwerk/Windows/ui-catch.i}

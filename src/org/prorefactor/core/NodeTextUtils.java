@@ -235,8 +235,8 @@ public class NodeTextUtils
 		}
 		else
 		{
+			bldr.append(getHiddenText(node));
 			if(this.hideIncludeFileText && node.getFileIndex() == 0 && this.consuming == 0) {
-				bldr.append(getHiddenText(node));
 				bldr.append(node.getText());
 			}
 			this.currNode = node;
