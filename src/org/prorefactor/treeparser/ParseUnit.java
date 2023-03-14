@@ -18,8 +18,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.UnsupportedCharsetException;
@@ -237,11 +235,11 @@ public class ParseUnit {
 		String errmsg = "";
 		
 		if (file != null) {
-			errmsg = "Error parsing " + file.getName() + System.lineSeparator() + System.lineSeparator(); 
+			errmsg = String.format ("Error parsing %s%n%n", file.getName()); 
 		}
 		
 		if (fileContent != null && !fileContent.isEmpty()) {
-			errmsg = errmsg + "Error parsing fileContent." + System.lineSeparator() + System.lineSeparator();
+			errmsg = String.format ("%sError parsing fileContent.%n%n", errmsg);
 		}
 		
 		if (refpack == null) {
@@ -255,15 +253,7 @@ public class ParseUnit {
 			doParse = new DoParse(file.getAbsolutePath(), fileContent);
 		}
 		catch (Exception e) {
-			StringWriter sw = new StringWriter();
-			PrintWriter pw = new PrintWriter(sw);
-			e.printStackTrace(pw);
-			String sStackTrace = sw.toString();
-			
-			throw new RefactorException(errmsg 
-										+ ((e.getMessage() == null) ? "" : "Original Exception: " + e.getMessage() + System.lineSeparator() + System.lineSeparator()) 
-										+ sStackTrace
-										, e);
+			throw new RefactorException (e, errmsg);
 		}
 		
 		try {
@@ -281,30 +271,14 @@ public class ParseUnit {
 				fileOut.close();
 			}
 		} catch (Exception e) {
-			StringWriter sw = new StringWriter();
-			PrintWriter pw = new PrintWriter(sw);
-			e.printStackTrace(pw);
-			String sStackTrace = sw.toString();			
-			
-			throw new RefactorException(errmsg 
-										+ ((e.getMessage() == null) ? "" : "Original Exception: " + e.getMessage() + System.lineSeparator() + System.lineSeparator()) 
-										+ sStackTrace
-										, e);
+			throw new RefactorException (e, errmsg);
 		}
 		
 		try {
 			setTopNode(doParse.getTopNode());
 		}
 		catch (Exception e) {
-			StringWriter sw = new StringWriter();
-			PrintWriter pw = new PrintWriter(sw);
-			e.printStackTrace(pw);
-			String sStackTrace = sw.toString();
-						
-			throw new RefactorException(errmsg 
-										+ ((e.getMessage() == null) ? "" : "Original Exception: " + e.getMessage() + System.lineSeparator() + System.lineSeparator()) 
-										+ sStackTrace
-										, e);
+			throw new RefactorException (e, errmsg);
 		}
 	}
 
@@ -334,7 +308,10 @@ public class ParseUnit {
 		try {
 			TreeParserWrapper.run2(tp, this.getTopNode());
 		} catch (PRCException e) {
-			throw new RefactorException(e.getMessage(), e);
+			if (e.getMessage() == null)
+				throw new RefactorException (e);
+			else
+				throw new RefactorException(e.getMessage(), e);
 		}
 	}
 
