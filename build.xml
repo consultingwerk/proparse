@@ -68,6 +68,7 @@
 			<zipfileset file="proparse.net.dll" prefix="proparse.assemblies" />
 			<zipfileset file="ikvmbin/IKVM.OpenJDK.Core.dll" prefix="proparse.assemblies" />
 			<zipfileset file="ikvmbin/IKVM.Runtime.dll" prefix="proparse.assemblies" />
+			<zipfileset file="ikvmbin/IKVM.OpenJDK.Text.dll" prefix="proparse.assemblies" />
 		</zip>
 	</target>	
 

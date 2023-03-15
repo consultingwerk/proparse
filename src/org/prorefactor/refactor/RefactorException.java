@@ -12,7 +12,6 @@ package org.prorefactor.refactor;
 
 import java.io.File;
 
-
 /** Exception to be thrown only by the refactoring libraries,
  * especially ScanLib, Refactor, etc. These exceptions thrown
  * from the refactoring libraries are intended to help the
@@ -35,20 +34,39 @@ public class RefactorException extends Exception {
 	}
 
 	public RefactorException(String message, Throwable cause) {
-		super(message, cause);
+		super (message, cause);
+	}
+	
+	public RefactorException (Throwable cause, String message) {
+		super (String.format ("%s%s%s", 
+			 	              message, 
+		 		              cause.getMessage () == null ? "" : String.format ("Original Exception: %s%n%n", 
+	 			            		                                            cause.getMessage ()), 
+				              RefactorException.getStackTrace (cause)), 
+			   cause);
 	}
 
 	/** Create an exception where we don't have a file index.
 	 */
 	public RefactorException(File file, int line, int col, String message) {
-		super(	file.toString()
-				+ ":" + Integer.toString(line)
-				+ ":" + Integer.toString(col)
-				+ " " + message
-				);
+		super (String.format ("%s:%d:%d %s", 
+							  file.toString(), 
+							  line, 
+							  col, 
+							  message));
 		this.file = file;
 		this.filePos = new int [] { -1, line, col};
 	}
 
+	protected static String getStackTrace (Throwable e) {
+		StringBuilder sb = new StringBuilder ();
+		
+		for (StackTraceElement ste: e.getStackTrace()) {
+			sb.append(String.format ("\tat %s%n", 
+									 ste.toString()));
+		}
 
+		return sb.toString();
+	}
+	
 } // class
