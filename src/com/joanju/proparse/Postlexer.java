@@ -94,6 +94,8 @@ public class Postlexer implements antlr.TokenStream, ProParserTokenTypes {
 			throwMessage("Bad DEFINED function in &IF preprocessor condition");
 		ProToken argToken = lexer.getAmpIfDefArg();
 		getNextToken();
+		if (currToken.getType() == MAKROREFERENCE)
+			getNextToken();
 		if (currToken.getType() != RIGHTPAREN)
 			throwMessage("Bad DEFINED function in &IF preprocessor condition");
 		return new ProToken(filenameList, NUMBER, prepro.defined(argToken.getText().trim().toLowerCase()));
