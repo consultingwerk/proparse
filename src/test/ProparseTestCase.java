@@ -23,13 +23,13 @@ public abstract class ProparseTestCase
 			proparseSchema = org.prorefactor.core.schema.Schema.getInstance();			
 			
 			proparseSchema.clear();
-			proparseSchema.loadSchema(new File("src/test/schema.txt").getAbsolutePath());
+			proparseSchema.loadSchema(new File(this.getSchemaFileName()).getAbsolutePath());
 			
 			proparseEnv.configSet ("propath", this.getPropath());			
 	
 			proparseEnv.configSet ("batch-mode", "false");
 			proparseEnv.configSet ("opsys", "WIN32");
-			proparseEnv.configSet ("proversion", "12.3");
+			proparseEnv.configSet ("proversion", this.getProversion());
 			proparseEnv.configSet ("window-system", "MS-WINXP");
 		} 
 		catch (IOException e)
@@ -37,6 +37,16 @@ public abstract class ProparseTestCase
 			e.printStackTrace();
 			fail("Failed to initialize Proparse: " + e.getMessage());
 		}
+	}
+	
+	protected String getSchemaFileName ()
+	{
+		return "src/test/schema.txt";
+	}
+	
+	protected String getProversion ()
+	{
+		return "12.3";
 	}
 
 	protected String getPropath()
@@ -46,7 +56,7 @@ public abstract class ProparseTestCase
 		
 		try
 		{
-			br = new BufferedReader(new FileReader(new File("src/test/propath.txt")));
+			br = new BufferedReader(new FileReader(new File(this.getPropathFileName())));
 			for(String line = br.readLine(); line != null; line = br.readLine())
 				propath += line;
 			
@@ -59,5 +69,10 @@ public abstract class ProparseTestCase
 		}
 		
 		return propath;
+	}
+	
+	protected String getPropathFileName ()
+	{
+		return "src/test/propath.txt";
 	}
 }
