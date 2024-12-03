@@ -129,7 +129,7 @@ blockorstate
 		|	annotation
 		|	dot_comment // ".anything" is a dotcomment if it's where a statement would fit.
 		|	proparse_directive
-		|	(blocklabel LEXCOLON (DO|FOR|REPEAT))=> labeled_block
+		|	(blocklabel LEXCOLON (proparse_directive)? (DO|FOR|REPEAT))=> labeled_block
 		|	(widattr EQUAL DYNAMICNEW)=> dynamicnewstate
 		|	(field EQUAL DYNAMICNEW)=> dynamicnewstate
 		|	(pseudfn EQUAL)=> assignstate3
@@ -203,7 +203,7 @@ labeled_block
 		{
 			astFactory.makeASTRoot(currentAST, #bl);
 		}
-		LEXCOLON (dostate|forstate|repeatstate)
+		LEXCOLON (proparse_directive)? (dostate|forstate|repeatstate)
 	;
 
 block_colon

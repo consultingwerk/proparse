@@ -1814,7 +1814,7 @@ blockorstate :( labeled_block
   ;
 
 // inherited from grammar JPTreeParser
-labeled_block :#(BLOCK_LABEL LEXCOLON (dostate|forstate|repeatstate) )
+labeled_block :#(BLOCK_LABEL LEXCOLON (PROPARSEDIRECTIVE)? (dostate|forstate|repeatstate) )
   ;
 
 // inherited from grammar JPTreeParser
