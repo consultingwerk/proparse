@@ -1,0 +1,43 @@
+
+ /*------------------------------------------------------------------------
+    File        : TestCode
+    Purpose     :
+    Syntax      :
+    Description :
+    Author(s)   : Sebastian
+    Created     : Wed Jun 16 16:43:21 CEST 2021
+    Notes       :
+  ----------------------------------------------------------------------*/
+
+BLOCK-LEVEL ON ERROR UNDO, THROW.
+
+USING Progress.Lang.*                            FROM PROPATH .
+USING Consultingwerk.StudioTest.SCL3394.Source.* FROM PROPATH .
+USING Consultingwerk.StudioTest.SCL3394.Target.* FROM PROPATH .
+
+CLASS Consultingwerk.StudioTest.SCL3394.Target.CopyOfTestCode:
+
+    CONSTRUCTOR CopyOfTestCode ():
+        CopyOfTestCode:Greeting = "Hello":U.
+    END CONSTRUCTOR.
+
+    DEFINE PUBLIC STATIC PROPERTY Greeting AS CHARACTER NO-UNDO
+    GET:
+        RETURN CopyOfTestCode:Greeting.
+    END GET.
+    SET (pcGreeting AS CHARACTER):
+        Consultingwerk.StudioTest.SCL3394.Target.CopyOfTestCode:Greeting = pcGreeting.
+    END SET.
+
+    METHOD PUBLIC STATIC VOID HelloWorld (pcName AS CHARACTER):
+
+        MESSAGE Greeting pcName
+            VIEW-AS ALERT-BOX.
+
+    END METHOD.
+
+    DESTRUCTOR CopyOfTestCode ():
+        CopyOfTestCode:Greeting = "Goodbye":U.
+    END DESTRUCTOR.
+
+END CLASS.

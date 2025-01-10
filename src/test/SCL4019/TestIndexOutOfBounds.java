@@ -104,14 +104,6 @@ public class TestIndexOutOfBounds
 		pu.treeParser01();
 		Assert.assertNotNull(pu.getTopNode());
 		Assert.assertNotNull(pu.getTopNode().toStringSourceText());
-		
-		try (FileWriter fw = new FileWriter (new File ("C:\\Temp\\debug.txt")))
-		{
-			fw.write(pu.getTopNode().toStringSourceText());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	
 	public void test_05 () throws RefactorException {
@@ -124,14 +116,7 @@ public class TestIndexOutOfBounds
 		Assert.assertNotNull(pu);
 		pu.treeParser01();
 		Assert.assertNotNull(pu.getTopNode());
-		
-		try (FileWriter fw = new FileWriter (new File ("C:\\Temp\\debug.txt")))
-		{
-			fw.write(pu.getTopNode().toStringSourceText());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Assert.assertNotNull(pu.getTopNode().toStringSourceText());
 	}
 	
 	public void test_06 () throws RefactorException {
@@ -144,14 +129,7 @@ public class TestIndexOutOfBounds
 		Assert.assertNotNull(pu);
 		pu.treeParser01();
 		Assert.assertNotNull(pu.getTopNode());
-		
-		try (FileWriter fw = new FileWriter (new File ("C:\\Temp\\debug.txt")))
-		{
-			fw.write(pu.getTopNode().toStringSourceText());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Assert.assertNotNull(pu.getTopNode().toStringSourceText());
 	}
 	
 	public void test_07 () throws RefactorException {
@@ -164,14 +142,7 @@ public class TestIndexOutOfBounds
 		Assert.assertNotNull(pu);
 		pu.treeParser01();
 		Assert.assertNotNull(pu.getTopNode());
-		
-		try (FileWriter fw = new FileWriter (new File ("C:\\Temp\\debug.txt")))
-		{
-			fw.write(pu.getTopNode().toStringSourceText());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Assert.assertNotNull(pu.getTopNode().toStringSourceText());
 	}
 	
 	private void compare(File orig, String copy)

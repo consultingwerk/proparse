@@ -2,7 +2,7 @@
 
 define variable cText as character no-undo initial "Hello World":U.
     
-{src/test/SCL4019/TestCode/nestedInclude.i} 
+{src/test/SCL4019/TestCode/nestedInclude.i}
 
 message cText
 	view-as alert-box.

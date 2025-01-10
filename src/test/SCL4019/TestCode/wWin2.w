@@ -1,16 +1,14 @@
 &ANALYZE-SUSPEND _VERSION-NUMBER AB_v10r12 GUI ADM2
 &ANALYZE-RESUME
+/* Connected Databases 
+          sports2000       PROGRESS
+*/
 &Scoped-define WINDOW-NAME wWin
 {adecomm/appserv.i}
-DEFINE VARIABLE h_async                    AS HANDLE          NO-UNDO.
-DEFINE VARIABLE h_Default                  AS HANDLE          NO-UNDO.
-DEFINE VARIABLE h_Local                    AS HANDLE          NO-UNDO.
-DEFINE VARIABLE h_oe113demo                AS HANDLE          NO-UNDO.
-DEFINE VARIABLE h_sports2000partition      AS HANDLE          NO-UNDO.
 &ANALYZE-SUSPEND _UIB-CODE-BLOCK _CUSTOM _DEFINITIONS wWin 
 /*------------------------------------------------------------------------
 
-  File:
+  File: 
 
   Description: from cntnrwin.w - ADM SmartWindow Template
 
@@ -21,14 +19,14 @@ DEFINE VARIABLE h_sports2000partition      AS HANDLE          NO-UNDO.
       <none>
 
   History: New V9 Version - January 15, 1998
-
+          
 ------------------------------------------------------------------------*/
 /*          This .W file was created with the Progress AB.              */
 /*----------------------------------------------------------------------*/
 
-/* Create an unnamed pool to store all the widgets created
+/* Create an unnamed pool to store all the widgets created 
      by this procedure. This is a good default which assures
-     that this procedure's triggers and internal procedures
+     that this procedure's triggers and internal procedures 
      will execute in this procedure's storage, and that proper
      cleanup will occur on deletion of the procedure. */
 
@@ -60,9 +58,29 @@ CREATE WIDGET-POOL.
 /* Name of designated FRAME-NAME and/or first browse and/or first query */
 &Scoped-define FRAME-NAME fMain
 
+/* Internal Tables (found by Frame, Query & Browse Queries)             */
+&Scoped-define INTERNAL-TABLES Customer
+
+/* Definitions for FRAME fMain                                          */
+&Scoped-define FIELDS-IN-QUERY-fMain Customer.Country 
+&Scoped-define ENABLED-FIELDS-IN-QUERY-fMain Customer.Country 
+&Scoped-define ENABLED-TABLES-IN-QUERY-fMain Customer
+&Scoped-define FIRST-ENABLED-TABLE-IN-QUERY-fMain Customer
+&Scoped-define QUERY-STRING-fMain FOR EACH Customer SHARE-LOCK
+&Scoped-define OPEN-QUERY-fMain OPEN QUERY fMain FOR EACH Customer SHARE-LOCK.
+&Scoped-define TABLES-IN-QUERY-fMain Customer
+&Scoped-define FIRST-TABLE-IN-QUERY-fMain Customer
+
+
 /* Standard List Definitions                                            */
-&Scoped-Define ENABLED-OBJECTS iCustNum cCustomerName cCity cSalesrep BUTTON-1 cRepRegion count-order 
-&Scoped-Define DISPLAYED-OBJECTS iCustNum cCustomerName cCity cSalesrep cRepname cRepRegion count-order 
+&Scoped-Define ENABLED-FIELDS Customer.Country 
+&Scoped-define ENABLED-TABLES Customer
+&Scoped-define FIRST-ENABLED-TABLE Customer
+&Scoped-Define ENABLED-OBJECTS FILL-IN-1 
+&Scoped-Define DISPLAYED-FIELDS Customer.Country 
+&Scoped-define DISPLAYED-TABLES Customer
+&Scoped-define FIRST-DISPLAYED-TABLE Customer
+&Scoped-Define DISPLAYED-OBJECTS FILL-IN-1 
 
 /* Custom List Definitions                                              */
 /* List-1,List-2,List-3,List-4,List-5,List-6                            */
@@ -75,64 +93,30 @@ CREATE WIDGET-POOL.
 /* ***********************  Control Definitions  ********************** */
 
 /* Define the widget handle for the window                              */
-DEFINE VARIABLE wWin AS WIDGET-HANDLE NO-UNDO.
+DEFINE VAR wWin AS WIDGET-HANDLE NO-UNDO.
 
 /* Definitions of the field level widgets                               */
-DEFINE BUTTON BUTTON-1 
-     LABEL "..." 
-     SIZE 5 BY .95.
-
-DEFINE VARIABLE cCity AS CHARACTER FORMAT "X(256)":U 
-     LABEL "City" 
-     VIEW-AS FILL-IN 
-     SIZE 32 BY 1 NO-UNDO.
-
-DEFINE VARIABLE cCustomerName AS CHARACTER FORMAT "X(256)":U 
-     LABEL "Name" 
-     VIEW-AS FILL-IN 
-     SIZE 32 BY 1 NO-UNDO.
-
-DEFINE VARIABLE count-order AS INTEGER FORMAT "->,>>>,>>9":U INITIAL 0 
-     LABEL "Order Count" 
+DEFINE VARIABLE FILL-IN-1 AS CHARACTER FORMAT "X(256)":U 
+     LABEL "Fill 1" 
      VIEW-AS FILL-IN 
      SIZE 14 BY 1 NO-UNDO.
 
-DEFINE VARIABLE cRepname AS CHARACTER FORMAT "X(256)":U 
-     VIEW-AS FILL-IN 
-     SIZE 23 BY 1 NO-UNDO.
-
-DEFINE VARIABLE cRepRegion AS CHARACTER FORMAT "X(256)":U 
-     LABEL "Region" 
-     VIEW-AS FILL-IN 
-     SIZE 23 BY 1 NO-UNDO.
-
-DEFINE VARIABLE cSalesrep AS CHARACTER FORMAT "X(256)":U 
-     LABEL "Salesrep" 
-     VIEW-AS FILL-IN 
-     SIZE 14 BY 1 NO-UNDO.
-
-DEFINE VARIABLE iCustNum AS INTEGER FORMAT "->,>>>,>>9":U INITIAL 0 
-     LABEL "Customer Number" 
-     VIEW-AS FILL-IN 
-     SIZE 14 BY 1 NO-UNDO.
-
+/* Query definitions                                                    */
+&ANALYZE-SUSPEND
+DEFINE QUERY fMain FOR 
+      Customer SCROLLING.
+&ANALYZE-RESUME
 
 /* ************************  Frame Definitions  *********************** */
 
 DEFINE FRAME fMain
-     iCustNum AT ROW 2.91 COL 19 COLON-ALIGNED WIDGET-ID 2
-     cCustomerName AT ROW 4.1 COL 19 COLON-ALIGNED WIDGET-ID 4
-     cCity AT ROW 5.29 COL 19 COLON-ALIGNED WIDGET-ID 6
-     cSalesrep AT ROW 6.48 COL 19 COLON-ALIGNED WIDGET-ID 8
-     BUTTON-1 AT ROW 6.48 COL 36 WIDGET-ID 10
-     cRepname AT ROW 6.48 COL 40 COLON-ALIGNED NO-LABEL WIDGET-ID 12
-     cRepRegion AT ROW 7.67 COL 40 COLON-ALIGNED WIDGET-ID 14
-     count-order AT ROW 9.81 COL 19 COLON-ALIGNED WIDGET-ID 16
-     "Text 1" VIEW-AS TEXT
-          SIZE 8 BY .62 AT ROW 1.95 COL 19 WIDGET-ID 18
+     FILL-IN-1 AT ROW 2.91 COL 16 COLON-ALIGNED WIDGET-ID 2
+     Customer.Country AT ROW 6.24 COL 16 COLON-ALIGNED WIDGET-ID 6
+          VIEW-AS FILL-IN 
+          SIZE 22 BY 1
     WITH 1 DOWN NO-BOX KEEP-TAB-ORDER OVERLAY 
          SIDE-LABELS NO-UNDERLINE THREE-D 
-         AT COLUMN 1 ROW 1
+         AT COL 1 ROW 1
          SIZE 80 BY 17 WIDGET-ID 100.
 
 
@@ -175,7 +159,7 @@ ELSE {&WINDOW-NAME} = CURRENT-WINDOW.
 &ANALYZE-SUSPEND _UIB-CODE-BLOCK _CUSTOM _INCLUDED-LIB wWin 
 /* ************************* Included-Libraries *********************** */
 
-{src/adm2/containr.i} 
+{src/adm2/containr.i}
 
 /* _UIB-CODE-BLOCK-END */
 &ANALYZE-RESUME
@@ -190,12 +174,20 @@ ELSE {&WINDOW-NAME} = CURRENT-WINDOW.
   VISIBLE,,RUN-PERSISTENT                                               */
 /* SETTINGS FOR FRAME fMain
    FRAME-NAME                                                           */
-/* SETTINGS FOR FILL-IN cRepname IN FRAME fMain
-   NO-ENABLE                                                            */
 IF SESSION:DISPLAY-TYPE = "GUI":U AND VALID-HANDLE(wWin)
 THEN wWin:HIDDEN = yes.
 
 /* _RUN-TIME-ATTRIBUTES-END */
+&ANALYZE-RESUME
+
+
+/* Setting information for Queries and Browse Widgets fields            */
+
+&ANALYZE-SUSPEND _QUERY-BLOCK FRAME fMain
+/* Query rebuild information for FRAME fMain
+     _TblList          = "sports2000.Customer"
+     _Query            is OPENED
+*/  /* FRAME fMain */
 &ANALYZE-RESUME
 
  
@@ -231,36 +223,6 @@ END.
 &ANALYZE-RESUME
 
 
-&Scoped-define SELF-NAME cSalesrep
-&ANALYZE-SUSPEND _UIB-CODE-BLOCK _CONTROL cSalesrep wWin
-ON LEAVE OF cSalesrep IN FRAME fMain /* Salesrep */
-DO:
-    MESSAGE "leave"
-        VIEW-AS ALERT-BOX.
-END.
-
-/* _UIB-CODE-BLOCK-END */
-&ANALYZE-RESUME
-
-
-&ANALYZE-SUSPEND _UIB-CODE-BLOCK _CONTROL cSalesrep wWin
-ON VALUE-CHANGED OF cSalesrep IN FRAME fMain /* Salesrep */
-DO:
-
-  FIND Salesrep WHERE Salesrep.salesrep = SELF:SCREEN-VALUE
-    NO-LOCK .
-
-  cRepname = Salesrep.RepName .
-  cRepRegion = Salesrep.Region .
-
-  DISPLAY cRepname cRepRegion WITH FRAME {&frame-name} .
-
-END.
-
-/* _UIB-CODE-BLOCK-END */
-&ANALYZE-RESUME
-
-
 &UNDEFINE SELF-NAME
 
 &ANALYZE-SUSPEND _UIB-CODE-BLOCK _CUSTOM _MAIN-BLOCK wWin 
@@ -268,8 +230,10 @@ END.
 
 /* ***************************  Main Block  *************************** */
 
+{&OPEN-QUERY-{&FRAME-NAME}}
+
 /* Include custom  Main Block code for SmartWindows. */
-{src/adm2/windowmn.i} 
+{src/adm2/windowmn.i}
 
 /* _UIB-CODE-BLOCK-END */
 &ANALYZE-RESUME
@@ -320,9 +284,15 @@ PROCEDURE enable_UI :
                These statements here are based on the "Other 
                Settings" section of the widget Property Sheets.
 ------------------------------------------------------------------------------*/
-  DISPLAY iCustNum cCustomerName cCity cSalesrep cRepname cRepRegion count-order 
+
+  {&OPEN-QUERY-fMain}
+  GET FIRST fMain.
+  DISPLAY FILL-IN-1 
       WITH FRAME fMain IN WINDOW wWin.
-  ENABLE iCustNum cCustomerName cCity cSalesrep BUTTON-1 cRepRegion count-order 
+  IF AVAILABLE Customer THEN 
+    DISPLAY Customer.Country 
+      WITH FRAME fMain IN WINDOW wWin.
+  ENABLE FILL-IN-1 Customer.Country 
       WITH FRAME fMain IN WINDOW wWin.
   {&OPEN-BROWSERS-IN-QUERY-fMain}
   VIEW wWin.
@@ -334,83 +304,13 @@ END PROCEDURE.
 &ANALYZE-SUSPEND _UIB-CODE-BLOCK _PROCEDURE exitObject wWin 
 PROCEDURE exitObject :
 /*------------------------------------------------------------------------------
-  Purpose:  Window-specific override of this procedure which destroys
+  Purpose:  Window-specific override of this procedure which destroys 
             its contents and itself.
-    Notes:
+    Notes:  
 ------------------------------------------------------------------------------*/
 
   APPLY "CLOSE":U TO THIS-PROCEDURE.
   RETURN.
-
-END PROCEDURE.
-
-/* _UIB-CODE-BLOCK-END */
-&ANALYZE-RESUME
-
-&ANALYZE-SUSPEND _UIB-CODE-BLOCK _PROCEDURE initializeObject wWin 
-PROCEDURE initializeObject :
-/*------------------------------------------------------------------------------
- Purpose:
- Notes:
-------------------------------------------------------------------------------*/
-
-    RUN SUPER .
-
-    FIND FIRST Customer .
-    FIND Salesrep OF Customer .
-
-    RUN ViewSelectedRecord .
-
-END PROCEDURE.
-
-/* _UIB-CODE-BLOCK-END */
-&ANALYZE-RESUME
-
-
-&ANALYZE-SUSPEND _UIB-CODE-BLOCK _PROCEDURE RelatedDetailsCount wWin
-PROCEDURE RelatedDetailsCount:
-/*------------------------------------------------------------------------------
- Purpose:
- Notes:
-------------------------------------------------------------------------------*/
-
-    ASSIGN count-order = 0 . 
-    
-    FOR EACH order WHERE 
-        order.custnum EQ iCustNum NO-LOCK:
-        ASSIGN 
-            count-order = count-order + 1.
-    END.
-    
-    DISPLAY count-order
-        WITH FRAME fMain . 
-
-END PROCEDURE.
-    
-/* _UIB-CODE-BLOCK-END */
-&ANALYZE-RESUME
-
-
-
-&ANALYZE-SUSPEND _UIB-CODE-BLOCK _PROCEDURE ViewSelectedRecord wWin 
-PROCEDURE ViewSelectedRecord :
-/*------------------------------------------------------------------------------
- Purpose:
- Notes:
-------------------------------------------------------------------------------*/
-
-    IF AVAILABLE Customer THEN
-        ASSIGN iCustNum      = Customer.CustNum
-               cCustomerName = Customer.Name
-               cCity         = Customer.City
-               cSalesrep     = Customer.SalesRep.
-
-    IF AVAILABLE Salesrep THEN DO:
-        cRepname = Salesrep.RepName .
-        cRepRegion = Salesrep.Region.
-    END.
-
-    DISPLAY {&DISPLAYED-OBJECTS} WITH FRAME {&frame-name} .
 
 END PROCEDURE.
 
