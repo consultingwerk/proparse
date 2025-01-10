@@ -3,7 +3,11 @@ package com.joanju.proparse;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.prorefactor.core.NodeTextUtils;
 import org.prorefactor.core.TokenTypes;
+import org.prorefactor.refactor.RefactorException;
 
 public class ConditionalCompilationToken 
 	extends ProToken 
@@ -121,10 +125,16 @@ public class ConditionalCompilationToken
 	/**
 	 * Returns the text between &IF and &ENDIF
 	 * @return The text between &IF and &ENDIF
+	 * @throws RefactorException 
 	 */
-	public String getEnclosedText (int level, ArrayList<ProToken> processed)
+	public String getEnclosedText (int level, ArrayList<ProToken> processed) throws RefactorException
 	{
 		StringBuilder sb = new StringBuilder ();
+		HashMap<Integer, ProToken> macros = new HashMap<Integer, ProToken>();
+		Object[] keys;
+		JSONObject macro;
+		String refText, refName;
+		String text;
 		
 		if (!processed.contains(this.ampIf))
 		{
@@ -142,8 +152,13 @@ public class ConditionalCompilationToken
 			{
 				if (this.children.containsKey(token))
 					sb.append(this.children.get(token).getEnclosedText(level + 1, processed));
-				else 
+				else if (token.getType() != TokenTypes.MAKROREFERENCE)	
+				{
 					sb.append(token.getText());
+					processed.add(token);
+				}
+				else 
+					macros.put(sb.length(), token);
 			}
 		}
 
@@ -153,6 +168,22 @@ public class ConditionalCompilationToken
 			processed.add(this.ampEndIf);
 		}
 		
-		return sb.toString();
+		keys = macros.keySet().toArray();
+		text = sb.toString();
+		try {
+			for (int i = keys.length - 1; i >= 0; i--)
+			{
+				macro = new JSONObject(macros.get((int) keys[i]).getText());
+				refText = macro.getString("refText");
+				refName = macro.getString("refName");
+				text = String.format ("%s%s", 
+								      text.substring(0, (int) keys[i] - refText.length()),
+								      text.substring((int) keys[i] - refText.length()).replaceFirst(NodeTextUtils.fixRegexEscape(refText), refName));
+			}
+		} catch (JSONException e) {
+			throw new RefactorException(e);
+		}
+		
+		return text;
 	}
 }

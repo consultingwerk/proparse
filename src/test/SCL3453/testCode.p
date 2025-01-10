@@ -5,7 +5,7 @@ MESSAGE "Some stuff before"
 VIEW-AS ALERT-BOX.
 
 &IF (TRUE) &THEN
-
+&SCOPED-DEFINE InABeforeMessage
     &IF (TRUE) &THEN
         MESSAGE "DO THIS"
         VIEW-AS ALERT-BOX.
@@ -13,18 +13,18 @@ VIEW-AS ALERT-BOX.
         MESSAGE "DON'T DO THIS"
         VIEW-AS ALERT-BOX.
     &ENDIF
-
+&SCOPED-DEFINE InAAfterMessage
 &ELSEIF (FALSE) &THEN
-
+&SCOPED-DEFINE InBBeforeMessage
     MESSAGE "NOT THIS"
     VIEW-AS ALERT-BOX.
-
+&SCOPED-DEFINE InBAfterMessage
 &ELSE
-
+&SCOPED-DEFINE InCBeforeMessage
     MESSAGE "NOT THIS EITHER"
     VIEW-AS ALERT-BOX.
-
+&SCOPED-DEFINE InCAfterMessage
 &ENDIF
 
-MESSAGE "some stuff after"
+MESSAGE "some stuff after":u
 VIEW-AS ALERT-BOX.
