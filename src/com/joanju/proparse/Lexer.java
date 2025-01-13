@@ -7,10 +7,8 @@ This file is made available under the terms of the Eclipse Public License v1.0.
 package com.joanju.proparse;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Stack;
-
-import org.prorefactor.core.TokenTypes;
-
 
 public class Lexer implements ProParserTokenTypes {
 
@@ -58,7 +56,7 @@ public class Lexer implements ProParserTokenTypes {
 
 	ProToken nextToken() throws IOException {
 
-		String makroText;
+		HashMap<String, String> makro;
 		String incRefText;
 		ConditionalCompilationToken token;
 		
@@ -108,10 +106,16 @@ public class Lexer implements ProParserTokenTypes {
 				textStartCol = prepro.textStartCol;
 				textStartSource = prepro.textStartSourceNum;
 				
-				makroText = prepro.makroRef.get(0);
+				makro = prepro.makroRef.get(0);
 				prepro.makroRef.remove(0);
 				
-				return makeToken(MAKROREFERENCE, makroText);
+				return new MakroReferenceToken (filenameList, 
+												textStartFile, 
+												textStartLine, 
+												textStartCol, 
+												textStartSource, 
+												makro.get("refName"), 
+												makro.get("refText"));
 			}
 			
 			// Proparse Directive

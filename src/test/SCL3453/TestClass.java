@@ -42,12 +42,6 @@ public class TestClass
 		System.out.println(node.toStringSourceText());
 		
 		System.out.println ("\n#####  End  #####\n");
-		
-		try (FileWriter fw = new FileWriter(new File ("C:\\Temp\\debug.txt"))) {
-			fw.write(pu.getTopNode().toStringSourceText());
-		} catch (IOException e) {
-			throw new RefactorException(e);
-		}
 	}
 
 	private void change (JPNode node)

@@ -35,11 +35,7 @@ import java.util.regex.Pattern;
 import java.io.*;
 import java.nio.charset.Charset;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import static com.joanju.proparse.StringFuncs.escapeLineBreaks;
-
 
 public class Preprocessor {
 
@@ -73,7 +69,7 @@ public class Preprocessor {
 	int currSourceNum;
 	
 	ArrayList<String> incRef = new ArrayList<String>();
-	ArrayList<String> makroRef = new ArrayList<String>();
+	ArrayList<HashMap<String, String>> makroRef = new ArrayList<HashMap<String, String>>();
 	
 	/** Are we in the middle of a comment? */
 	boolean doingComment = false;
@@ -579,7 +575,7 @@ public class Preprocessor {
 
 	private void macroReference() throws IOException {
 		
-		JSONObject macroReference;
+		HashMap<String, String> macroReference;
 		
 		textStartFile = currFile;
 		textStartLine = currLine;
@@ -671,24 +667,11 @@ public class Preprocessor {
 			String argName = refText.substring(2, closingCurly).trim().toLowerCase();
 			newMacroRef(argName, refPos);
 			
-			try
-			{
-				macroReference = new JSONObject();
-				macroReference.put("refName", refText);
-				macroReference.put("refText", getArgText(argName));
-				macroReference.put("file", refPos.file);
-				macroReference.put("line", refPos.line - 1);
+			macroReference = new HashMap<String, String>();
+			macroReference.put("refName", refText);
+			macroReference.put("refText", getArgText(argName));
 
-				if((refPos.col - 2) < 0 || (getArgText(argName).length() == 0))
-					macroReference.put("col", refPos.col - 1);
-				else
-					macroReference.put("col", refPos.col - 2);
-				makroRef.add(macroReference.toString());
-			}
-			catch(JSONException e)
-			{
-				e.printStackTrace();
-			}
+			makroRef.add(macroReference);
 
 			return;
 		}

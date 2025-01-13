@@ -90,6 +90,7 @@ public class TestIndexOutOfBounds
 		Assert.assertNotNull(pu);
 		pu.treeParser01();
 		Assert.assertNotNull(pu.getTopNode());
+	
 		this.compare(expected, pu.getTopNode().toStringSourceText());
 	}
 	

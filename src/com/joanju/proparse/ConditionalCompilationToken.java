@@ -3,9 +3,6 @@ package com.joanju.proparse;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.prorefactor.core.NodeTextUtils;
 import org.prorefactor.core.TokenTypes;
 import org.prorefactor.refactor.RefactorException;
 
@@ -132,8 +129,7 @@ public class ConditionalCompilationToken
 		StringBuilder sb = new StringBuilder ();
 		HashMap<Integer, ProToken> macros = new HashMap<Integer, ProToken>();
 		Object[] keys;
-		JSONObject macro;
-		String refText, refName;
+		MakroReferenceToken macro;
 		String text;
 		
 		if (!processed.contains(this.ampIf))
@@ -170,18 +166,13 @@ public class ConditionalCompilationToken
 		
 		keys = macros.keySet().toArray();
 		text = sb.toString();
-		try {
-			for (int i = keys.length - 1; i >= 0; i--)
-			{
-				macro = new JSONObject(macros.get((int) keys[i]).getText());
-				refText = macro.getString("refText");
-				refName = macro.getString("refName");
-				text = String.format ("%s%s", 
-								      text.substring(0, (int) keys[i] - refText.length()),
-								      text.substring((int) keys[i] - refText.length()).replaceFirst(NodeTextUtils.fixRegexEscape(refText), refName));
-			}
-		} catch (JSONException e) {
-			throw new RefactorException(e);
+		for (int i = keys.length - 1; i >= 0; i--)
+		{
+			macro = (MakroReferenceToken)macros.get((int) keys[i]);
+			text = String.format ("%s%s", 
+							      text.substring(0, (int) keys[i] - macro.length()),
+							      text.substring((int) keys[i] - macro.length()).replaceFirst (macro.getEscapedReferenceText(), 
+							    		  													   macro.getReferenceName()));
 		}
 		
 		return text;

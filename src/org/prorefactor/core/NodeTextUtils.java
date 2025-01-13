@@ -1,14 +1,13 @@
 package org.prorefactor.core;
 
 import com.joanju.proparse.ConditionalCompilationToken;
+import com.joanju.proparse.MakroReferenceToken;
 import com.joanju.proparse.ProToken;
 
 import de.consultingwerk.proparse.refactor.RefactoredToken;
 
 import java.util.ArrayList;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.prorefactor.refactor.RefactorException;
 
 /**
@@ -49,26 +48,14 @@ public class NodeTextUtils
 		this.flattenTree (this.rootNode, flatTree);
 
 		// replace makros
-		try {
-			for (int i = flatTree.size() - 1; i >= 0; i--)
-			{
-				treeNode = flatTree.get(i);
-				if (treeNode instanceof ProToken)
-				{
-					token = (ProToken) treeNode;
-					switch (token.getType())
-					{
-						case TokenTypes.MAKROREFERENCE:
-							this.replaceMakro (token, flatTree);
-							i--;
-							break;
-					}
-				}
-			}
-		}
-		catch (JSONException e) 
+		for (int i = flatTree.size() - 1; i >= 0; i--)
 		{
-			throw new RefactorException (e);
+			treeNode = flatTree.get(i);
+			if (treeNode instanceof MakroReferenceToken)
+			{
+				this.replaceMakro ((MakroReferenceToken) treeNode, flatTree);
+				i--;
+			}
 		}
 		
 		// process conditional compilation
@@ -183,54 +170,49 @@ public class NodeTextUtils
 	 * Replaces a makro reference with its content
 	 * @param token The token of the macro reference
 	 * @param tree The tree in which to replace it
-	 * @throws JSONException 
 	 */
-	private void replaceMakro (ProToken token, ArrayList<Object> tree) throws JSONException
+	private void replaceMakro (ProToken token, ArrayList<Object> tree)
 	{
 		int start = tree.indexOf(token);
 		int i = start - 1;
-		JSONObject makro;
+		MakroReferenceToken makro;
 		String text = "";
-		String refText;
-		String refName;
 		ProToken newToken;
 		ProToken token2;
 
 		
-		if (this.getToken(tree.get(i)).getType() == TokenTypes.MAKROREFERENCE)
+		if (tree.get(i) instanceof MakroReferenceToken)
 			this.replaceNestedMakro (tree, token, this.getToken(tree.get(start - 1)));
 		
-		makro = new JSONObject (token.getText());
-		refText = makro.getString("refText");
-		refName = makro.getString("refName");
+		makro = (MakroReferenceToken) token;
 		
 		if (this.getToken(tree.get(i)).getType() == TokenTypes.AMPSCOPEDDEFINE || this.getToken(tree.get(i)).getType() == TokenTypes.AMPGLOBALDEFINE)
 		{
 			token2 = this.getToken(tree.get(i));
-			token2.setText(token2.getText().replaceFirst(NodeTextUtils.fixRegexEscape(refText), refName));
+			token2.setText(token2.getText().replaceFirst(makro.getEscapedReferenceText(), makro.getReferenceName()));
 			tree.remove(token);
 			return;
 		}
 		
-		while (text.trim().length() <= refText.trim().length() && i < tree.size() && i >= 0)
+		while (text.trim().length() <= makro.getReferenceText().trim().length() && i < tree.size() && i >= 0)
 		{
 			if (this.getToken(tree.get(i)).getType() != TokenTypes.MAKROREFERENCE)
 				text += this.getToken(tree.get(i)).getText();
 			i++;
 		}
 
-		if (!text.contains(refText))
+		if (!text.contains(makro.getReferenceText()))
 			return;
 		
-		text = text.replaceFirst(NodeTextUtils.fixRegexEscape(refText), refName);
+		text = text.replaceFirst(makro.getEscapedReferenceText(), makro.getReferenceName());
 		newToken = new RefactoredToken(token, text);
-		if (refText.isEmpty())
+		if (makro.getReferenceText().isEmpty())
 			this.replaceEmptyMakro (tree, 
 									this.getToken(tree.get(tree.indexOf(token) - 1)), 
 									token, 
 									this.getToken(tree.get(tree.indexOf(token) + 1)), 
-									refText, 
-									refName);			
+									makro.getReferenceText(), 
+									makro.getReferenceName());			
 		else
 		{				
 			for (int j = i - 1; j >= start - 1; j--)
@@ -244,20 +226,17 @@ public class NodeTextUtils
 	 * @param tree
 	 * @param outer
 	 * @param inner
-	 * @throws JSONException
 	 */
-	private void replaceNestedMakro (ArrayList<Object> tree, ProToken outer, ProToken inner) throws JSONException
+	private void replaceNestedMakro (ArrayList<Object> tree, ProToken outer, ProToken inner)
 	{
-		JSONObject outerMakro = new JSONObject (outer.getText());
-		JSONObject innerMakro = new JSONObject (inner.getText());
+		MakroReferenceToken outerMakro = (MakroReferenceToken) outer;
+		MakroReferenceToken innerMakro = (MakroReferenceToken) inner;
 		
-		if (!outerMakro.getString("refName").contains(NodeTextUtils.fixRegexEscape(innerMakro.getString("refText"))))
+		if (!outerMakro.getReferenceName().contains(innerMakro.getEscapedReferenceText()))
 			return;
 		
-		outerMakro.put ("refName", 
-				        outerMakro.getString("refName").replaceFirst (NodeTextUtils.fixRegexEscape(innerMakro.getString("refText")), 
-				        		                                      innerMakro.getString("refName")));
-		outer.setText(outerMakro.toString());
+		outerMakro.setReferenceName (outerMakro.getReferenceName().replaceFirst (innerMakro.getEscapedReferenceText(), 
+																				 innerMakro.getReferenceName()));
 		tree.remove(inner);
 	}
 	

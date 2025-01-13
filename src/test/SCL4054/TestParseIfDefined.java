@@ -30,9 +30,6 @@ public class TestParseIfDefined extends ProparseTestCase {
 		Assert.assertNotNull(pu);
 		pu.treeParser01();
 		Assert.assertNotNull(pu.getTopNode());
-		
-		try (FileWriter fw = new FileWriter(new File ("C:\\Temp\\debug.txt"))) {
-			fw.write(pu.getTopNode().toStringSourceText());
-		}
+		Assert.assertNotNull(pu.getTopNode().toStringSourceText());
 	}
 }
