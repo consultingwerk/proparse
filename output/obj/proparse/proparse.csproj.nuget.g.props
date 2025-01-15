@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <RestoreSuccess Condition=" '$(RestoreSuccess)' == '' ">True</RestoreSuccess>
+    <RestoreTool Condition=" '$(RestoreTool)' == '' ">NuGet</RestoreTool>
+    <ProjectAssetsFile Condition=" '$(ProjectAssetsFile)' == '' ">$(MSBuildThisFileDirectory)project.assets.json</ProjectAssetsFile>
+    <NuGetPackageRoot Condition=" '$(NuGetPackageRoot)' == '' ">$(UserProfile)\.nuget\packages\</NuGetPackageRoot>
+    <NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' ">C:\Users\Sebastian\.nuget\packages\</NuGetPackageFolders>
+    <NuGetProjectStyle Condition=" '$(NuGetProjectStyle)' == '' ">PackageReference</NuGetProjectStyle>
+    <NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' ">6.11.1</NuGetToolVersion>
+  </PropertyGroup>
+  <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <SourceRoot Include="C:\Users\Sebastian\.nuget\packages\" />
+  </ItemGroup>
+  <ImportGroup Condition=" '$(TargetFramework)' == 'net472' AND '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Import Project="$(NuGetPackageRoot)ikvm.msbuild.tools.runtime.win-x64\8.10.3\buildTransitive\IKVM.MSBuild.Tools.runtime.win-x64.props" Condition="Exists('$(NuGetPackageRoot)ikvm.msbuild.tools.runtime.win-x64\8.10.3\buildTransitive\IKVM.MSBuild.Tools.runtime.win-x64.props')" />
+    <Import Project="$(NuGetPackageRoot)ikvm.msbuild.tools.runtime.win-arm64\8.10.3\buildTransitive\IKVM.MSBuild.Tools.runtime.win-arm64.props" Condition="Exists('$(NuGetPackageRoot)ikvm.msbuild.tools.runtime.win-arm64\8.10.3\buildTransitive\IKVM.MSBuild.Tools.runtime.win-arm64.props')" />
+    <Import Project="$(NuGetPackageRoot)ikvm.msbuild.tools.runtime.osx-x64\8.10.3\buildTransitive\IKVM.MSBuild.Tools.runtime.osx-x64.props" Condition="Exists('$(NuGetPackageRoot)ikvm.msbuild.tools.runtime.osx-x64\8.10.3\buildTransitive\IKVM.MSBuild.Tools.runtime.osx-x64.props')" />
+    <Import Project="$(NuGetPackageRoot)ikvm.msbuild.tools.runtime.osx-arm64\8.10.3\buildTransitive\IKVM.MSBuild.Tools.runtime.osx-arm64.props" Condition="Exists('$(NuGetPackageRoot)ikvm.msbuild.tools.runtime.osx-arm64\8.10.3\buildTransitive\IKVM.MSBuild.Tools.runtime.osx-arm64.props')" />
+    <Import Project="$(NuGetPackageRoot)ikvm.msbuild.tools.runtime.linux-x64\8.10.3\buildTransitive\IKVM.MSBuild.Tools.runtime.linux-x64.props" Condition="Exists('$(NuGetPackageRoot)ikvm.msbuild.tools.runtime.linux-x64\8.10.3\buildTransitive\IKVM.MSBuild.Tools.runtime.linux-x64.props')" />
+    <Import Project="$(NuGetPackageRoot)ikvm.msbuild.tools.runtime.linux-arm64\8.10.3\buildTransitive\IKVM.MSBuild.Tools.runtime.linux-arm64.props" Condition="Exists('$(NuGetPackageRoot)ikvm.msbuild.tools.runtime.linux-arm64\8.10.3\buildTransitive\IKVM.MSBuild.Tools.runtime.linux-arm64.props')" />
+    <Import Project="$(NuGetPackageRoot)ikvm.msbuild.tools.runtime.linux-arm\8.10.3\buildTransitive\IKVM.MSBuild.Tools.runtime.linux-arm.props" Condition="Exists('$(NuGetPackageRoot)ikvm.msbuild.tools.runtime.linux-arm\8.10.3\buildTransitive\IKVM.MSBuild.Tools.runtime.linux-arm.props')" />
+    <Import Project="$(NuGetPackageRoot)ikvm.msbuild\8.10.3\buildTransitive\IKVM.MSBuild.props" Condition="Exists('$(NuGetPackageRoot)ikvm.msbuild\8.10.3\buildTransitive\IKVM.MSBuild.props')" />
+    <Import Project="$(NuGetPackageRoot)ikvm.image.runtime.win-x86\8.10.3\buildTransitive\IKVM.Image.runtime.win-x86.props" Condition="Exists('$(NuGetPackageRoot)ikvm.image.runtime.win-x86\8.10.3\buildTransitive\IKVM.Image.runtime.win-x86.props')" />
+    <Import Project="$(NuGetPackageRoot)ikvm.image.runtime.win-x64\8.10.3\buildTransitive\IKVM.Image.runtime.win-x64.props" Condition="Exists('$(NuGetPackageRoot)ikvm.image.runtime.win-x64\8.10.3\buildTransitive\IKVM.Image.runtime.win-x64.props')" />
+    <Import Project="$(NuGetPackageRoot)ikvm.image.runtime.win-arm64\8.10.3\buildTransitive\IKVM.Image.runtime.win-arm64.props" Condition="Exists('$(NuGetPackageRoot)ikvm.image.runtime.win-arm64\8.10.3\buildTransitive\IKVM.Image.runtime.win-arm64.props')" />
+    <Import Project="$(NuGetPackageRoot)ikvm.image.runtime.osx-x64\8.10.3\buildTransitive\IKVM.Image.runtime.osx-x64.props" Condition="Exists('$(NuGetPackageRoot)ikvm.image.runtime.osx-x64\8.10.3\buildTransitive\IKVM.Image.runtime.osx-x64.props')" />
+    <Import Project="$(NuGetPackageRoot)ikvm.image.runtime.osx-arm64\8.10.3\buildTransitive\IKVM.Image.runtime.osx-arm64.props" Condition="Exists('$(NuGetPackageRoot)ikvm.image.runtime.osx-arm64\8.10.3\buildTransitive\IKVM.Image.runtime.osx-arm64.props')" />
+    <Import Project="$(NuGetPackageRoot)ikvm.image.runtime.linux-x64\8.10.3\buildTransitive\IKVM.Image.runtime.linux-x64.props" Condition="Exists('$(NuGetPackageRoot)ikvm.image.runtime.linux-x64\8.10.3\buildTransitive\IKVM.Image.runtime.linux-x64.props')" />
+    <Import Project="$(NuGetPackageRoot)ikvm.image.runtime.linux-musl-x64\8.10.3\buildTransitive\IKVM.Image.runtime.linux-musl-x64.props" Condition="Exists('$(NuGetPackageRoot)ikvm.image.runtime.linux-musl-x64\8.10.3\buildTransitive\IKVM.Image.runtime.linux-musl-x64.props')" />
+    <Import Project="$(NuGetPackageRoot)ikvm.image.runtime.linux-musl-arm64\8.10.3\buildTransitive\IKVM.Image.runtime.linux-musl-arm64.props" Condition="Exists('$(NuGetPackageRoot)ikvm.image.runtime.linux-musl-arm64\8.10.3\buildTransitive\IKVM.Image.runtime.linux-musl-arm64.props')" />
+    <Import Project="$(NuGetPackageRoot)ikvm.image.runtime.linux-musl-arm\8.10.3\buildTransitive\IKVM.Image.runtime.linux-musl-arm.props" Condition="Exists('$(NuGetPackageRoot)ikvm.image.runtime.linux-musl-arm\8.10.3\buildTransitive\IKVM.Image.runtime.linux-musl-arm.props')" />
+    <Import Project="$(NuGetPackageRoot)ikvm.image.runtime.linux-arm64\8.10.3\buildTransitive\IKVM.Image.runtime.linux-arm64.props" Condition="Exists('$(NuGetPackageRoot)ikvm.image.runtime.linux-arm64\8.10.3\buildTransitive\IKVM.Image.runtime.linux-arm64.props')" />
+    <Import Project="$(NuGetPackageRoot)ikvm.image.runtime.linux-arm\8.10.3\buildTransitive\IKVM.Image.runtime.linux-arm.props" Condition="Exists('$(NuGetPackageRoot)ikvm.image.runtime.linux-arm\8.10.3\buildTransitive\IKVM.Image.runtime.linux-arm.props')" />
+    <Import Project="$(NuGetPackageRoot)ikvm.image\8.10.3\buildTransitive\IKVM.Image.props" Condition="Exists('$(NuGetPackageRoot)ikvm.image\8.10.3\buildTransitive\IKVM.Image.props')" />
+    <Import Project="$(NuGetPackageRoot)ikvm\8.10.3\buildTransitive\IKVM.props" Condition="Exists('$(NuGetPackageRoot)ikvm\8.10.3\buildTransitive\IKVM.props')" />
+  </ImportGroup>
+</Project>

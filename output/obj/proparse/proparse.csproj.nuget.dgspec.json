@@ -1,0 +1,66 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Work\\Proparse\\GitHub\\proparse\\proparse.csproj": {}
+  },
+  "projects": {
+    "C:\\Work\\Proparse\\GitHub\\proparse\\proparse.csproj": {
+      "version": "4.2.0.9",
+      "restore": {
+        "projectUniqueName": "C:\\Work\\Proparse\\GitHub\\proparse\\proparse.csproj",
+        "projectName": "proparse",
+        "projectPath": "C:\\Work\\Proparse\\GitHub\\proparse\\proparse.csproj",
+        "packagesPath": "C:\\Users\\Sebastian\\.nuget\\packages\\",
+        "outputPath": "C:\\Work\\Proparse\\GitHub\\proparse\\output\\obj\\proparse\\",
+        "projectStyle": "PackageReference",
+        "crossTargeting": true,
+        "configFilePaths": [
+          "C:\\Users\\Sebastian\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net472"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net472": {
+            "targetAlias": "net472",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net472": {
+          "targetAlias": "net472",
+          "dependencies": {
+            "IKVM": {
+              "target": "Package",
+              "version": "[8.10.3, )"
+            },
+            "IKVM.MSBuild": {
+              "target": "Package",
+              "version": "[8.10.3, )"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.404\\RuntimeIdentifierGraph.json"
+        }
+      },
+      "runtimes": {
+        "any": {
+          "#import": []
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,36 @@
+-out:C:\Work\Proparse\GitHub\proparse\output\obj\proparse\debug_net472_win-x64\ikvm\stage\1\6ee1e2f40fb282feddb97c214b84c898\proparse.net.dll
+-assembly:proparse.net
+-version:4.2.0.7
+-target:library
+-keyfile:C:\Work\Proparse\GitHub\proparse\proparse.snk
+-reference:C:\Users\Sebastian\.nuget\packages\ikvm\8.10.3\lib\net472\IKVM.Java.dll
+-reference:C:\Users\Sebastian\.nuget\packages\ikvm\8.10.3\lib\net472\IKVM.Runtime.dll
+-reference:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\mscorlib.dll
+-reference:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Core.dll
+-reference:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Data.dll
+-reference:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.dll
+-reference:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Drawing.dll
+-reference:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.IO.Compression.FileSystem.dll
+-reference:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Numerics.dll
+-reference:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Runtime.Serialization.dll
+-reference:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Xml.dll
+-reference:C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Xml.Linq.dll
+-fileversion:4.2.0.7
+-compressresources
+-debug:portable
+-nostdlib
+-runtime:C:\Users\Sebastian\.nuget\packages\ikvm\8.10.3\lib\net472\IKVM.Runtime.dll
+-nologo
+C:\Work\Proparse\GitHub\proparse\proparse.jar
+C:\Work\Proparse\GitHub\proparse\proparse.jar
+C:\Work\Proparse\GitHub\proparse\lib\ant-1.8.1.jar
+C:\Work\Proparse\GitHub\proparse\lib\ant-launcher-1.8.1.jar
+C:\Work\Proparse\GitHub\proparse\lib\antlr-2.7.7.jar
+C:\Work\Proparse\GitHub\proparse\lib\commons-cli-1.2.jar
+C:\Work\Proparse\GitHub\proparse\lib\commons-collections-3.2.1.jar
+C:\Work\Proparse\GitHub\proparse\lib\commons-io-1.4.jar
+C:\Work\Proparse\GitHub\proparse\lib\commons-lang-2.4.jar
+C:\Work\Proparse\GitHub\proparse\lib\groovy-all-1.7.3.jar
+C:\Work\Proparse\GitHub\proparse\lib\jdbm-1.0.jar
+C:\Work\Proparse\GitHub\proparse\lib\json.org-01.jar
+C:\Work\Proparse\GitHub\proparse\lib\junit-3.8.1.jar

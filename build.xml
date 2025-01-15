@@ -72,5 +72,28 @@
 		</zip>
 	</target>	
 
+	<target name="make_dotnet_msbuild" depends="makeproparsejar">
+		<msbuild/>
+	</target>	
 
+	<macrodef name="msbuild">
+		<attribute name="version" default="${build.number}"/>
+		<attribute name="output" default="C:\Work\Proparse\GitHub\proparse\output"/>
+		<!--https://github.com/ikvmnet/ikvm?tab=readme-ov-file#support-->
+		<!--https://learn.microsoft.com/en-us/dotnet/standard/frameworks-->
+		<attribute name="targetVersion" default="net472"/>
+		<!--https://learn.microsoft.com/en-us/dotnet/core/rid-catalog-->
+		<attribute name="runtime" default="any"/>
+		<!--q[uiet], m[inimal], n[ormal] (default), d[etailed], and diag[nostic]-->
+		<attribute name="verbose" default="n"/>
+		<attribute name="baseDir" default="C:\Work\Proparse\GitHub\proparse"/>
+		<attribute name="IkvmVersion" default="8.10.3"/>
+		<attribute name="dllFileName" default="proparse.net"/>
+		<sequential>
+			<exec executable="dotnet" dir="." failonerror="true">
+				<arg line=" build --output @{output} --artifacts-path @{output} --version-suffix @{version} --framework @{targetVersion} -p:TargetFrameworks=@{targetVersion} -p:baseDir=@{baseDir} -p:IkvmVersion=@{IkvmVersion} -p:dllFileName=@{dllFileName} --runtime @{runtime} -v @{verbose} @{baseDir}\proparse.csproj"/>
+			</exec>
+		</sequential>
+	</macrodef>
+	
 </project>

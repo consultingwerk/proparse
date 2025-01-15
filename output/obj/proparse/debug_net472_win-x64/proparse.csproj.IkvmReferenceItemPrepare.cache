@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<IkvmReferenceItemPrepareState>
+  <AssemblyInfoState>
+    <Assembly Path="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Runtime.Serialization.dll" LastWriteTimeUtc="2018-03-26T15:24:54Z" Name="System.Runtime.Serialization" Mvid="40dd49b3-da7b-4fe9-aa1f-e56059d48289">
+      <Reference>mscorlib</Reference>
+      <Reference>SMDiagnostics</Reference>
+      <Reference>System</Reference>
+      <Reference>System.Configuration</Reference>
+      <Reference>System.ServiceModel.Internals</Reference>
+      <Reference>System.Xml</Reference>
+    </Assembly>
+    <Assembly Path="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\mscorlib.dll" LastWriteTimeUtc="2018-03-26T15:24:54Z" Name="mscorlib" Mvid="cafb29d5-2338-47fb-b4ed-cf8d7c32b1e3" />
+    <Assembly Path="C:\Users\Sebastian\.nuget\packages\ikvm\8.10.3\lib\net472\IKVM.Java.dll" LastWriteTimeUtc="2024-10-30T23:20:50Z" Name="IKVM.Java" Mvid="0d2f1b61-8f6f-48c1-8c16-143596c2d92c">
+      <Reference>IKVM.Runtime</Reference>
+      <Reference>mscorlib</Reference>
+      <Reference>System</Reference>
+      <Reference>System.Data</Reference>
+    </Assembly>
+    <Assembly Path="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Xml.Linq.dll" LastWriteTimeUtc="2018-03-26T15:24:54Z" Name="System.Xml.Linq" Mvid="a51d290b-b294-47c7-b3e5-b8d0df4c4e4e">
+      <Reference>mscorlib</Reference>
+      <Reference>System</Reference>
+      <Reference>System.Core</Reference>
+      <Reference>System.Runtime.Serialization</Reference>
+      <Reference>System.Xml</Reference>
+    </Assembly>
+    <Assembly Path="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Core.dll" LastWriteTimeUtc="2018-03-26T15:24:54Z" Name="System.Core" Mvid="3c9e850c-90c5-48a0-af7e-388089bbdae9">
+      <Reference>mscorlib</Reference>
+      <Reference>System</Reference>
+      <Reference>System.Numerics</Reference>
+      <Reference>System.Security</Reference>
+      <Reference>System.Xml</Reference>
+    </Assembly>
+    <Assembly Path="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.dll" LastWriteTimeUtc="2018-03-26T15:24:54Z" Name="System" Mvid="da2502c5-0798-42b1-9aaf-45d431b1301b">
+      <Reference>mscorlib</Reference>
+      <Reference>System.Configuration</Reference>
+      <Reference>System.Xml</Reference>
+    </Assembly>
+    <Assembly Path="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.IO.Compression.FileSystem.dll" LastWriteTimeUtc="2018-03-26T15:24:54Z" Name="System.IO.Compression.FileSystem" Mvid="be636da5-b9a7-459d-ba9a-f713d30adf42">
+      <Reference>mscorlib</Reference>
+      <Reference>System</Reference>
+      <Reference>System.IO.Compression</Reference>
+    </Assembly>
+    <Assembly Path="C:\Users\Sebastian\.nuget\packages\ikvm\8.10.3\lib\net472\IKVM.Runtime.dll" LastWriteTimeUtc="2024-10-30T23:15:20Z" Name="IKVM.Runtime" Mvid="b0b573fa-40b7-45b8-9d4b-6242298a422c">
+      <Reference>IKVM.ByteCode</Reference>
+      <Reference>IKVM.Java</Reference>
+      <Reference>mscorlib</Reference>
+      <Reference>System</Reference>
+      <Reference>System.Configuration</Reference>
+      <Reference>System.Core</Reference>
+      <Reference>System.Memory</Reference>
+      <Reference>System.Runtime.CompilerServices.Unsafe</Reference>
+      <Reference>System.Text.Json</Reference>
+    </Assembly>
+    <Assembly Path="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Xml.dll" LastWriteTimeUtc="2018-03-26T15:24:54Z" Name="System.Xml" Mvid="82ca8cb8-9d1a-481b-adc1-6322e06a8f03">
+      <Reference>mscorlib</Reference>
+      <Reference>System</Reference>
+      <Reference>System.Configuration</Reference>
+      <Reference>System.Data.SqlXml</Reference>
+    </Assembly>
+    <Assembly Path="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Drawing.dll" LastWriteTimeUtc="2018-03-26T15:24:54Z" Name="System.Drawing" Mvid="76e5685a-ed56-42c2-b08f-6e049526ab12">
+      <Reference>mscorlib</Reference>
+      <Reference>System</Reference>
+      <Reference>System.Configuration</Reference>
+    </Assembly>
+    <Assembly Path="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Numerics.dll" LastWriteTimeUtc="2018-03-26T15:24:54Z" Name="System.Numerics" Mvid="64a5d4a2-a435-4531-b41c-65ed5e5534b2">
+      <Reference>mscorlib</Reference>
+    </Assembly>
+    <Assembly Path="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Data.dll" LastWriteTimeUtc="2018-03-26T15:24:54Z" Name="System.Data" Mvid="9830c18b-4ae5-4d31-89f1-6c37283329f2">
+      <Reference>mscorlib</Reference>
+      <Reference>System</Reference>
+      <Reference>System.Configuration</Reference>
+      <Reference>System.Core</Reference>
+      <Reference>System.EnterpriseServices</Reference>
+      <Reference>System.Numerics</Reference>
+      <Reference>System.Runtime.Caching</Reference>
+      <Reference>System.Transactions</Reference>
+      <Reference>System.Xml</Reference>
+    </Assembly>
+  </AssemblyInfoState>
+  <FileIdentityState>
+    <File Path="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Xml.Linq.dll" LastWriteTimeUtc="2018-03-26T15:24:54Z" Identity="MVID:a51d290b-b294-47c7-b3e5-b8d0df4c4e4e" />
+    <File Path="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Core.dll" LastWriteTimeUtc="2018-03-26T15:24:54Z" Identity="MVID:3c9e850c-90c5-48a0-af7e-388089bbdae9" />
+    <File Path="lib\commons-collections-3.2.1.jar" LastWriteTimeUtc="2016-03-06T12:52:58Z" Identity="13bc641afd7fd95e09b260f69c1e4c91" />
+    <File Path="lib\commons-io-1.4.jar" LastWriteTimeUtc="2016-03-06T12:52:58Z" Identity="b6a50c8a15ece8753e37cbe5700bf84f" />
+    <File Path="lib\ant-1.8.1.jar" LastWriteTimeUtc="2016-03-06T12:52:58Z" Identity="e46a018f08da06e099fbc041c78bf040" />
+    <File Path="lib\junit-3.8.1.jar" LastWriteTimeUtc="2016-03-06T12:52:58Z" Identity="1f40fb782a4f2cf78f161d32670f7a3a" />
+    <File Path="lib\jdbm-1.0.jar" LastWriteTimeUtc="2016-03-06T12:52:58Z" Identity="80b9460ab7f754feedda5bb01e6ed5df" />
+    <File Path="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Runtime.Serialization.dll" LastWriteTimeUtc="2018-03-26T15:24:54Z" Identity="MVID:40dd49b3-da7b-4fe9-aa1f-e56059d48289" />
+    <File Path="lib\commons-lang-2.4.jar" LastWriteTimeUtc="2016-03-06T12:52:58Z" Identity="237a8e845441bad2e535c57d985c8204" />
+    <File Path="lib\antlr-2.7.7.jar" LastWriteTimeUtc="2016-03-06T12:52:58Z" Identity="f8f1352c52a4c6a500b597596501fc64" />
+    <File Path="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\mscorlib.dll" LastWriteTimeUtc="2018-03-26T15:24:54Z" Identity="MVID:cafb29d5-2338-47fb-b4ed-cf8d7c32b1e3" />
+    <File Path="C:\Users\Sebastian\.nuget\packages\ikvm\8.10.3\lib\net472\IKVM.Java.dll" LastWriteTimeUtc="2024-10-30T23:20:50Z" Identity="MVID:0d2f1b61-8f6f-48c1-8c16-143596c2d92c" />
+    <File Path="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Xml.dll" LastWriteTimeUtc="2018-03-26T15:24:54Z" Identity="MVID:82ca8cb8-9d1a-481b-adc1-6322e06a8f03" />
+    <File Path="lib\commons-cli-1.2.jar" LastWriteTimeUtc="2016-03-06T12:52:58Z" Identity="bfdcae1ff93f0c07d733f03bdce28c9e" />
+    <File Path="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Numerics.dll" LastWriteTimeUtc="2018-03-26T15:24:54Z" Identity="MVID:64a5d4a2-a435-4531-b41c-65ed5e5534b2" />
+    <File Path="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.IO.Compression.FileSystem.dll" LastWriteTimeUtc="2018-03-26T15:24:54Z" Identity="MVID:be636da5-b9a7-459d-ba9a-f713d30adf42" />
+    <File Path="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Data.dll" LastWriteTimeUtc="2018-03-26T15:24:54Z" Identity="MVID:9830c18b-4ae5-4d31-89f1-6c37283329f2" />
+    <File Path="lib\ant-launcher-1.8.1.jar" LastWriteTimeUtc="2016-03-06T12:52:58Z" Identity="625025dd44332c859390fad91cef06a3" />
+    <File Path="lib\groovy-all-1.7.3.jar" LastWriteTimeUtc="2016-03-06T12:52:58Z" Identity="2e88a4df8cc57e1e594aaba4fbf7ec56" />
+    <File Path="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.dll" LastWriteTimeUtc="2018-03-26T15:24:54Z" Identity="MVID:da2502c5-0798-42b1-9aaf-45d431b1301b" />
+    <File Path="lib\json.org-01.jar" LastWriteTimeUtc="2016-03-06T12:52:58Z" Identity="38ad884c6ff85cb44e0508f9d21ea10f" />
+    <File Path="C:\Work\Proparse\GitHub\proparse\proparse.snk" LastWriteTimeUtc="2016-03-06T12:52:58Z" Identity="eb747e40bd662e51dbbf629f3aea1d2d" />
+    <File Path="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Drawing.dll" LastWriteTimeUtc="2018-03-26T15:24:54Z" Identity="MVID:76e5685a-ed56-42c2-b08f-6e049526ab12" />
+    <File Path="proparse.jar" LastWriteTimeUtc="2025-01-15T15:17:18.9955813Z" Identity="bc1532354bfb0d9cf5d5921badc712b0" />
+    <File Path="C:\Users\Sebastian\.nuget\packages\ikvm\8.10.3\lib\net472\IKVM.Runtime.dll" LastWriteTimeUtc="2024-10-30T23:15:20Z" Identity="MVID:b0b573fa-40b7-45b8-9d4b-6242298a422c" />
+  </FileIdentityState>
+</IkvmReferenceItemPrepareState>
