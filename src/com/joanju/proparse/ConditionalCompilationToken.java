@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.prorefactor.core.TokenTypes;
+import org.prorefactor.refactor.RefactorException;
 
 public class ConditionalCompilationToken 
 	extends ProToken 
@@ -121,10 +122,15 @@ public class ConditionalCompilationToken
 	/**
 	 * Returns the text between &IF and &ENDIF
 	 * @return The text between &IF and &ENDIF
+	 * @throws RefactorException 
 	 */
-	public String getEnclosedText (int level, ArrayList<ProToken> processed)
+	public String getEnclosedText (int level, ArrayList<ProToken> processed) throws RefactorException
 	{
 		StringBuilder sb = new StringBuilder ();
+		HashMap<Integer, ProToken> macros = new HashMap<Integer, ProToken>();
+		Object[] keys;
+		MakroReferenceToken macro;
+		String text;
 		
 		if (!processed.contains(this.ampIf))
 		{
@@ -142,8 +148,13 @@ public class ConditionalCompilationToken
 			{
 				if (this.children.containsKey(token))
 					sb.append(this.children.get(token).getEnclosedText(level + 1, processed));
-				else 
+				else if (token.getType() != TokenTypes.MAKROREFERENCE)	
+				{
 					sb.append(token.getText());
+					processed.add(token);
+				}
+				else 
+					macros.put(sb.length(), token);
 			}
 		}
 
@@ -153,6 +164,17 @@ public class ConditionalCompilationToken
 			processed.add(this.ampEndIf);
 		}
 		
-		return sb.toString();
+		keys = macros.keySet().toArray();
+		text = sb.toString();
+		for (int i = keys.length - 1; i >= 0; i--)
+		{
+			macro = (MakroReferenceToken)macros.get((int) keys[i]);
+			text = String.format ("%s%s", 
+							      text.substring(0, (int) keys[i] - macro.length()),
+							      text.substring((int) keys[i] - macro.length()).replaceFirst (macro.getEscapedReferenceText(), 
+							    		  													   macro.getReferenceName()));
+		}
+		
+		return text;
 	}
 }

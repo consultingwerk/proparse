@@ -1,14 +1,14 @@
 package test.SCL3453;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import org.prorefactor.core.JPNode;
 import org.prorefactor.refactor.RefactorException;
 import org.prorefactor.treeparser.ParseUnit;
 
-import com.joanju.proparse.IntegerIndex;
 import com.joanju.proparse.NodeTypes;
-import com.joanju.proparse.ProToken;
 
 import de.consultingwerk.proparse.refactor.RefactoredToken;
 
@@ -46,13 +46,14 @@ public class TestClass
 
 	private void change (JPNode node)
 	{
-		IntegerIndex<String> idx;
-		
 		if (node.getType() == NodeTypes.MESSAGE)
-		{
 			node.setToken(new RefactoredToken (node.getToken(), "DISPLAY"));
-		}
-		node.setText(node.getText().toLowerCase());
+		else if (node.getType() == NodeTypes.VIEWAS || node.getType() == NodeTypes.ALERTBOX)
+			node.setToken(new RefactoredToken(node.getToken(), ""));
+		else if (node.getType() == NodeTypes.QSTRING && node.getText().charAt(node.getText().length() - 1) == '"')
+			node.setText(String.format("%s:u", node.getText()));
+		else
+			node.setText(node.getText().toLowerCase());
 		
 		if (node.firstChild() != null)
 			this.change(node.firstChild());

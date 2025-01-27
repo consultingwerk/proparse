@@ -1,16 +1,13 @@
 package org.prorefactor.core;
 
 import com.joanju.proparse.ConditionalCompilationToken;
-import com.joanju.proparse.ProParserTokenTypes;
+import com.joanju.proparse.MakroReferenceToken;
 import com.joanju.proparse.ProToken;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.StringReader;
+
+import de.consultingwerk.proparse.refactor.RefactoredToken;
+
 import java.util.ArrayList;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.prorefactor.refactor.RefactorException;
 
 /**
@@ -19,11 +16,6 @@ import org.prorefactor.refactor.RefactorException;
 public class NodeTextUtils 
 {
 	private final JPNode rootNode;
-	private JPNode currNode;
-	private JSONArray macros;
-	private boolean hideIncludeFileText = false;
-	private Boolean skipNextSpace = false;
-	private int consuming = 0;
 	
 	/**
 	 * Constructor for the NodeTextUtils class
@@ -32,38 +24,6 @@ public class NodeTextUtils
 	public NodeTextUtils(JPNode top)
 	{
 		this.rootNode = top;
-		
-		this.macros = new JSONArray();
-	}
-	
-	/**
-	 * Returns the following node or null if EOF
-	 * @param node The current node
-	 * @return The next node
-	 */
-	private JPNode getNextNode(JPNode node)
-	{
-		JPNode parent;
-		
-		if(node == null)
-			return null;
-
-		if(node.firstChild() != null)
-			return node.firstChild();
-		
-		if(node.nextSibling() != null)
-			return node.nextSibling();
-		
-		if(node.parent() != null)
-		{
-			parent = node.parent();
-			while(parent != null && parent.nextSibling() == null)
-				parent = parent.parent();
-			if(parent != null)
-				return parent.nextSibling();
-		}
-		
-		return null;
 	}
 	
 	/**
@@ -76,104 +36,303 @@ public class NodeTextUtils
 	 */
 	public String getFullSourceText() throws RefactorException
 	{
-		StringBuilder bldr = new StringBuilder();
-		String txt;
+		ArrayList<Object> flatTree = new ArrayList<Object>();
+		StringBuilder bldr;
+		Object treeNode;
+		ProToken token, token2;
+		JPNode node;
+		ConditionalCompilationToken ccToken = null;
+		ArrayList<ProToken> processedTokens = new ArrayList<ProToken>();
+		ArrayList<JPNode> processedNodes = new ArrayList<JPNode>();
 		
-		this.currNode = this.rootNode;
-		this.hideIncludeFileText = true;
-				
-		for(this.currNode  = this.rootNode; 
-			this.currNode != null; 
-			this.currNode  = this.getNextNode(this.currNode))
-			bldr.append(this.getText(this.currNode));
-		
-		txt = this.replaceMacros(bldr.toString());
-		
-		this.hideIncludeFileText = false;
-		return txt;
-	}
-	
-	/**
-	 * Replaces macro-text with their references
-	 * @param txt The source code with macro-text
-	 * @return The source code with macro-references
-	 * @throws RefactorException 
-	 */
-	private String replaceMacros(String txt) throws RefactorException
-	{
-		int line;
-		JSONObject json;
-		ArrayList<String> lines;
-		
-		try
-		{
-			lines = this.stringToLines(txt);
-			for(int i = this.macros.length() - 1; i >= 0; i--)
-			{
-				json = this.macros.getJSONObject(i);
-				line = json.getInt("line");
-				lines.set(line, this.replaceMacro(lines.get(line), json));
-			}
-			txt = this.linesToString(lines);
-		}
-		catch(JSONException e)
-		{
-			throw new RefactorException(e);
-		}
-		return txt;
-	}
-	
-	/**
-	 * Replaces a macros text with the reference
-	 * @param txt The source code line with the macro-text
-	 * @param macro The info about the macro as JSON
-	 * @return The source code line with the macro-reference
-	 * @throws RefactorException 
-	 */
-	private String replaceMacro(String txt, JSONObject macro) throws RefactorException
-	{
-		int col;
-		String name;
-		String text;
+		this.flattenTree (this.rootNode, flatTree);
 
-		try
+		// replace makros
+		for (int i = flatTree.size() - 1; i >= 0; i--)
 		{
-			col = macro.getInt("col");
-			name = macro.getString("refName");
-			text = this.fixRegexEscape(macro.getString("refText"));
-			
-			return (txt.substring(0, col) + txt.substring(col).replaceFirst(text, name));
+			treeNode = flatTree.get(i);
+			if (treeNode instanceof MakroReferenceToken)
+			{
+				this.replaceMakro ((MakroReferenceToken) treeNode, flatTree);
+				i--;
+			}
 		}
-		catch(JSONException e)
+		
+		// process conditional compilation
+		for (Object obj: flatTree)
+		{			
+			// &IF .. &THEN .. &ELSEIF .. &ELSE .. &ENDIF
+			if (obj instanceof ConditionalCompilationToken)
+			{
+				ccToken = (ConditionalCompilationToken) obj;
+				if (ccToken.getFileIndex() == 0 && !processedTokens.contains(ccToken) && ccToken.isOpening())
+					flatTree.set(flatTree.indexOf(ccToken), new RefactoredToken(ccToken, ccToken.getEnclosedText(0, processedTokens)));
+			}
+			else if (obj instanceof JPNode)
+			{
+				node = (JPNode) obj;
+				if (processedTokens.contains(node.getToken())) 
+					processedNodes.add(node);
+			}
+		}
+		
+		for (ProToken processedToken: processedTokens)
 		{
-			throw new RefactorException(e);
+			if (flatTree.contains(processedToken))
+				flatTree.remove(processedToken);
+		}
+		for (JPNode processedNode: processedNodes)
+		{
+			if (flatTree.contains(processedNode))
+				flatTree.remove(processedNode);
+		}
+		
+		// Since whitespaces at the end of include files 
+		// and after includefile references get combined 
+		// as a token that is part of the include file,
+		// those whitespaces need to be added to the reference text.
+		for (int i = 0; i < flatTree.size() - 1; i++) 
+		{
+			treeNode = flatTree.get(i);
+			if (treeNode instanceof ProToken && ((ProToken) treeNode).getType() == TokenTypes.INCLUDEFILEREFERENCE)
+			{
+				token = (ProToken) treeNode;				
+				if(token.getHiddenAfter() != null && token.getHiddenBefore() != null)
+				{
+					if ((i + 1 < flatTree.size() - 1))
+					{
+						if (flatTree.get(i + 1) instanceof JPNode)
+							token2 = ((JPNode) flatTree.get(i + 1)).getToken();
+						else if (flatTree.get(i + 1) instanceof ProToken)
+							token2 = (ProToken) flatTree.get(i + 1);
+						else
+							token2 = null;
+						
+						if (token2 != null && token2.getHiddenBefore() != null && token2.getHiddenBefore().getType() == TokenTypes.WS)
+							flatTree.add(flatTree.indexOf(token) + 1, token2.getHiddenBefore());
+					}
+				}
+			}
+		}
+		
+		for (int i = 0; i < flatTree.size() - 2; i++)
+		{
+			token = this.getToken(flatTree.get(i));
+			token2 = this.getToken(flatTree.get(i + 1));
+			if (token.getType() == TokenTypes.WS && token2.getType() == TokenTypes.WS)
+			{
+				flatTree.remove(token);
+				i--;
+			}
+		}
+		for (int i = 0; i < flatTree.size() - 1; i++) 
+		{
+			token = this.getToken(flatTree.get(i));
+			if (token != null && token.getType() == TokenTypes.INCLUDEFILEREFERENCE && (i + 1) < flatTree.size())
+			{
+				token2 = this.getNextTokenWithText(token, flatTree);		
+				if (token2 != null && token2.getType() == TokenTypes.WS && token2.getText().startsWith(" "))
+					token2.setText(token2.getText().substring(1));
+			}
+		}
+		
+		bldr = new StringBuilder ();
+		for (Object obj: flatTree) 
+		{
+			if (obj instanceof JPNode)
+				bldr.append(((JPNode)obj).getText());
+			else if (obj instanceof ProToken)
+				bldr.append(((ProToken)obj).getText());
+		}
+		
+		return bldr.toString();
+	}
+	
+	/**
+	 * Returns the next token in the tree that does have text
+	 * @param token The current token
+	 * @param tree The list of tokens in which to search
+	 * @return The next token with text or null
+	 */
+	private ProToken getNextTokenWithText (ProToken token, ArrayList<Object> tree)
+	{
+		ProToken token2;
+		for (int i = tree.indexOf(token) + 1; i < tree.size() - 1; i++)
+		{
+			token2 = this.getToken(tree.get(i));
+			if (token2 != null && !token2.getText().isEmpty())
+				return token2;
+		}
+		return null;
+	}
+	
+	/**
+	 * Replaces a makro reference with its content
+	 * @param token The token of the macro reference
+	 * @param tree The tree in which to replace it
+	 */
+	private void replaceMakro (ProToken token, ArrayList<Object> tree)
+	{
+		int start = tree.indexOf(token);
+		int i = start - 1;
+		MakroReferenceToken makro;
+		String text = "";
+		ProToken newToken;
+		ProToken token2;
+
+		
+		if (tree.get(i) instanceof MakroReferenceToken)
+			this.replaceNestedMakro (tree, token, this.getToken(tree.get(start - 1)));
+		
+		makro = (MakroReferenceToken) token;
+		
+		if (this.getToken(tree.get(i)).getType() == TokenTypes.AMPSCOPEDDEFINE || this.getToken(tree.get(i)).getType() == TokenTypes.AMPGLOBALDEFINE)
+		{
+			token2 = this.getToken(tree.get(i));
+			token2.setText(token2.getText().replaceFirst(makro.getEscapedReferenceText(), makro.getReferenceName()));
+			tree.remove(token);
+			return;
+		}
+		
+		while (text.trim().length() <= makro.getReferenceText().trim().length() && i < tree.size() && i >= 0)
+		{
+			if (this.getToken(tree.get(i)).getType() != TokenTypes.MAKROREFERENCE)
+				text += this.getToken(tree.get(i)).getText();
+			i++;
+		}
+
+		if (!text.contains(makro.getReferenceText()))
+			return;
+		
+		text = text.replaceFirst(makro.getEscapedReferenceText(), makro.getReferenceName());
+		newToken = new RefactoredToken(token, text);
+		if (makro.getReferenceText().isEmpty())
+			this.replaceEmptyMakro (tree, 
+									this.getToken(tree.get(tree.indexOf(token) - 1)), 
+									token, 
+									this.getToken(tree.get(tree.indexOf(token) + 1)), 
+									makro.getReferenceText(), 
+									makro.getReferenceName());			
+		else
+		{				
+			for (int j = i - 1; j >= start - 1; j--)
+				tree.remove(j);
+			tree.add(start - 1, newToken);
 		}
 	}
 	
 	/**
-	 * Helper method to turn source-code into a list of lines
-	 * @param txt The source code
-	 * @return The list of lines
-	 * @throws RefactorException 
+	 * Replaces a makro reference inside another makro reference
+	 * @param tree
+	 * @param outer
+	 * @param inner
 	 */
-	private ArrayList<String> stringToLines(String txt) throws RefactorException
+	private void replaceNestedMakro (ArrayList<Object> tree, ProToken outer, ProToken inner)
 	{
-		ArrayList<String> lines = new ArrayList<String>();
-		BufferedReader br;
+		MakroReferenceToken outerMakro = (MakroReferenceToken) outer;
+		MakroReferenceToken innerMakro = (MakroReferenceToken) inner;
 		
-		try
+		if (!outerMakro.getReferenceName().contains(innerMakro.getEscapedReferenceText()))
+			return;
+		
+		outerMakro.setReferenceName (outerMakro.getReferenceName().replaceFirst (innerMakro.getEscapedReferenceText(), 
+																				 innerMakro.getReferenceName()));
+		tree.remove(inner);
+	}
+	
+	/**
+	 * Performs the replacement for a macro without content
+	 * @param tree The flattened tree
+	 * @param prev The token before the makro token
+	 * @param token The makro token
+	 * @param next The token after the makro
+	 * @param refText The macro content text
+	 * @param refName The macro reference text
+	 */
+	private void replaceEmptyMakro (ArrayList<Object> tree, ProToken prev, ProToken token, ProToken next, String refText, String refName)
+	{
+		String ws;
+		int lineDiff, colDiff;
+		
+		if (prev.getLine() == token.getLine() && prev.getText().length() + prev.getColumn() == token.getColumn())
+			prev.setText(String.format("%s%s", prev.getText(), refName));
+		else if (next.getLine() == token.getLine() && next.getColumn() == token.getColumn() + refText.length())
+			next.setText(String.format("%s%s", refName, next.getText()));
+		else if (prev.getType() == TokenTypes.WS)
 		{
-			br = new BufferedReader(new StringReader(txt));
-			for(String line = br.readLine(); line != null; line = br.readLine())
-				lines.add(line + "\n");
-			br.close();
+			ws = prev.getText();
+			lineDiff = token.getLine() - prev.getLine();
+			if (lineDiff == 0)
+				colDiff = token.getColumn() - prev.getColumn();
+			else
+				colDiff = lineDiff + token.getColumn();
+			
+			if (colDiff < ws.length())
+				ws = String.format ("%s%s%s", 
+						ws.substring(0, colDiff), 
+						refName, 
+						ws.substring(colDiff));
+			else
+				ws = String.format ("%s%s", ws, refName);
+
+			prev.setText(ws);
 		}
-		catch(IOException e)
-		{
-			throw new RefactorException(e);
+		tree.remove(token);
+	}
+	
+	/**
+	 * Attempts to return a token for the given object 
+	 * @param obj A JPNode or ProToken
+	 * @return The token or null 
+	 */
+	private ProToken getToken (Object obj) {
+		if (obj instanceof ProToken)
+			return (ProToken) obj;
+		else if (obj instanceof JPNode)
+			return ((JPNode) obj).getToken();
+		else
+			return null;
+	}
+	
+	/**
+	 * Flattens the nodes and hidden tokens of a tree
+	 * @param node The node at which to start
+	 * @param list The list to fill
+	 */
+	private void flattenTree (JPNode node, ArrayList<Object> list)
+	{
+		if (node == null || list == null)
+			return;
+		
+		if (this.isOperator(node)) {
+			this.flattenTree(node.firstChild(), list);
+			this.addNodeAndToken(node, list);
+			this.flattenTree(node.firstChild().nextSibling(), list);
+		}
+		else {
+			this.addNodeAndToken(node, list);
+			if (node.firstChild() != null)
+				this.flattenTree(node.firstChild(), list);
 		}
 		
-		return lines;
+		if (node.nextSibling() != null && !this.isOperator(node.parent()))
+			this.flattenTree(node.nextSibling(), list);
+	}
+	
+	/**
+	 * Adds a node and its tokens to the list
+	 * @param node The node to add
+	 * @param list The list to which to add it
+	 */
+	private void addNodeAndToken (JPNode node, ArrayList<Object> list)
+	{
+		for (ProToken t = node.getHiddenFirst(); t!=null; t = t.getNext())
+		{
+			if (t.getFileIndex() == 0)
+				list.add(t);
+		}
+		if (node.getFileIndex() == 0)
+			list.add(node);
 	}
 	
 	/**
@@ -181,7 +340,7 @@ public class NodeTextUtils
 	 * @param txt The pattern for regex
 	 * @return The fixed pattern
 	 */
-	private String fixRegexEscape(String txt)
+	public static String fixRegexEscape(String txt)
 	{
 		txt = txt.replace("\\", "\\\\");
 		txt = txt.replace("|", "\\|");
@@ -202,54 +361,17 @@ public class NodeTextUtils
 	}
 	
 	/**
-	 * Helper method to turn a list of lines into source-code
-	 * @param lines The list of lines
-	 * @return The source-code
-	 */
-	private String linesToString(ArrayList<String> lines)
-	{
-		String txt = "";
-		for(String line: lines)
-			txt += line;
-		return txt;
-	}
-	
-	/**
-	 * Returns a nodes text including hidden text, 
-	 * also brings operators in the correct order
-	 * @param node The node whose text is sought
-	 * @return The nodes text
-	 * @throws RefactorException If an error occurred
-	 */
-	private String getText(JPNode node) throws RefactorException
-	{
-		StringBuilder bldr = new StringBuilder();
-
-		if (this.isOperator(node))
-		{
-			if(this.hideIncludeFileText && node.getFileIndex() == 0)
-			{
-				bldr.append(getOperatorText(node));
-				this.currNode = this.skipNodeChildren(node);
-			}
-		}
-		else
-		{
-			bldr.append(getHiddenText(node));
-			if(this.hideIncludeFileText && node.getFileIndex() == 0 && this.consuming == 0) {
-				bldr.append(node.getText());
-			}
-			this.currNode = node;
-		}
-		return bldr.toString();
-	}
-	
-	/**
 	 * Returns whether the given node is an operator node
 	 * @param node The node to test
 	 * @return Whether the node is an operator
 	 */
 	private boolean isOperator (JPNode node) {
+		
+		if (node == null)
+			return false;
+		
+		if (node.firstChild() == null || node.firstChild().nextSibling() == null || node.firstChild().nextSibling().nextSibling() != null)
+			return false;
 		
 		return node.getType() == TokenTypes.PLUS
 			|| node.getType() == TokenTypes.MINUS
@@ -273,162 +395,5 @@ public class NodeTextUtils
 			|| node.getType() == TokenTypes.BEGINS
 			|| node.getType() == TokenTypes.MATCHES
 			|| node.getType() == TokenTypes.CONTAINS;
-	}
-	
-	/**
-	 * Returns the last node descending from the given node
-	 * @param node The given node
-	 * @return The last node descending from node
-	 */
-	private JPNode skipNodeChildren(JPNode node)
-	{
-		if(node.lastDescendant() != null)
-			return node.lastDescendant();
-		else
-			return node;
-	}
-	
-	/**
-	 * Returns an operators text in the correct order
-	 * @param node The operator node
-	 * @return The nodes text
-	 * @throws RefactorException If an error occurred
-	 */
-	private String getOperatorText(JPNode node) throws RefactorException
-	{
-		StringBuilder bldr = new StringBuilder();
-		JPNode begin = null;
-		JPNode end = null;
-		
-		// An EQUAL node does not necessarily have children
-		// e.g. in assignments in annotations EQUAL is in a sibling
-		// relationship with the sides of the assignment
-		// before and after itself.
-		if(node.firstChild() == null)
-		{
-			bldr.append(this.getHiddenText(node));
-			bldr.append(node.getText());
-			return bldr.toString();
-		}
-		
-		// Get the text on the left side of the operator
-		begin = node.firstChild();
-		if(begin.lastDescendant() != null)
-			end = begin.lastDescendant();
-		else
-			end = begin;
-		bldr.append(this.getText(begin, end));
-		
-		// Get the operators text
-		bldr.append(this.getHiddenText(node));
-		if(this.consuming == 0)
-			bldr.append(node.getText());
-
-		// Get the text on the right side of the operator
-		begin = node.firstChild().nextSibling();
-		if(begin.lastDescendant() != null)
-			end = begin.lastDescendant();
-		else
-			end = begin;
-		bldr.append(getText(begin, end));
-		
-		return bldr.toString();
-	}
-	
-	/**
-	 * Returns the text between two nodes
-	 * @param begin The node from which to begin
-	 * @param end The node at which to end
-	 * @return The Text between begin and end
-	 * @throws RefactorException If an error occurred
-	 */
-	private String getText(JPNode begin, JPNode end) throws RefactorException
-	{
-		StringBuilder bldr = new StringBuilder();
-		
-		if(this.getNextNode(end) != null)
-		{
-			end = this.getNextNode(end);
-			for(this.currNode = begin; 
-				this.currNode.getNodeNum() != end.getNodeNum(); 
-				this.currNode = this.getNextNode(this.currNode))
-				bldr.append(this.getText(this.currNode));
-		}	
-		else
-		{
-			for(this.currNode  = begin; 
-				this.currNode != null; 
-				this.currNode  = this.getNextNode(this.currNode))
-				bldr.append(this.getText(this.currNode));
-		}
-		return bldr.toString();
-	}
-	
-	/**
-	 * Returns the text of a nodes hidden tokens
-	 * @param node The node whose hidden text is sought
-	 * @return The nodes hidden text
-	 * @throws RefactorException If an error occurred
-	 */
-	private String getHiddenText(JPNode node) throws RefactorException
-	{
-		StringBuilder bldr = new StringBuilder();
-		JSONObject json;
-		ArrayList<ProToken> processed = new ArrayList<ProToken>();
-		
-		// Iterating the nodes hidden tokens
-		for (ProToken t = node.getHiddenFirst(); t!=null; t = t.getNext()) 
-		{
-			// Only the top-most file
-			if((t.getFileIndex() == 0 || t.getType() == TokenTypes.MAKROREFERENCE) && this.hideIncludeFileText)
-			{
-				// &IF .. &THEN .. &ELSEIF .. &ELSE .. &ENDIF
-				if(t instanceof ConditionalCompilationToken)
-				{
-					if (((ConditionalCompilationToken)t).isOpening())
-					{
-						this.consuming++;
-						if (!processed.contains(t))
-						{
-							bldr.append(((ConditionalCompilationToken)t).getEnclosedText(0, processed));
-							processed.add(t);
-						}
-					}
-					else
-						this.consuming--;
-				}
-
-				// Remember macros to replace them later
-				if(t.getType() == TokenTypes.MAKROREFERENCE)
-				{
-					try
-					{
-						json = new JSONObject(t.getText());
-						if(json.getInt("file") == 0)
-							macros.put(json);
-					}
-					catch(JSONException e)
-					{
-						throw new RefactorException(e);
-					}
-				}
-				
-				// Skip additional space after an include-file
-				else if(skipNextSpace)
-				{
-					if(t.getType() == TokenTypes.WS && this.consuming == 0)
-						bldr.append(t.getText().substring(1));
-					else if (this.consuming == 0)
-						bldr.append(t.getText());
-					skipNextSpace = false;
-				}
-				else if (this.consuming == 0)
-					bldr.append(t.getText());
-				if(t.getType() == TokenTypes.INCLUDEFILEREFERENCE)
-					skipNextSpace = true;
-			}
-		}
-		
-		return bldr.toString();
 	}
 }
