@@ -73,7 +73,9 @@
 	</target>	
 
 	<target name="make_dotnet_msbuild" depends="makeproparsejar">
-		<msbuild/>
+		<msbuild output="C:\Work\Proparse\GitHub\proparse\output\x64" targetVersion="net472" runtime="win-x64"/>
+		<msbuild output="C:\Work\Proparse\GitHub\proparse\output\x86" targetVersion="net472" runtime="win-x86"/>
+		<msbuild output="C:\Work\Proparse\GitHub\proparse\output\netcore" targetVersion="net8.0" runtime="linux-x64"/>
 	</target>	
 
 	<macrodef name="msbuild">
@@ -91,8 +93,14 @@
 		<attribute name="dllFileName" default="proparse.net"/>
 		<sequential>
 			<exec executable="dotnet" dir="." failonerror="true">
-				<arg line=" build --output @{output} --artifacts-path @{output} --version-suffix @{version} --framework @{targetVersion} -p:TargetFrameworks=@{targetVersion} -p:baseDir=@{baseDir} -p:IkvmVersion=@{IkvmVersion} -p:dllFileName=@{dllFileName} --runtime @{runtime} -v @{verbose} @{baseDir}\proparse.csproj"/>
+				<arg line=" clean --output @{output} --artifacts-path @{output} --framework @{targetVersion} -p:TargetFrameworks=@{targetVersion} -p:baseDir=@{baseDir} -p:IkvmVersion=@{IkvmVersion} -p:dllFileName=@{dllFileName} --runtime @{runtime} -v @{verbose} @{baseDir}\proparse.csproj"/>
 			</exec>
+			<exec executable="dotnet" dir="." failonerror="true">
+				<arg line=" build --output @{output} --artifacts-path @{output} --self-contained --version-suffix @{version} --framework @{targetVersion} -p:TargetFrameworks=@{targetVersion} -p:baseDir=@{baseDir} -p:IkvmVersion=@{IkvmVersion} -p:dllFileName=@{dllFileName} --runtime @{runtime} -v @{verbose} @{baseDir}\proparse.csproj"/>
+			</exec>
+			<delete dir="@{output}\obj\proparse\debug_@{targetVersion}_@{runtime}"/>
+			<delete file="@{output}\proparse.dll"/>
+			<delete file="@{output}\proparse.pdb"/>
 		</sequential>
 	</macrodef>
 	
