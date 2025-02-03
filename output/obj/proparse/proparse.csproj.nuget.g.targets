@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Condition=" '$(TargetFramework)' == 'net472' AND '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Import Project="$(NuGetPackageRoot)system.text.json\8.0.5\buildTransitive\net462\System.Text.Json.targets" Condition="Exists('$(NuGetPackageRoot)system.text.json\8.0.5\buildTransitive\net462\System.Text.Json.targets')" />
+    <Import Project="$(NuGetPackageRoot)ikvm.msbuild.tools\8.10.3\buildTransitive\IKVM.MSBuild.Tools.targets" Condition="Exists('$(NuGetPackageRoot)ikvm.msbuild.tools\8.10.3\buildTransitive\IKVM.MSBuild.Tools.targets')" />
+    <Import Project="$(NuGetPackageRoot)ikvm.msbuild\8.10.3\buildTransitive\IKVM.MSBuild.targets" Condition="Exists('$(NuGetPackageRoot)ikvm.msbuild\8.10.3\buildTransitive\IKVM.MSBuild.targets')" />
+    <Import Project="$(NuGetPackageRoot)ikvm.image\8.10.3\buildTransitive\IKVM.Image.targets" Condition="Exists('$(NuGetPackageRoot)ikvm.image\8.10.3\buildTransitive\IKVM.Image.targets')" />
+    <Import Project="$(NuGetPackageRoot)ikvm\8.10.3\buildTransitive\IKVM.targets" Condition="Exists('$(NuGetPackageRoot)ikvm\8.10.3\buildTransitive\IKVM.targets')" />
+  </ImportGroup>
+</Project>

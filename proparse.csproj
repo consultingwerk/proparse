@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project Sdk="Microsoft.NET.Sdk" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<Version>4.2.0.$(VersionSuffix)</Version>
+		<TargetFramework>$(TargetFrameworks)</TargetFramework>
+	    <ImplicitUsings>enable</ImplicitUsings>
+	    <LangVersion>latest</LangVersion>
+	    <LibDir>$(baseDir)\lib</LibDir>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="IKVM" Version="$(IkvmVersion)" />
+		<PackageReference Include="IKVM.MSBuild" Version="$(IkvmVersion)" />
+		<IkvmReference Include="$(baseDir)\proparse.jar">
+			<AssemblyName>$(dllFileName)</AssemblyName>
+			<AssemblyVersion>4.2.0.$(VersionSuffix)</AssemblyVersion>
+   			<AssemblyFileVersion>4.2.0.$(VersionSuffix)</AssemblyFileVersion>
+   			<KeyFile>$(baseDir)\proparse.snk</KeyFile>
+   			<Compile>$(baseDir)\proparse.jar;$(LibDir)\ant-1.8.1.jar;$(LibDir)\ant-launcher-1.8.1.jar;$(LibDir)\antlr-2.7.7.jar;$(LibDir)\commons-cli-1.2.jar;$(LibDir)\commons-collections-3.2.1.jar;$(LibDir)\commons-io-1.4.jar;$(LibDir)\commons-lang-2.4.jar;$(LibDir)\groovy-all-1.7.3.jar;$(LibDir)\jdbm-1.0.jar;$(LibDir)\json.org-01.jar;$(LibDir)\junit-3.8.1.jar</Compile>
+		</IkvmReference>
+	</ItemGroup>
+</Project>
