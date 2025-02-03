@@ -73,8 +73,8 @@
 	</target>	
 
 	<target name="make_dotnet_msbuild" depends="makeproparsejar">
-		<msbuild output="C:\Work\Proparse\GitHub\proparse\output\x64" targetVersion="net472" runtime="win-x64"/>
-		<msbuild output="C:\Work\Proparse\GitHub\proparse\output\x86" targetVersion="net472" runtime="win-x86"/>
+		<msbuild output="C:\Work\Proparse\GitHub\proparse\output\x64"     targetVersion="net472" runtime="win-x64"/>
+		<msbuild output="C:\Work\Proparse\GitHub\proparse\output\x86"     targetVersion="net472" runtime="win-x86"/>
 		<msbuild output="C:\Work\Proparse\GitHub\proparse\output\netcore" targetVersion="net8.0" runtime="linux-x64"/>
 	</target>	
 
