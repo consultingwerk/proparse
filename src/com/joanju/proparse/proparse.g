@@ -3396,7 +3396,7 @@ onstate
 	:	ON^<AST=BlockNode>
 		{sthd(##,0);}
 		(	// ON event OF database-object
-			(dbevent)=> dbevent
+			dbevent
 		|	// ON key-label keyfunction.
 			(. . state_end)=> . . state_end
 		|	eventlist
