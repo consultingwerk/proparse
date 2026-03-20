@@ -2,7 +2,15 @@
 <project name="jars" default="main">
 
 	<property name="message" value="Building proparse..."/>
-	<property name="core_xclds" value="**/*.g,**/*.smap,**/*.SF,**/*.launch,**/*.testsuite,**/*.deploy,**/*.location,**/*.execution,**/*.datapool,**/*.artifact,**/*.html,**/*.svg,**/*.groovy" />
+	<property name="core_xclds" value="**/*.g,**/*.smap,**/*.SF,**/*.launch,**/*.testsuite,**/*.deploy,**/*.location,**/*.execution,**/*.datapool,**/*.artifact,**/*.html,**/*.svg,**/*.groovy,Release/**" />
+	<property name="output.dir" value="${basedir}\output"/>
+	<property name="output.dir.x64" value="${output.dir}\x64"/>
+	<property name="output.dir.x86" value="${output.dir}\x86"/>
+	<property name="output.dir.netcore" value="${output.dir}\netcore"/>
+	<property name="package.zip.win-x64" value="${output.dir}\proparse.win-x64.zip"/>
+	<property name="package.zip.win-x86" value="${output.dir}\proparse.win-x86.zip"/>
+	<property name="package.zip.netcore" value="${output.dir}\proparse.netcore-linux-x64.zip"/>
+	<property name="ikvm.bin.dir" value="${basedir}\ikvmbin"/>
 
 	<target name="main" depends="makeproparsejar, makeproparsezip, make_dotnet">
 		<echo>
@@ -15,7 +23,7 @@
 
 		<tstamp/>
 		<buildnumber/>
-		
+
 		<path id="build-classpath">
 		   <fileset dir="lib">
 		      <include name="*.jar"/>
@@ -47,7 +55,7 @@
 
 		</jar>
 	</target>
-	
+
 
 	<target name="makeproparsezip">
 		<delete dir="prorefactor/projects/unittest/pubs" />
@@ -56,11 +64,11 @@
 			<zipfileset file="proparse.jar" prefix="proparse.java" />
 			<zipfileset file="build.number" prefix="proparse.java" />
 		</zip>
-	</target>	
+	</target>
 
 
 	<target name="make_dotnet">
-		<exec executable="C:\Work\Proparse\Github\proparse\ikvmbin\ikvmc.exe" dir="." failonerror="true">
+		<exec executable="${ikvm.bin.dir}\ikvmc.exe" dir="." failonerror="true">
 			<arg line="-out:proparse.net.dll -version:4.2.0.${build.number} -keyfile:proparse.snk proparse.jar lib\*.jar"/>
 		</exec>
 		<delete dir="prorefactor/projects/unittest/pubs" />
@@ -70,17 +78,63 @@
 			<zipfileset file="ikvmbin/IKVM.Runtime.dll" prefix="proparse.assemblies" />
 			<zipfileset file="ikvmbin/IKVM.OpenJDK.Text.dll" prefix="proparse.assemblies" />
 		</zip>
-	</target>	
+	</target>
 
 	<target name="make_dotnet_msbuild" depends="makeproparsejar">
-		<msbuild output="C:\Work\Proparse\GitHub\proparse\output\x64"     targetVersion="net472" runtime="win-x64"/>
-		<msbuild output="C:\Work\Proparse\GitHub\proparse\output\x86"     targetVersion="net472" runtime="win-x86"/>
-		<msbuild output="C:\Work\Proparse\GitHub\proparse\output\netcore" targetVersion="net8.0" runtime="linux-x64"/>
-	</target>	
+		<msbuild output="${output.dir.x64}" targetVersion="net472" runtime="win-x64"/>
+		<delete dir="${output.dir.x64}\ikvm"/>
+		<delete dir="${output.dir.x64}\runtimes"/>
+		<delete>
+			<fileset dir="${output.dir.x64}">
+				<include name="Microsoft.Bcl.AsyncInterfaces.dll"/>
+				<include name="System.Buffers.dll"/>
+				<include name="System.Collections.Immutable.dll"/>
+				<include name="System.Memory.dll"/>
+				<include name="System.Numerics.Vectors.dll"/>
+				<include name="System.Reflection.Metadata.dll"/>
+				<include name="System.Runtime.CompilerServices.Unsafe.dll"/>
+				<include name="System.Text.Encodings.Web.dll"/>
+				<include name="System.Text.Json.dll"/>
+				<include name="System.Threading.Tasks.Extensions.dll"/>
+				<include name="System.ValueTuple.dll"/>
+			</fileset>
+		</delete>
+		<delete file="${package.zip.win-x64}"/>
+		<zip destfile="${package.zip.win-x64}">
+			<zipfileset dir="${output.dir.x64}"/>
+		</zip>
+		<msbuild output="${output.dir.x86}" targetVersion="net472" runtime="win-x86"/>
+		<delete dir="${output.dir.x86}\ikvm"/>
+		<delete dir="${output.dir.x86}\runtimes"/>
+		<delete>
+			<fileset dir="${output.dir.x86}">
+				<include name="Microsoft.Bcl.AsyncInterfaces.dll"/>
+				<include name="System.Buffers.dll"/>
+				<include name="System.Collections.Immutable.dll"/>
+				<include name="System.Memory.dll"/>
+				<include name="System.Numerics.Vectors.dll"/>
+				<include name="System.Reflection.Metadata.dll"/>
+				<include name="System.Runtime.CompilerServices.Unsafe.dll"/>
+				<include name="System.Text.Encodings.Web.dll"/>
+				<include name="System.Text.Json.dll"/>
+				<include name="System.Threading.Tasks.Extensions.dll"/>
+				<include name="System.ValueTuple.dll"/>
+			</fileset>
+		</delete>
+		<delete file="${package.zip.win-x86}"/>
+		<zip destfile="${package.zip.win-x86}">
+			<zipfileset dir="${output.dir.x86}"/>
+		</zip>
+		<msbuild output="${output.dir.netcore}" targetVersion="net8.0" runtime="linux-x64" dotnetCommand="publish" selfContainedArg="" copyDependencies="true"/>
+		<delete file="${package.zip.netcore}"/>
+		<zip destfile="${package.zip.netcore}">
+			<zipfileset dir="${output.dir.netcore}"/>
+		</zip>
+	</target>
 
 	<macrodef name="msbuild">
 		<attribute name="version" default="${build.number}"/>
-		<attribute name="output" default="C:\Work\Proparse\GitHub\proparse\output"/>
+		<attribute name="output" default="${output.dir}"/>
 		<!--https://github.com/ikvmnet/ikvm?tab=readme-ov-file#support-->
 		<!--https://learn.microsoft.com/en-us/dotnet/standard/frameworks-->
 		<attribute name="targetVersion" default="net472"/>
@@ -88,20 +142,26 @@
 		<attribute name="runtime" default="any"/>
 		<!--q[uiet], m[inimal], n[ormal] (default), d[etailed], and diag[nostic]-->
 		<attribute name="verbose" default="n"/>
-		<attribute name="baseDir" default="C:\Work\Proparse\GitHub\proparse"/>
-		<attribute name="IkvmVersion" default="8.10.3"/>
+		<attribute name="baseDir" default="${basedir}"/>
+		<attribute name="IkvmVersion" default="8.15.0"/>
 		<attribute name="dllFileName" default="proparse.net"/>
+		<attribute name="copyDependencies" default="true"/>
+		<attribute name="dotnetCommand" default="build"/>
+		<attribute name="selfContainedArg" default="--self-contained"/>
 		<sequential>
 			<exec executable="dotnet" dir="." failonerror="true">
-				<arg line=" clean --output @{output} --artifacts-path @{output} --framework @{targetVersion} -p:TargetFrameworks=@{targetVersion} -p:baseDir=@{baseDir} -p:IkvmVersion=@{IkvmVersion} -p:dllFileName=@{dllFileName} --runtime @{runtime} -v @{verbose} @{baseDir}\proparse.csproj"/>
+				<arg line=" restore --runtime @{runtime} -p:TargetFrameworks=@{targetVersion} -p:baseDir=@{baseDir} -p:IkvmVersion=@{IkvmVersion} -p:dllFileName=@{dllFileName} -p:CopyDependencies=@{copyDependencies} -p:VersionSuffix=@{version} -v @{verbose} @{baseDir}\proparse.csproj"/>
 			</exec>
 			<exec executable="dotnet" dir="." failonerror="true">
-				<arg line=" build --output @{output} --artifacts-path @{output} --self-contained --version-suffix @{version} --framework @{targetVersion} -p:TargetFrameworks=@{targetVersion} -p:baseDir=@{baseDir} -p:IkvmVersion=@{IkvmVersion} -p:dllFileName=@{dllFileName} --runtime @{runtime} -v @{verbose} @{baseDir}\proparse.csproj"/>
+				<arg line=" clean --output @{output} --framework @{targetVersion} -p:TargetFrameworks=@{targetVersion} -p:baseDir=@{baseDir} -p:IkvmVersion=@{IkvmVersion} -p:dllFileName=@{dllFileName} -p:CopyDependencies=@{copyDependencies} -p:VersionSuffix=@{version} --runtime @{runtime} -v @{verbose} @{baseDir}\proparse.csproj"/>
 			</exec>
-			<delete dir="@{output}\obj\proparse\debug_@{targetVersion}_@{runtime}"/>
+			<exec executable="dotnet" dir="." failonerror="true">
+				<arg line=" @{dotnetCommand} --output @{output} @{selfContainedArg} --framework @{targetVersion} -p:TargetFrameworks=@{targetVersion} -p:baseDir=@{baseDir} -p:IkvmVersion=@{IkvmVersion} -p:dllFileName=@{dllFileName} -p:CopyDependencies=@{copyDependencies} -p:VersionSuffix=@{version} --runtime @{runtime} -v @{verbose} @{baseDir}\proparse.csproj"/>
+			</exec>
 			<delete file="@{output}\proparse.dll"/>
 			<delete file="@{output}\proparse.pdb"/>
+            <delete dir="${basedir}\obj"/>
 		</sequential>
 	</macrodef>
-	
+
 </project>
