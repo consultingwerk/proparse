@@ -82,45 +82,11 @@
 
 	<target name="make_dotnet_msbuild" depends="makeproparsejar">
 		<msbuild output="${output.dir.x64}" targetVersion="net472" runtime="win-x64"/>
-		<delete dir="${output.dir.x64}\ikvm"/>
-		<delete dir="${output.dir.x64}\runtimes"/>
-		<delete>
-			<fileset dir="${output.dir.x64}">
-				<include name="Microsoft.Bcl.AsyncInterfaces.dll"/>
-				<include name="System.Buffers.dll"/>
-				<include name="System.Collections.Immutable.dll"/>
-				<include name="System.Memory.dll"/>
-				<include name="System.Numerics.Vectors.dll"/>
-				<include name="System.Reflection.Metadata.dll"/>
-				<include name="System.Runtime.CompilerServices.Unsafe.dll"/>
-				<include name="System.Text.Encodings.Web.dll"/>
-				<include name="System.Text.Json.dll"/>
-				<include name="System.Threading.Tasks.Extensions.dll"/>
-				<include name="System.ValueTuple.dll"/>
-			</fileset>
-		</delete>
 		<delete file="${package.zip.win-x64}"/>
 		<zip destfile="${package.zip.win-x64}">
 			<zipfileset dir="${output.dir.x64}"/>
 		</zip>
 		<msbuild output="${output.dir.x86}" targetVersion="net472" runtime="win-x86"/>
-		<delete dir="${output.dir.x86}\ikvm"/>
-		<delete dir="${output.dir.x86}\runtimes"/>
-		<delete>
-			<fileset dir="${output.dir.x86}">
-				<include name="Microsoft.Bcl.AsyncInterfaces.dll"/>
-				<include name="System.Buffers.dll"/>
-				<include name="System.Collections.Immutable.dll"/>
-				<include name="System.Memory.dll"/>
-				<include name="System.Numerics.Vectors.dll"/>
-				<include name="System.Reflection.Metadata.dll"/>
-				<include name="System.Runtime.CompilerServices.Unsafe.dll"/>
-				<include name="System.Text.Encodings.Web.dll"/>
-				<include name="System.Text.Json.dll"/>
-				<include name="System.Threading.Tasks.Extensions.dll"/>
-				<include name="System.ValueTuple.dll"/>
-			</fileset>
-		</delete>
 		<delete file="${package.zip.win-x86}"/>
 		<zip destfile="${package.zip.win-x86}">
 			<zipfileset dir="${output.dir.x86}"/>
