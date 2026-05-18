@@ -219,10 +219,10 @@ block_for
 	;
 block_opt
 	:	(field EQUAL)=> field EQUAL expression TO expression (options{greedy=true;}: BY constant)? {##=#([Block_iterator],##);}
-	|	querytuningphrase 
-	|	WHILE^ expression 
+	|	querytuningphrase
+	|	WHILE^ expression
 	|	TRANSACTION
-	|	stop_after 
+	|	stop_after
 	|	on___phrase
 	|	framephrase
 	|	BREAK
@@ -250,7 +250,7 @@ statement
 	|	applystate
 	|	assignstate
 	|	bellstate
-    |   blocklevelstate	
+    |   blocklevelstate
 	|	buffercomparestate
 	|	buffercopystate
 	|	callstate  | casestate | catchstate
@@ -259,7 +259,7 @@ statement
 	| enumstate
 	|	clearstate  | closestatement  | colorstate
 	|	compilestate
-	|	connectstate  
+	|	connectstate
 	|	constructorstate
 	|	copylobstate
 	|	createstatement
@@ -273,28 +273,28 @@ statement
 	|	disablestate | disabletriggersstate
 	|	disconnectstate  | displaystate
 	|	dostate
-	|	downstate  | dropstatement  | emptytemptablestate  
+	|	downstate  | dropstatement  | emptytemptablestate
 	|	enablestate
 	|	exportstate  | fetchstate  | finallystate | findstate
 	|	forstate
 	|	formstate
-	|	functionstate  | getstate  | getkeyvaluestate  
+	|	functionstate  | getstate  | getkeyvaluestate
 	|	grantstate  | hidestate
 	|	ifstate
-	|	importstate  
+	|	importstate
 	|	inputstatement
 	|	inputoutputstatement
 	|	insertstatement
 	|	interfacestate
 	|	leavestate
-	|	loadstate  
+	|	loadstate
 	|	messagestate
 	|	methodstate
-	|	nextstate  | nextpromptstate | onstate  
-	|	openstatement  | osappendstate  | oscommandstate  | oscopystate  | oscreatedirstate  
+	|	nextstate  | nextpromptstate | onstate
+	|	openstatement  | osappendstate  | oscommandstate  | oscopystate  | oscreatedirstate
 	|	osdeletestate  | osrenamestate
 	|	outputstatement
-	|	pagestate  
+	|	pagestate
 	|	pausestate
 	|	procedurestate
 	|	processeventsstate  | promptforstate
@@ -306,14 +306,14 @@ statement
 	|	readkeystate
 	|	releasestatement
 	|	repeatstate
-	|	repositionstate  
+	|	repositionstate
 	|	returnstate  | revokestate
 	|	routinelevelstate
 	|	runstatement
 	|	savecachestate  | scrollstate
-	|	seekstate  
+	|	seekstate
 	|	selectstate
-	|	setstate  | showstatsstate  | statusstate  
+	|	setstate  | showstatsstate  | statusstate
 	|	stopstate  | subscribestate
 	|	systemdialogcolorstate | systemdialogfontstate
 	|	systemdialoggetdirstate | systemdialoggetfilestate
@@ -322,8 +322,8 @@ statement
 	|	thisobjectstate
 	|	transactionmodeautomaticstate
 	|	triggerprocedurestate
-	|	underlinestate  
-	|	undostate  | unloadstate  | unsubscribestate  | upstate  
+	|	underlinestate
+	|	undostate  | unloadstate  | unsubscribestate  | upstate
 	|	updatestatement  | usestate | usingstate | validatestate | varStatement | viewstate  | waitforstate
 	;
 
@@ -375,7 +375,7 @@ pseudfn
 	| PROGRESS | FRAMEINDEX | FRAMEDB | FRAMENAME | DATASERVERS
 	| NUMDBS | NUMALIASES | ISATTRSPACE | PROCSTATUS
 	| PROCHANDLE | CURSOR | OSERROR | RETURNVALUE | OSDRIVES
-	| PROVERSION | TRANSACTION | MACHINECLASS 
+	| PROVERSION | TRANSACTION | MACHINECLASS
 	| AAPCONTROL | GETCODEPAGES | COMSELF
 	;
 
@@ -384,18 +384,18 @@ pseudfn
 // maximumfunc or minimumfunc. Judy
 // ## IMPORTANT ## If you add a function keyword here, also add it to NodeTypes.
 builtinfunc
-	:	ACCUMULATE^ accum_what 
+	:	ACCUMULATE^ accum_what
 		(	(by_expr expression)=> by_expr expression
 		|	expression
 		)
 	|	ADDINTERVAL^ LEFTPAREN expression COMMA expression COMMA expression RIGHTPAREN
 	|	AUDITENABLED^ LEFTPAREN (expression)? RIGHTPAREN
-	| BUFFER_GROUP_ID^ LEFTPAREN ID RIGHTPAREN 
-	| BUFFER_GROUP_NAME^ LEFTPAREN ID RIGHTPAREN 
-	| BUFFER_PARTITION_ID^ LEFTPAREN ID RIGHTPAREN 
-	| BUFFER_TENANT_ID^ LEFTPAREN ID RIGHTPAREN 
-  | BUFFER_TENANT_NAME^ LEFTPAREN ID RIGHTPAREN 
-	|	(AVG LEFTPAREN)=> sqlaggregatefunc  
+	| BUFFER_GROUP_ID^ LEFTPAREN ID RIGHTPAREN
+	| BUFFER_GROUP_NAME^ LEFTPAREN ID RIGHTPAREN
+	| BUFFER_PARTITION_ID^ LEFTPAREN ID RIGHTPAREN
+	| BUFFER_TENANT_ID^ LEFTPAREN ID RIGHTPAREN
+  | BUFFER_TENANT_NAME^ LEFTPAREN ID RIGHTPAREN
+	|	(AVG LEFTPAREN)=> sqlaggregatefunc
 	|	CANFIND^<AST=BlockNode> LEFTPAREN (options{greedy=true;}: findwhich)? recordphrase RIGHTPAREN
 	|	CAST^ LEFTPAREN expression COMMA type_name RIGHTPAREN
 	|	(COUNT LEFTPAREN)=> sqlaggregatefunc
@@ -418,12 +418,12 @@ builtinfunc
 	|	FRAMEROW^ LEFTPAREN widgetname RIGHTPAREN  // also noarg
 	|	GETCODEPAGE^ funargs  // also noarg
 	|	GETCODEPAGES^ funargs  // also noarg
-	| GET_EFFECTIVE_TENANT_ID^ LEFTPAREN (expression)? RIGHTPAREN 
+	| GET_EFFECTIVE_TENANT_ID^ LEFTPAREN (expression)? RIGHTPAREN
 	| GET_EFFECTIVE_TENANT_NAME^ LEFTPAREN (expression)? RIGHTPAREN
 	|	GUID^ LEFTPAREN (expression)? RIGHTPAREN
 	|	IF^ expression THEN expression ELSE expression
-	| IS_DB_MULTI_TENANT^ LEFTPAREN (expression)? RIGHTPAREN 
-	|	ldbnamefunc 
+	| IS_DB_MULTI_TENANT^ LEFTPAREN (expression)? RIGHTPAREN
+	|	ldbnamefunc
 	|	lengthfunc // is also a pseudfn.
 	|	LINECOUNTER^ LEFTPAREN streamname RIGHTPAREN  // also noarg
 	|	(MAXIMUM LEFTPAREN DISTINCT)=> sqlaggregatefunc
@@ -438,7 +438,7 @@ builtinfunc
 	|	SEEK^ LEFTPAREN (INPUT|OUTPUT|streamname|STREAMHANDLE expression) RIGHTPAREN // streamname, /not/ stream_name_or_handle.
 	|	substringfunc // is also a pseudfn.
 	|	SUPER^ parameterlist  // also noarg
-	| SET_EFFECTIVE_TENANT^ LEFTPAREN expression (COMMA expression)? RIGHTPAREN 
+	| SET_EFFECTIVE_TENANT^ LEFTPAREN expression (COMMA expression)? RIGHTPAREN
 	| TENANT_ID^ LEFTPAREN (expression)? RIGHTPAREN
 	| TENANT_NAME^ LEFTPAREN (expression)? RIGHTPAREN
 	|	TIMEZONE^ funargs  // also noarg
@@ -646,7 +646,7 @@ noargfunc
 	|	TODAY
 	|	TRANSACTION
 		// The following are built-in functions with optional arguments.
-		// You will also find them listed in builtinfunc. 
+		// You will also find them listed in builtinfunc.
 	|	ETIME_KW
 	|	FRAMECOL
 	|	FRAMEDOWN
@@ -717,7 +717,7 @@ funargs
 // Use funargs /only/ if it is the child of a root-node keyword.
 	:	LEFTPAREN expression (COMMA expression)* RIGHTPAREN
 	;
-  
+
 // ... or value phrases
 // There are a number of situations where you can have name, filename,
 // or "Anything", or that can be substituted with "value(expression)".
@@ -835,7 +835,7 @@ exprt2
 		// the identifier cannot be resolved to a method or user function name.
 		// Otherwise, the return value assigned to ntype is either LOCAL_METHOD_REF
 		// or USER_FUNC.
-		// Methods take precedent over built-in functions. The compiler (10.2b) 
+		// Methods take precedent over built-in functions. The compiler (10.2b)
 		// does not seem to try recognize by function/method signature.
 		( {(ntype = support.methodOrFunc(LT(1).getText())) != 0}? identifier LEFTPAREN)=>
 			fname:identifier!
@@ -1090,7 +1090,7 @@ filename_part
 	;
 
 type_name
-	:	type_name2 
+	:	type_name2
 		{ support.typenameLookup(##); }
 	;
 type_name2
@@ -1139,7 +1139,7 @@ systemhandlename
 widgettype
 	:	BROWSE | BUFFER | (BUTTON | btns:BUTTONS {#btns.setType(BUTTON);}) | COMBOBOX | CONTROLFRAME | DIALOGBOX
 	|	EDITOR | FILLIN | FIELD | FRAME | IMAGE | MENU
-	| 	MENUITEM | QUERY | RADIOSET | RECTANGLE | SELECTIONLIST 
+	| 	MENUITEM | QUERY | RADIOSET | RECTANGLE | SELECTIONLIST
 	|	SLIDER | SOCKET | SUBMENU | TEMPTABLE | TEXT | TOGGLEBOX | WINDOW
 	|	XDOCUMENT | XNODEREF
 	;
@@ -1220,7 +1220,7 @@ annotation
 anno_att_list
 	:	(FILE)? LEFTPAREN anno_att (COMMA anno_att)* RIGHTPAREN
 	;
-	
+
 anno_att
 	:	new_identifier EQUAL constant
 	;
@@ -1266,7 +1266,7 @@ assignment_list
 		)*
 	;
 assignstate2
-	:	field e:EQUAL^ expression 
+	:	field e:EQUAL^ expression
 		{support.attrOp(#e);}
 		{## = #([ASSIGN], ##);}
 		(NOERROR_KW)?
@@ -1280,7 +1280,7 @@ assignstate2plus
 		(NOERROR_KW)?
 		state_end
 		{sthd(##,0);}
-	;	
+	;
 assignstate2minus
 	:	field e:MINUS_EQUAL^ expression {support.attrOp(#e);}
 		{support.attrOp(#e);}
@@ -1288,7 +1288,7 @@ assignstate2minus
 		(NOERROR_KW)?
 		state_end
 		{sthd(##,0);}
-	;	
+	;
 assignstate2divide
 	:	field e:DIVIDE_EQUAL^ expression {support.attrOp(#e);}
 		{support.attrOp(#e);}
@@ -1296,7 +1296,7 @@ assignstate2divide
 		(NOERROR_KW)?
 		state_end
 		{sthd(##,0);}
-	;	
+	;
 assignstate2multiply
 	:	field e:MULTIPLY_EQUAL^ expression {support.attrOp(#e);}
 		{support.attrOp(#e);}
@@ -1304,7 +1304,7 @@ assignstate2multiply
 		(NOERROR_KW)?
 		state_end
 		{sthd(##,0);}
-	;		
+	;
 assignstate3
 	:	pseudfn e:EQUAL^ expression
 		{support.attrOp(#e);}
@@ -1314,13 +1314,13 @@ assignstate3
 		{sthd(##,0);}
 	;
 assignstate4
-	:	widattr e:EQUAL^ expression 
+	:	widattr e:EQUAL^ expression
 		{support.attrOp(#e);}
 		{## = #([ASSIGN], ##);}
 		(NOERROR_KW)?
 		state_end
 		{sthd(##,0);}
-	;	
+	;
 assignstate4plus
 	:	widattr e:PLUS_EQUAL^ expression {support.attrOp(#e);}
 		{support.attrOp(#e);}
@@ -1328,7 +1328,7 @@ assignstate4plus
 		(NOERROR_KW)?
 		state_end
 		{sthd(##,0);}
-	;	
+	;
 assignstate4minus
 	:	widattr e:MINUS_EQUAL^ expression {support.attrOp(#e);}
 		{support.attrOp(#e);}
@@ -1336,7 +1336,7 @@ assignstate4minus
 		(NOERROR_KW)?
 		state_end
 		{sthd(##,0);}
-	;	
+	;
 assignstate4divide
 	:	widattr e:DIVIDE_EQUAL^ expression {support.attrOp(#e);}
 		{support.attrOp(#e);}
@@ -1344,7 +1344,7 @@ assignstate4divide
 		(NOERROR_KW)?
 		state_end
 		{sthd(##,0);}
-	;	
+	;
 assignstate4multiply
 	:	widattr e:MULTIPLY_EQUAL^ expression {support.attrOp(#e);}
 		{support.attrOp(#e);}
@@ -1352,32 +1352,32 @@ assignstate4multiply
 		(NOERROR_KW)?
 		state_end
 		{sthd(##,0);}
-	;	
-assign_equal 
+	;
+assign_equal
 	:	(pseudfn)=> pseudfn e1:EQUAL^ expression {support.attrOp(#e1);}
 	|	(widattr)=> widattr e3:EQUAL^ expression {support.attrOp(#e3);}
 	|	field e2:EQUAL^ expression {support.attrOp(#e2);}
 	;
-assign_plus_equal 
+assign_plus_equal
 	:	(pseudfn)=> pseudfn e1:PLUS_EQUAL^ expression {support.attrOp(#e1);}
 	|	(widattr)=> widattr e3:PLUS_EQUAL^ expression {support.attrOp(#e3);}
 	|	field e2:PLUS_EQUAL^ expression {support.attrOp(#e2);}
 	;
-assign_minus_equal 
+assign_minus_equal
 	:	(pseudfn)=> pseudfn e1:MINUS_EQUAL^ expression {support.attrOp(#e1);}
 	|	(widattr)=> widattr e3:MINUS_EQUAL^ expression {support.attrOp(#e3);}
 	|	field e2:MINUS_EQUAL^ expression {support.attrOp(#e2);}
 	;
-assign_divide_equal 
+assign_divide_equal
 	:	(pseudfn)=> pseudfn e1:DIVIDE_EQUAL^ expression {support.attrOp(#e1);}
 	|	(widattr)=> widattr e3:DIVIDE_EQUAL^ expression {support.attrOp(#e3);}
 	|	field e2:DIVIDE_EQUAL^ expression {support.attrOp(#e2);}
 	;
-assign_multiply_equal 
+assign_multiply_equal
 	:	(pseudfn)=> pseudfn e1:MULTIPLY_EQUAL^ expression {support.attrOp(#e1);}
 	|	(widattr)=> widattr e3:MULTIPLY_EQUAL^ expression {support.attrOp(#e3);}
 	|	field e2:MULTIPLY_EQUAL^ expression {support.attrOp(#e2);}
-	;		
+	;
 assign_field
 	:	field {## = #([Assign_from_buffer], ##);}
 	;
@@ -1515,10 +1515,10 @@ choose_field
 	:	field (help_const)? {##=#([Form_item],##);}
 	;
 choose_opt
-	:	AUTORETURN 
-	|	color_anyorvalue 
+	:	AUTORETURN
+	|	color_anyorvalue
 	|	goonphrase
-	|	KEYS^ field 
+	|	KEYS^ field
 	|	NOERROR_KW
 	|	pause_expr
 	;
@@ -1781,7 +1781,7 @@ convertphrase_source
 convertphrase_target
 	:	TARGET^ ( BASE64 | CODEPAGE expression (options{greedy=true;}: BASE64)? )
 	;
-		
+
 copylobstate
 	:	COPYLOB^ (FROM)?
 		(	(FILE expression)=> FILE expression
@@ -1808,7 +1808,7 @@ copylob_starting
 fortenant
 	: FOR^ TENANT expression
 	;
-	
+
 createstatement
 		// "CREATE WIDGET-POOL." truly is ambiguous if you have a table named "widget-pool".
 		// Progress seems to treat this as a CREATE WIDGET-POOL statement rather than a
@@ -1939,8 +1939,8 @@ createwidgetpoolstate
 	;
 
 currentvaluefunc
-	:	CURRENTVALUE^ LEFTPAREN sequencename (COMMA identifier)? // logical name 
-	(COMMA expression)? // multitenant 
+	:	CURRENTVALUE^ LEFTPAREN sequencename (COMMA identifier)? // logical name
+	(COMMA expression)? // multitenant
 	RIGHTPAREN
 	;
 
@@ -1949,7 +1949,7 @@ datatype
 options{generateAmbigWarnings=false;} // order of options is important.
 	:	CLASS type_name
 	|	datatype_var
-		
+
 	;
 
 datatype_com
@@ -2046,7 +2046,7 @@ definestatement
 	:	DEFINE^ define_share
 		{support.setCurrDefInheritable(false);}
 		(	PRIVATE
-		|	PACKAGEPRIVATE 
+		|	PACKAGEPRIVATE
 		|	PROTECTED {support.setCurrDefInheritable(true);}
 		|	PACKAGEPROTECTED {support.setCurrDefInheritable(true);}
 		|	PUBLIC {support.setCurrDefInheritable(true);}
@@ -2199,7 +2199,7 @@ datarelation_nested
 	;
 
 definedatasourcestate
-	:	DATASOURCE n:identifier FOR 
+	:	DATASOURCE n:identifier FOR
 		(options{greedy=true;}: query_queryname)?
 		(options{greedy=true;}: source_buffer_phrase)?
 		(COMMA source_buffer_phrase)*
@@ -2246,7 +2246,7 @@ defineimagestate
 	;
 defineimage_opt
 	:	like_field
-	|	imagephrase_opt 
+	|	imagephrase_opt
 	|	sizephrase
 	|	color_expr
 	|	CONVERT3DCOLORS
@@ -2362,7 +2362,7 @@ rectangle_opt
 	|	ROUNDED
 	|	GROUPBOX
 	;
-   
+
 definestreamstate
 	:	STREAM n:identifier state_end
 		{support.defVar(#n.getText());}
@@ -2376,7 +2376,7 @@ definesubmenustate
 		state_end
 		{support.defVar(#n.getText());}
 	;
-   
+
 definetemptablestate
 {	String tableName;
 }
@@ -2426,7 +2426,7 @@ def_table_index
 		INDEX^ identifier (options{greedy=true;}: (AS|IS)? (UNIQUE|PRIMARY|WORDINDEX))*
 		(identifier (options{greedy=true;}: ASCENDING|as:ASC{#as.setType(ASCENDING);}|DESCENDING|CASESENSITIVE)*)+
 	;
-   
+
 // Token WORKTABLE can be "work-file" or abbreviated forms of "work-table"
 defineworktablestate
 {	String tableName;
@@ -2449,7 +2449,7 @@ definevariablestate
 
 // https://docs.progress.com/de-DE/bundle/abl-reference/page/VAR-statement.html
 varStatement
-	:   VARIABLE^ (varStateAccessMode)? (varStateOptions)? varStateDataType 
+	:   VARIABLE^ (varStateAccessMode)? (varStateOptions)? varStateDataType
       	varStatementSub ( COMMA varStatementSub )* state_end
   	;
 
@@ -2490,7 +2490,7 @@ varStatementInitialValueArray
   	;
 
 varStateDataType
-	:	
+	:
 	(	CLASS typeName
   	|	datatypeVar
   	)	(varStateBraces)?
@@ -2514,11 +2514,11 @@ datatypeVar
   	| 	ROWID
   	|	type_name
   	;
-  
+
 typeName:
     non_punctuating
   ;
-	
+
 varStatementInitialValueSub
 	:    TODAY | NOW | TRUE | FALSE | YES | NO | UNKNOWNVALUE | QSTRING | LEXDATE | NUMBER | NULL | expression
   	;
@@ -2589,10 +2589,10 @@ dictionarystate
 
 disablestate
 // Does not allow DISABLE <record buffer name>
-	:	DISABLE^ 
-	(UNLESSHIDDEN)? 
-	(all_except_fields | (form_item)+)? 
-	(framephrase)? 
+	:	DISABLE^
+	(UNLESSHIDDEN)?
+	(all_except_fields | (form_item)+)?
+	(framephrase)?
 	state_end
 		{sthd(##,0);}
 	;
@@ -2686,7 +2686,7 @@ editorphrase
 	:	EDITOR^ (options{greedy=true;}: editor_opt)*
 	;
 editor_opt
-	:	INNERCHARS^ expression 
+	:	INNERCHARS^ expression
 	|	INNERLINES^ expression
 	|	BUFFERCHARS^ expression
 	|	BUFFERLINES^ expression
@@ -2826,7 +2826,7 @@ form_items_or_record
 	|	(options{greedy=true;}: form_item)*
 	;
 form_item
-// Note that if record buffername is allowed, 
+// Note that if record buffername is allowed,
 // the calling syntax must sort out var/rec/field name precedences.
 	:	(	(TEXT LEFTPAREN)=> text_opt
 		|	(assign_equal)=> assign_equal
@@ -2868,12 +2868,12 @@ format_opt
 	|	AUTORETURN
 	|	color_expr
 	|	contexthelpid_expr
-	|	BLANK 
-	|	COLON^ expression 
+	|	BLANK
+	|	COLON^ expression
 	|	to_expr
-	|	DEBLANK 
-	|	DISABLEAUTOZAP 
-	|	font_expr 
+	|	DEBLANK
+	|	DISABLEAUTOZAP
+	|	font_expr
 	|	format_expr
 	|	help_const
 	|	label_constant
@@ -2921,7 +2921,7 @@ frame_opt
 	:	(options{greedy=true;}: 	ACCUMULATE^ (options{greedy=true;}: expression)?
 		|	ATTRSPACE | NOATTRSPACE
 		|	CANCELBUTTON^ field
-		|	CENTERED 
+		|	CENTERED
 		|	(COLUMN^| c2:COLUMNS^ {#c2.setType(COLUMN);}) expression
 		|	CONTEXTHELP | CONTEXTHELPFILE expression
 		|	DEFAULTBUTTON^ field
@@ -2942,11 +2942,11 @@ frame_opt
 		|	EXPANDABLE | DROPTARGET | NOAUTOVALIDATE | NOCOLUMNSCROLLING
 		|	KEEPTABORDER | NOBOX | NOEMPTYSPACE | NOHIDE | NOLABELS | USEDICTEXPS | NOVALIDATE
 		|	NOHELP | NOUNDERLINE | OVERLAY | PAGEBOTTOM | PAGETOP | NOTABSTOP
-		|	RETAIN^ expression 
+		|	RETAIN^ expression
 		|	ROW^ expression
 		|	SCREENIO | STREAMIO
 		|	SCROLL^ expression
-		|	SCROLLABLE | SIDELABELS 
+		|	SCROLLABLE | SIDELABELS
 		|	stream_name_or_handle | THREED
 		|	tooltip_expr
 		|	TOPONLY | USETEXT
@@ -2955,7 +2955,7 @@ frame_opt
 		|	(WIDTH^|WIDTHCHARS^) expression
 		|	widget_id
 		|	in_window_expr
-		|	colorspecification | atphrase | sizephrase | titlephrase 
+		|	colorspecification | atphrase | sizephrase | titlephrase
 		|	DOWN
 		|	WITH // yup, this is really valid
 		)
@@ -3020,7 +3020,7 @@ function_param
 		}
 	|	(options{greedy=true;}: p1:INPUT^|p2:OUTPUT^|p3:INPUTOUTPUT^)?
 		(	{LA(2)==AS}?
-			n:identifier AS 
+			n:identifier AS
 			(	options{generateAmbigWarnings=false;}
 			:	CLASS type_name
 			|	datatype_var
@@ -3150,7 +3150,7 @@ inputfromstate
 	:	INPUT^ (stream_name_or_handle)? FROM io_phrase_state_end
 		{sthd(##,FROM);}
 	;
-   
+
 inputthroughstate
 	:	INPUT^ (stream_name_or_handle)? THROUGH io_phrase_state_end
 		{sthd(##,THROUGH);}
@@ -3218,7 +3218,7 @@ io_opt
 	|	COLLATE
 	|	CONVERT^ ((SOURCE|TARGET) expression)* | NOCONVERT
 	|	ECHO | NOECHO
-	|	KEEPMESSAGES 
+	|	KEEPMESSAGES
 	|	LANDSCAPE
 	|	LOBDIR^ filenameorvalue
 	|	MAP^ anyorvalue | NOMAP
@@ -3226,7 +3226,7 @@ io_opt
 	|	PAGED
 	|	PAGESIZE_KW^ anyorvalue
 	|	PORTRAIT
-	|	UNBUFFERED 
+	|	UNBUFFERED
 	;
 io_osdir
 	:	OSDIR^ LEFTPAREN expression RIGHTPAREN (NOATTRLIST)?
@@ -3301,13 +3301,13 @@ message_item
 		{##=#([Form_item],##);}
 	;
 
-message_opt		
+message_opt
 	:	VIEWAS^ ALERTBOX
 		(MESSAGE|QUESTION|INFORMATION|ERROR|WARNING)?
 		(	(BUTTONS | b:BUTTON {#b.setType(BUTTONS);})
 			(YESNO|YESNOCANCEL|OK|OKCANCEL|RETRYCANCEL)
 		)?
-		(title_expr)?	
+		(title_expr)?
 	|	SET^ field ({LA(2)!=ALERTBOX}? (options{greedy=true;}: formatphrase)? |)
 	|	UPDATE^ field ({LA(2)!=ALERTBOX}? (options{greedy=true;}: formatphrase)? |)
 	;
@@ -3363,7 +3363,7 @@ nextpromptstate
 	;
 
 nextvaluefunc
-	:	NEXTVALUE^ LEFTPAREN sequencename (COMMA identifier)? // logical name 
+	:	NEXTVALUE^ LEFTPAREN sequencename (COMMA identifier)? // logical name
   (COMMA expression)? // multitenant
   RIGHTPAREN
 	;
@@ -3373,25 +3373,26 @@ nullphrase
 	;
 
 dbevent:
-	(	(CREATE|DELETE_KW|FIND) OF record (label_constant)?
-		|	WRITE OF bf:record (label_constant)?
-			(options{greedy=true;}: 	NEW (options{greedy=true;}: BUFFER)? n:identifier (label_constant)?
-				{support.defBuffer(#n.getText(), #bf.getText());}
-			)? 
-			(options{greedy=true;}: 	OLD (options{greedy=true;}: BUFFER)? o:identifier (label_constant)?
-				{support.defBuffer(#o.getText(), #bf.getText());}
-			)? 
-		|	ASSIGN OF field (trigger_table_label)?
-			(	OLD (VALUE)? f:identifier (options{greedy=true;}: defineparam_var)?
-				{support.defVar(#f.getText());}
-			)?
+(	(CREATE|DELETE_KW|FIND) OF {LA(1)==THISPROCEDURE}? THISPROCEDURE (label_constant)?
+	|	(CREATE|DELETE_KW|FIND) OF record (label_constant)?
+	|	WRITE OF bf:record (label_constant)?
+		(options{greedy=true;}: 	NEW (options{greedy=true;}: BUFFER)? n:identifier (label_constant)?
+			{support.defBuffer(#n.getText(), #bf.getText());}
+		)?
+		(options{greedy=true;}: 	OLD (options{greedy=true;}: BUFFER)? o:identifier (label_constant)?
+			{support.defBuffer(#o.getText(), #bf.getText());}
+		)?
+	|	ASSIGN OF field (trigger_table_label)?
+		(	OLD (VALUE)? f:identifier (options{greedy=true;}: defineparam_var)?
+			{support.defVar(#f.getText());}
+		)?
 	)
 	(options{greedy=true;}: OVERRIDE)?
 	(	REVERT state_end
 	|	PERSISTENT runstate
 	|	{support.addInnerScope();} blockorstate {support.dropInnerScope();}
 	);
-	
+
 onstate
 	:	ON^<AST=BlockNode>
 		{sthd(##,0);}
@@ -3827,7 +3828,7 @@ run_opt
 	|	run_set
 	|	ON^ (options{greedy=true;}: SERVER)? expression (options{greedy=true;}: TRANSACTION (options{greedy=true;}: DISTINCT)? )?
 	|	in_expr
-	|	ASYNCHRONOUS^ (options{greedy=true;}: run_set)? (options{greedy=true;}: run_event)? (options{greedy=true;}: in_expr)? (options{greedy=true;}: run_event_oo)? (options{greedy=true;}: run_event_oo_context)?	
+	|	ASYNCHRONOUS^ (options{greedy=true;}: run_set)? (options{greedy=true;}: run_event)? (options{greedy=true;}: in_expr)? (options{greedy=true;}: run_event_oo)? (options{greedy=true;}: run_event_oo_context)?
 	;
 run_event
 	:	EVENTPROCEDURE^ expression
@@ -3973,7 +3974,7 @@ subscribestate
 subscribe_run
 	:	RUNPROCEDURE^ expression
 	;
-   
+
 substringfunc
 	:	SUBSTRING^ funargs
 	;
@@ -4046,7 +4047,7 @@ systemhelp_window
 systemhelp_opt
 	:	ALTERNATEKEY^ expression
 	|	CONTEXT^ expression
-	|	CONTENTS 
+	|	CONTENTS
 	|	SETCONTENTS^ expression
 	|	FINDER
 	|	CONTEXTPOPUP^ expression
@@ -4122,10 +4123,10 @@ triggerprocedurestate
 		|	(WRITE|REPLICATIONWRITE) OF bf:record (label_constant)?
 			(	NEW (BUFFER)? n:identifier (label_constant)?
 				{support.defBuffer(#n.getText(), #bf.getText());}
-			)? 
+			)?
 			(	OLD (BUFFER)? o:identifier (label_constant)?
 				{support.defBuffer(#o.getText(), #bf.getText());}
-			)? 
+			)?
 		|	ASSIGN (trigger_of)? (trigger_old)?
 		)
 		state_end
@@ -4181,7 +4182,7 @@ upstate
 	;
 
 updatestatement
-	:	
+	:
 		(UPDATE record SET)=> sqlupdatestate
 	|	updatestate
 	;
@@ -4283,7 +4284,7 @@ waitfor_exclusiveweb
 waitfor_set
 	:	SET^ field
 	;
-   
+
 when_exp
 	:	WHEN^ expression
 	;
@@ -4304,108 +4305,108 @@ unreservedkeyword
 	:
 AACBIT | AACONTROL | AALIST | AAMEMORY | AAMSG | AAPCONTROL | AASERIAL | AATRACE |
 ABSOLUTE | ACCELERATOR | ADDINTERVAL | ADVISE | ALERTBOX | ALLOWREPLICATION | ALTERNATEKEY |
-ANALYZE | ANSIONLY | ANYWHERE | APPEND | 
+ANALYZE | ANSIONLY | ANYWHERE | APPEND |
 APPLICATION | ARRAYMESSAGE | AS | ASC | ASKOVERWRITE | ASYNCHRONOUS | ATTACHMENT |
 AUTOCOMPLETION | AUTOENDKEY | AUTOGO | AUTOMATIC |
 AVERAGE | AVG | BACKWARDS | BASE64 | BASEKEY | BGCOLOR | BIGINT | BINARY | BINDWHERE |
-BLOB | BOTH | BOTTOM | BROWSE | BTOS | BUFFER | 
-BUFFERCHARS | BUFFERLINES | BUFFERNAME | BUTTON | BUTTONS | 
-BYREFERENCE | BYVALUE | BYTE | CACHE | CACHESIZE | CANQUERY | CANSET | 
-CANCELBUTTON | CAPS | CDECL_KW | CHAINED | CHARACTER | CHARACTERLENGTH | CHOOSE | CLOB | CLOSE | 
+BLOB | BOTH | BOTTOM | BROWSE | BTOS | BUFFER |
+BUFFERCHARS | BUFFERLINES | BUFFERNAME | BUTTON | BUTTONS |
+BYREFERENCE | BYVALUE | BYTE | CACHE | CACHESIZE | CANQUERY | CANSET |
+CANCELBUTTON | CAPS | CDECL_KW | CHAINED | CHARACTER | CHARACTERLENGTH | CHOOSE | CLOB | CLOSE |
 CODEBASELOCATOR | CODEPAGE | CODEPAGECONVERT | COLLATE |
-COLOF | COLONALIGNED | COLORTABLE | COLUMN | COLUMNBGCOLOR | 
-COLUMNCODEPAGE | COLUMNDCOLOR | COLUMNFGCOLOR | COLUMNFONT | COLUMNOF | 
-COLUMNPFCOLOR | COLUMNS | COMHANDLE | COMBOBOX | COMMAND | COMPARES | COMPLETE | COMPILE | CONFIGNAME | CONNECT | 
-CONTAINS | CONTENTS | CONTEXT | CONTEXTHELP | CONTEXTHELPFILE | CONTEXTHELPID | 
-CONTEXTPOPUP | CONTROLFRAME | CONVERT | CONVERT3DCOLORS | COUNT | 
-CREATETESTFILE | CURRENCY | CURRENTENVIRONMENT | CURRENTRESULTROW | CURRENTVALUE | 
-DATABIND | DATASOURCE | DATE | DATETIME | DATETIMETZ | DAY | DBIMS | DCOLOR | DEBUG | DECIMAL | 
+COLOF | COLONALIGNED | COLORTABLE | COLUMN | COLUMNBGCOLOR |
+COLUMNCODEPAGE | COLUMNDCOLOR | COLUMNFGCOLOR | COLUMNFONT | COLUMNOF |
+COLUMNPFCOLOR | COLUMNS | COMHANDLE | COMBOBOX | COMMAND | COMPARES | COMPLETE | COMPILE | CONFIGNAME | CONNECT |
+CONTAINS | CONTENTS | CONTEXT | CONTEXTHELP | CONTEXTHELPFILE | CONTEXTHELPID |
+CONTEXTPOPUP | CONTROLFRAME | CONVERT | CONVERT3DCOLORS | COUNT |
+CREATETESTFILE | CURRENCY | CURRENTENVIRONMENT | CURRENTRESULTROW | CURRENTVALUE |
+DATABIND | DATASOURCE | DATE | DATETIME | DATETIMETZ | DAY | DBIMS | DCOLOR | DEBUG | DECIMAL |
 DEFAULTBUTTON | DEFAULTEXTENSION | DEFAULTNOXLATE | DEFERLOBFETCH |
-DEFINED | DELETERESULTLISTENTRY | 
+DEFINED | DELETERESULTLISTENTRY |
 DESELECTION | DIALOGBOX | DIALOGHELP |
-DIR | DISABLED | DOUBLE | DROPDOWN | DROPDOWNLIST | DROPFILENOTIFY | DROPTARGET | 
+DIR | DISABLED | DOUBLE | DROPDOWN | DROPDOWNLIST | DROPFILENOTIFY | DROPTARGET |
 DUMP | DYNAMIC | DYNAMICCURRENTVALUE | DYNAMICNEXTVALUE |
-ECHO | EDGECHARS | EDGEPIXELS | EDITUNDO | EDITOR | EMPTY | ENDMOVE | ENDRESIZE | ENDROWRESIZE | 
-ENDKEY | ENTERED | EQ | ERROR | ERRORCODE | EVENTPROCEDURE | 
-EVENTS | EXCLUSIVEID | EXCLUSIVEWEBUSER | EXECUTE | EXP | EXPAND | 
-EXPANDABLE | EXPLICIT | EXTENDED | EXTENT | EXTERNAL | 
-FGCOLOR | FILE | FILLIN | FILTERS | FINDER | FITLASTCOLUMN | FIXCHAR | FIXCODEPAGE | FIXEDONLY | 
-FLATBUTTON | FLOAT | FONTTABLE | FORCEFILE | FORMINPUT | FORWARDS | FREQUENCY | FROMCURRENT | FUNCTION | 
-GE | GENERATEMD5 | GET | GETBITS | GETBYTE | GETBYTES | GETBYTEORDER | GETCGILIST | 
-GETCGIVALUE | GETCONFIGVALUE | GETDIR | GETDOUBLE | 
+ECHO | EDGECHARS | EDGEPIXELS | EDITUNDO | EDITOR | EMPTY | ENDMOVE | ENDRESIZE | ENDROWRESIZE |
+ENDKEY | ENTERED | EQ | ERROR | ERRORCODE | EVENTPROCEDURE |
+EVENTS | EXCLUSIVEID | EXCLUSIVEWEBUSER | EXECUTE | EXP | EXPAND |
+EXPANDABLE | EXPLICIT | EXTENDED | EXTENT | EXTERNAL |
+FGCOLOR | FILE | FILLIN | FILTERS | FINDER | FITLASTCOLUMN | FIXCHAR | FIXCODEPAGE | FIXEDONLY |
+FLATBUTTON | FLOAT | FONTTABLE | FORCEFILE | FORMINPUT | FORWARDS | FREQUENCY | FROMCURRENT | FUNCTION |
+GE | GENERATEMD5 | GET | GETBITS | GETBYTE | GETBYTES | GETBYTEORDER | GETCGILIST |
+GETCGIVALUE | GETCONFIGVALUE | GETDIR | GETDOUBLE |
 GETFILE | GETFLOAT | GETLICENSE |
 GETLONG | GETPOINTERVALUE | GETSHORT | GETSIZE | GETSTRING | GETUNSIGNEDSHORT | GTHAN | HANDLE | HEIGHT |
 HEIGHTPIXELS | HEIGHTCHARS | HELPTOPIC | HINT |
-HORIZONTAL | HTMLENDOFLINE | HTMLFRAMEBEGIN | HTMLFRAMEEND | HTMLHEADERBEGIN | HTMLHEADEREND | HTMLTITLEBEGIN | 
-HTMLTITLEEND | IMAGE | IMAGEDOWN | IMAGEINSENSITIVE | IMAGESIZE | IMAGESIZECHARS | IMAGESIZEPIXELS | 
-IMAGEUP | INCREMENTEXCLUSIVEID | INDEXHINT | INDEXEDREPOSITION | INFORMATION | INITIAL | INITIALDIR | 
-INITIALFILTER | INITIATE | INNER | INNERCHARS | INNERLINES | INTEGER | INTERVAL | ITEM | 
+HORIZONTAL | HTMLENDOFLINE | HTMLFRAMEBEGIN | HTMLFRAMEEND | HTMLHEADERBEGIN | HTMLHEADEREND | HTMLTITLEBEGIN |
+HTMLTITLEEND | IMAGE | IMAGEDOWN | IMAGEINSENSITIVE | IMAGESIZE | IMAGESIZECHARS | IMAGESIZEPIXELS |
+IMAGEUP | INCREMENTEXCLUSIVEID | INDEXHINT | INDEXEDREPOSITION | INFORMATION | INITIAL | INITIALDIR |
+INITIALFILTER | INITIATE | INNER | INNERCHARS | INNERLINES | INTEGER | INTERVAL | ITEM |
 ISCODEPAGEFIXED | ISCOLUMNCODEPAGE | ISODATE | IUNKNOWN |
-JOINBYSQLDB | KEEPMESSAGES | KEEPTABORDER | 
-KEY | KEYCODE | KEYFUNCTION | KEYLABEL | KEYWORDALL | LABELBGCOLOR | LABELDCOLOR | LABELFGCOLOR | LABELFONT | 
-LANDSCAPE | LANGUAGES | LARGE | LARGETOSMALL | LC | LE | LEFT | 
-LEFTALIGNED | LEFTTRIM | LENGTH | LISTEVENTS | LISTITEMPAIRS | 
-LISTITEMS | LISTQUERYATTRS | LISTSETATTRS | LISTWIDGETS | 
-LOAD | LOADPICTURE | LOBDIR | LOG | LOGICAL | LONG | LONGCHAR | LOOKAHEAD | 
-LTHAN | MACHINECLASS | MARGINEXTRA | MATCHES | MAXCHARS | 
-MAXROWS | MAXSIZE | MAXVALUE | MAXIMIZE | MAXIMUM | MEMPTR | MENU | 
+JOINBYSQLDB | KEEPMESSAGES | KEEPTABORDER |
+KEY | KEYCODE | KEYFUNCTION | KEYLABEL | KEYWORDALL | LABELBGCOLOR | LABELDCOLOR | LABELFGCOLOR | LABELFONT |
+LANDSCAPE | LANGUAGES | LARGE | LARGETOSMALL | LC | LE | LEFT |
+LEFTALIGNED | LEFTTRIM | LENGTH | LISTEVENTS | LISTITEMPAIRS |
+LISTITEMS | LISTQUERYATTRS | LISTSETATTRS | LISTWIDGETS |
+LOAD | LOADPICTURE | LOBDIR | LOG | LOGICAL | LONG | LONGCHAR | LOOKAHEAD |
+LTHAN | MACHINECLASS | MARGINEXTRA | MATCHES | MAXCHARS |
+MAXROWS | MAXSIZE | MAXVALUE | MAXIMIZE | MAXIMUM | MEMPTR | MENU |
 MENUITEM | MENUBAR | MESSAGELINE |
-MINSIZE | MINVALUE | MINIMUM | MODULO | MONTH | MOUSE | MOUSEPOINTER | MPE | MTIME | MULTIPLE | 
-MULTIPLEKEY | MUSTEXIST | NATIVE | NE | NEXTVALUE | NOAPPLY | NOARRAYMESSAGE | NOASSIGN | NOAUTOVALIDATE | 
-NOBINDWHERE | NOBOX | NOCOLUMNSCROLLING | NOCONSOLE | NOCONVERT | NOCONVERT3DCOLORS | NOCURRENTVALUE | NODEBUG | 
-NODRAG | NOECHO | NOEMPTYSPACE | 
-NOINDEXHINT | NOJOINBYSQLDB | NOLOOKAHEAD | NONE | NORMAL | NOROWMARKERS | NOSCROLLBARVERTICAL | 
-NOSEPARATECONNECTION | NOSEPARATORS | NOTABSTOP | NOUNDERLINE | NOWORDWRAP | NUMCOPIES | NUMRESULTS | NUMERIC | 
+MINSIZE | MINVALUE | MINIMUM | MODULO | MONTH | MOUSE | MOUSEPOINTER | MPE | MTIME | MULTIPLE |
+MULTIPLEKEY | MUSTEXIST | NATIVE | NE | NEXTVALUE | NOAPPLY | NOARRAYMESSAGE | NOASSIGN | NOAUTOVALIDATE |
+NOBINDWHERE | NOBOX | NOCOLUMNSCROLLING | NOCONSOLE | NOCONVERT | NOCONVERT3DCOLORS | NOCURRENTVALUE | NODEBUG |
+NODRAG | NOECHO | NOEMPTYSPACE |
+NOINDEXHINT | NOJOINBYSQLDB | NOLOOKAHEAD | NONE | NORMAL | NOROWMARKERS | NOSCROLLBARVERTICAL |
+NOSEPARATECONNECTION | NOSEPARATORS | NOTABSTOP | NOUNDERLINE | NOWORDWRAP | NUMCOPIES | NUMRESULTS | NUMERIC |
 OBJECT | OCTETLENGTH | OK | OKCANCEL | ONLY | ORDER | ORDEREDJOIN | ORDINAL |
-OS2 | OS400 | OSDRIVES | OSERROR | OSGETENV | OUTER | OUTERJOIN | OVERRIDE | PAGESIZE_KW | 
+OS2 | OS400 | OSDRIVES | OSERROR | OSGETENV | OUTER | OUTERJOIN | OVERRIDE | PAGESIZE_KW |
 PAGEWIDTH | PAGED | PARENT | PARTIALKEY | PASCAL_KW | PERFORMANCE |
-PFCOLOR | PINNABLE | PORTRAIT | POSITION | PRECISION | PRESELECT | PREV | PRIMARY | 
-PRINTER | PRINTERSETUP | PRIVATE | PROCTEXT | PROCTEXTBUFFER | PROCEDURE | 
-PROFILER | PROMPT | PUBLIC | PUBLISH | PUTBITS | 
-PUTBYTES | PUTDOUBLE | PUTFLOAT | PUTLONG | PUTSHORT | PUTSTRING | QUESTION | QUOTER | RADIOBUTTONS | RADIOSET | RANDOM | 
-RAW | RAWTRANSFER | READ | 
-READONLY | REAL | RECORDLENGTH | RECURSIVE | RELATIONFIELDS | REPLACE | 
-REPLICATIONCREATE | REPLICATIONDELETE | REPLICATIONWRITE | REPOSITIONFORWARD | 
-REQUEST | RESULT | RETAINSHAPE | RETRYCANCEL | RETURNS | RETURNTOSTARTDIR | 
-RETURNVALUE | REVERSEFROM | RGBVALUE | RIGHT | RIGHTALIGNED | RIGHTTRIM | ROUND | 
-ROW | ROWHEIGHTCHARS | ROWHEIGHTPIXELS | ROWID | ROWOF | RULE | RUNPROCEDURE | SAVECACHE | SAVEAS | SAXREADER | SCROLLABLE | 
-SCROLLBARHORIZONTAL | SCROLLBARVERTICAL | SCROLLING | SECTION | SELECTION | SELECTIONLIST | SEND | SENDSQLSTATEMENT | 
-SEPARATECONNECTION | SEPARATORS | SERVER | SERVERSOCKET | SETBYTEORDER | SETCONTENTS | SETCURRENTVALUE | 
+PFCOLOR | PINNABLE | PORTRAIT | POSITION | PRECISION | PRESELECT | PREV | PRIMARY |
+PRINTER | PRINTERSETUP | PRIVATE | PROCTEXT | PROCTEXTBUFFER | PROCEDURE |
+PROFILER | PROMPT | PUBLIC | PUBLISH | PUTBITS |
+PUTBYTES | PUTDOUBLE | PUTFLOAT | PUTLONG | PUTSHORT | PUTSTRING | QUESTION | QUOTER | RADIOBUTTONS | RADIOSET | RANDOM |
+RAW | RAWTRANSFER | READ |
+READONLY | REAL | RECORDLENGTH | RECURSIVE | RELATIONFIELDS | REPLACE |
+REPLICATIONCREATE | REPLICATIONDELETE | REPLICATIONWRITE | REPOSITIONFORWARD |
+REQUEST | RESULT | RETAINSHAPE | RETRYCANCEL | RETURNS | RETURNTOSTARTDIR |
+RETURNVALUE | REVERSEFROM | RGBVALUE | RIGHT | RIGHTALIGNED | RIGHTTRIM | ROUND |
+ROW | ROWHEIGHTCHARS | ROWHEIGHTPIXELS | ROWID | ROWOF | RULE | RUNPROCEDURE | SAVECACHE | SAVEAS | SAXREADER | SCROLLABLE |
+SCROLLBARHORIZONTAL | SCROLLBARVERTICAL | SCROLLING | SECTION | SELECTION | SELECTIONLIST | SEND | SENDSQLSTATEMENT |
+SEPARATECONNECTION | SEPARATORS | SERVER | SERVERSOCKET | SETBYTEORDER | SETCONTENTS | SETCURRENTVALUE |
 SETPOINTERVALUE |
-SETSIZE | SIDELABELS | SILENT | SIMPLE | SINGLE | SIZE | SIZECHARS | SIZEPIXELS | SHORT | SLIDER | SMALLINT | 
-SOAPHEADER | SOAPHEADERENTRYREF | SOCKET | SORT | SOURCE | SOURCEPROCEDURE | 
-SQL | SQRT | START | STARTING | STARTMOVE | STARTRESIZE | 
-STARTROWRESIZE | STATUSBAR | STDCALL_KW | 
-STRETCHTOFIT | STOP | STOREDPROCEDURE | STRING | STRINGXREF | SUBAVERAGE | SUBCOUNT | SUBMAXIMUM | SUBMENU | 
-SUBMENUHELP | SUBMINIMUM | SUBTOTAL | SUBSCRIBE | SUBSTITUTE | SUBSTRING | SUM | 
-SUMMARY | SUPER | SYSTEMHELP | TARGET | 
-TARGETPROCEDURE | TEMPTABLE | TERMINATE | TEXTCURSOR | 
+SETSIZE | SIDELABELS | SILENT | SIMPLE | SINGLE | SIZE | SIZECHARS | SIZEPIXELS | SHORT | SLIDER | SMALLINT |
+SOAPHEADER | SOAPHEADERENTRYREF | SOCKET | SORT | SOURCE | SOURCEPROCEDURE |
+SQL | SQRT | START | STARTING | STARTMOVE | STARTRESIZE |
+STARTROWRESIZE | STATUSBAR | STDCALL_KW |
+STRETCHTOFIT | STOP | STOREDPROCEDURE | STRING | STRINGXREF | SUBAVERAGE | SUBCOUNT | SUBMAXIMUM | SUBMENU |
+SUBMENUHELP | SUBMINIMUM | SUBTOTAL | SUBSCRIBE | SUBSTITUTE | SUBSTRING | SUM |
+SUMMARY | SUPER | SYSTEMHELP | TARGET |
+TARGETPROCEDURE | TEMPTABLE | TERMINATE | TEXTCURSOR |
 TEXTSEGGROW | THREED | THROUGH | TICMARKS | TIMESTAMP | TIMEZONE | TODAY | TOGGLEBOX |
-TOOLBAR | TOOLTIP | 
-TOP | TOPIC | TOTAL | TRANSACTIONMODE | TRANSPARENT | TRAILING | 
-TRUNCATE | TTCODEPAGE | UNBUFFERED | UNIQUEMATCH | UNLOAD | UNSIGNEDBYTE | UNSIGNEDSHORT | UNSUBSCRIBE | 
-URLDECODE | URLENCODE | USE | USEDICTEXPS | USEFILENAME | 
-USEREVVIDEO | USETEXT | USEUNDERLINE | USER | VALIDEVENT | VALIDHANDLE | 
-VALIDATE | VARIABLE | VERBOSE | VERTICAL | VMS | 
-WAIT | WARNING | WEBCONTEXT | WEEKDAY | WIDGET | WIDGETHANDLE | WIDGETPOOL | 
-WIDTH | WIDTHCHARS | WIDTHPIXELS | WINDOWNAME | WORDINDEX | 
+TOOLBAR | TOOLTIP |
+TOP | TOPIC | TOTAL | TRANSACTIONMODE | TRANSPARENT | TRAILING |
+TRUNCATE | TTCODEPAGE | UNBUFFERED | UNIQUEMATCH | UNLOAD | UNSIGNEDBYTE | UNSIGNEDSHORT | UNSUBSCRIBE |
+URLDECODE | URLENCODE | USE | USEDICTEXPS | USEFILENAME |
+USEREVVIDEO | USETEXT | USEUNDERLINE | USER | VALIDEVENT | VALIDHANDLE |
+VALIDATE | VARIABLE | VERBOSE | VERTICAL | VMS |
+WAIT | WARNING | WEBCONTEXT | WEEKDAY | WIDGET | WIDGETHANDLE | WIDGETPOOL |
+WIDTH | WIDTHCHARS | WIDTHPIXELS | WINDOWNAME | WORDINDEX |
 X | XDOCUMENT | XNODEREF | XOF | Y | YOF | YEAR | YESNO | YESNOCANCEL |
 // 10.0B
-BASE64DECODE | BASE64ENCODE | BATCHSIZE | BEFORETABLE | COPYDATASET | COPYTEMPTABLE | 
-DATASOURCEMODIFIED | DECRYPT | DELETECHARACTER | ENABLEDFIELDS | ENCRYPT | ENCRYPTIONSALT | 
-FORMLONGINPUT | GENERATEPBEKEY | GENERATEPBESALT | GENERATERANDOMKEY | GETCGILONGVALUE | 
-LASTBATCH | MD5DIGEST | MERGEBYFIELD | NORMALIZE | PBEHASHALGORITHM | PBEKEYROUNDS | 
-PREFERDATASET | REJECTED | REPOSITIONMODE | ROWSTATE | 
-SHA1DIGEST | SSLSERVERNAME | SYMMETRICENCRYPTIONALGORITHM | 
-SYMMETRICENCRYPTIONIV | SYMMETRICENCRYPTIONKEY | SYMMETRICSUPPORT | TRANSINITPROCEDURE | 
+BASE64DECODE | BASE64ENCODE | BATCHSIZE | BEFORETABLE | COPYDATASET | COPYTEMPTABLE |
+DATASOURCEMODIFIED | DECRYPT | DELETECHARACTER | ENABLEDFIELDS | ENCRYPT | ENCRYPTIONSALT |
+FORMLONGINPUT | GENERATEPBEKEY | GENERATEPBESALT | GENERATERANDOMKEY | GETCGILONGVALUE |
+LASTBATCH | MD5DIGEST | MERGEBYFIELD | NORMALIZE | PBEHASHALGORITHM | PBEKEYROUNDS |
+PREFERDATASET | REJECTED | REPOSITIONMODE | ROWSTATE |
+SHA1DIGEST | SSLSERVERNAME | SYMMETRICENCRYPTIONALGORITHM |
+SYMMETRICENCRYPTIONIV | SYMMETRICENCRYPTIONKEY | SYMMETRICSUPPORT | TRANSINITPROCEDURE |
 // 10.1
-AUDITENABLED | BIND | CLASS | CLIENTPRINCIPAL | CONSTRUCTOR | DESTRUCTOR | FINAL | GENERATEUUID | GUID | 
-HEXDECODE | HEXENCODE | IMPLEMENTS | INHERITS | INTERFACE | METHOD | NAMESPACEPREFIX | 
-NAMESPACEURI | NESTED | NEWINSTANCE | PROTECTED | REFERENCEONLY | 
+AUDITENABLED | BIND | CLASS | CLIENTPRINCIPAL | CONSTRUCTOR | DESTRUCTOR | FINAL | GENERATEUUID | GUID |
+HEXDECODE | HEXENCODE | IMPLEMENTS | INHERITS | INTERFACE | METHOD | NAMESPACEPREFIX |
+NAMESPACEURI | NESTED | NEWINSTANCE | PROTECTED | REFERENCEONLY |
 SAXWRITER | SETDBCLIENT | TYPEOF | VALIDOBJECT | VOID | WIDGETID | XMLDATATYPE | XMLNODETYPE |
 ROUNDED | GROUPBOX |
 // 10.1B
-INT64 | PUTINT64 | GETINT64 | PUTUNSIGNEDLONG | GETUNSIGNEDLONG | PROPERTY | SAXATTRIBUTES | 
+INT64 | PUTINT64 | GETINT64 | PUTUNSIGNEDLONG | GETUNSIGNEDLONG | PROPERTY | SAXATTRIBUTES |
 INHERITBGCOLOR | NOINHERITBGCOLOR | INHERITFGCOLOR | NOINHERITFGCOLOR | USEWIDGETPOOL | XREFXML |
 // 10.1C, 10.2A
 ASSEMBLY | BOX | CATCH | CREATELIKESEQUENTIAL | CURRENTQUERY | DATASOURCEROWID | DBREMOTEHOST |
@@ -4416,70 +4417,70 @@ STATIC | THROW | TOPNAVQUERY | UNBOX
 ABSTRACT | DELEGATE | DYNAMICNEW | EVENT | FOREIGNKEYHIDDEN | SERIALIZEHIDDEN | SERIALIZENAME | SIGNATURE | STOPAFTER |
 // 11+
 GETCLASS | SERIALIZABLE | TABLESCAN | MESSAGEDIGEST | ENUM | FLAGS | NON_SERIALIZABLE  | TENANT |
-	
+
 // 12.2
 PACKAGEPROTECTED | PACKAGEPRIVATE |
 
 // 12.3
-EVENT_HANDLER | EVENT_HANDLER_CONTEXT 
+EVENT_HANDLER | EVENT_HANDLER_CONTEXT
 
 ;
 
 
 reservedkeyword:
-   ACCUMULATE | ACTIVEFORM | ACTIVEWINDOW | ADD | ALIAS | ALL | ALTER | AMBIGUOUS | AND 
- | ANY | APPLY | ASCENDING | ASSIGN | AT | ATTRSPACE | AUDITCONTROL | AUDITPOLICY 
- | AUTHORIZATION | AUTORETURN | AVAILABLE | BACKGROUND | BEFOREHIDE | BEGINS | BELL 
- | BETWEEN | BIGENDIAN | BLANK | BREAK | BUFFERCOMPARE | BUFFERCOPY | BY | BYPOINTER 
- | BYVARIANTPOINTER | CALL | CANDO | CANFIND | CASE | CASESENSITIVE | CAST | CENTERED 
- | CHECK | CHR | CLEAR | CLIPBOARD | COLON | COLOR | COLUMNLABEL | COMPILER | COMSELF 
- | CONNECTED | CONTROL | COPYLOB | COUNTOF | CREATE | CURRENT | CURRENTCHANGED 
- | CURRENTLANGUAGE | CURRENTWINDOW | CURSOR | DATABASE | DATARELATION | DATASERVERS 
- | DATASET | DATASETHANDLE | DBCODEPAGE | DBCOLLATION | DBNAME | DBPARAM | DBRESTRICTIONS 
- | DBTASKID | DBTYPE | DBVERSION | DDE | DEBLANK | DEBUGGER | DEBUGLIST | DECIMALS 
- | DECLARE | DEFAULT | DEFAULTWINDOW | DEFINE | DELETE_KW | DELIMITER | DESCENDING 
- | DICTIONARY | DISABLE | DISABLEAUTOZAP | DISCONNECT | DISPLAY | DISTINCT | DO 
- | DOS | DOWN | DROP | DYNAMICFUNCTION | DYNAMICINVOKE | EACH | EDITING | ELSE | ENABLE 
- | ENCODE | END | ENTRY | ERRORSTATUS | ESCAPE | ETIME_KW | EXCEPT | EXCLUSIVELOCK 
- | EXISTS | EXPORT | FALSELEAKS | FALSE_KW | FETCH | FIELD | FIELDS | FILEINFORMATION 
- | FILL | FIND | FINDCASESENSITIVE | FINDGLOBAL | FINDNEXTOCCURRENCE | FINDPREVOCCURRENCE 
- | FINDSELECT | FINDWRAPAROUND | FIRST | FIRSTOF | FOCUS | FONT | FOR | FORMAT | FRAME 
- | FRAMECOL | FRAMEDB | FRAMEDOWN | FRAMEFIELD | FRAMEFILE | FRAMEINDEX | FRAMELINE 
- | FRAMENAME | FRAMEROW | FRAMEVALUE | FROM | FUNCTIONCALLTYPE | GETATTRCALLTYPE 
- | GETBUFFERHANDLE | GETCODEPAGE | GETCODEPAGES | GETCOLLATIONS 
- | GET_EFFECTIVE_TENANT_ID | GET_EFFECTIVE_TENANT_NAME | GETKEYVALUE | GLOBAL | GOON 
- | GOPENDING | GRANT | GRAPHICEDGE | GROUP | HAVING | HEADER | HELP | HIDE 
- | HOSTBYTEORDER | IF | IMPORT | INDEX | INDICATOR | INPUT | INPUTOUTPUT | INSERT 
- | INTO | IN_KW | IS | ISATTRSPACE | ISLEADBYTE | JOIN | KBLABEL | KEYS | KEYWORD 
- | LABEL | LAST | LASTEVENT | LASTKEY | LASTOF | LDBNAME | LEAKDETECTION | LEAVE 
- | LIBRARY | LIKE | LIKESEQUENTIAL | LINECOUNTER | LISTING | LITTLEENDIAN | LOCKED 
- | LOGMANAGER | LOOKUP | MAP | MEMBER | MESSAGE | MESSAGELINES | NEW | NEXT | NEXTPROMPT 
- | NO | NOATTRLIST | NOATTRSPACE | NOERROR_KW | NOFILL | NOFOCUS | NOHELP | NOHIDE 
- | NOLABELS | NOLOBS | NOLOCK | NOMAP | NOMESSAGE | NOPAUSE | NOPREFETCH | NORETURNVALUE 
- | NOT | NOUNDO | NOVALIDATE | NOW | NOWAIT | NULL_KW | NUMALIASES | NUMDBS | NUMENTRIES 
- | OF | OFF | OLD | ON | OPEN | OPSYS | OPTION | OR | OSAPPEND | OSCOMMAND | OSCOPY 
- | OSCREATEDIR | OSDELETE | OSDIR | OSRENAME | OTHERWISE | OUTPUT | OVERLAY | PAGE 
- | PAGEBOTTOM | PAGENUMBER | PAGETOP | PARAMETER | PASSWORDFIELD | PAUSE | PDBNAME 
- | PERSISTENT | PREPROCESS | PRIVILEGES | PROCEDURECALLTYPE | PROCESS | PROCHANDLE 
- | PROCSTATUS | PROGRAMNAME | PROGRESS | PROMPTFOR | PROMSGS | PROPATH | PROVERSION 
- | PUT | PUTBYTE | PUTKEYVALUE | QUERY | QUERYCLOSE | QUERYOFFEND | QUERYTUNING | QUIT 
- | RCODEINFORMATION | READAVAILABLE | READEXACTNUM | READKEY | RECID | RECTANGLE 
- | RELEASE | REPEAT | REPOSITION | REPOSITIONBACKWARD | REPOSITIONTOROW 
- | REPOSITIONTOROWID | RETAIN | RETRY | RETURN | REVERT | REVOKE | RINDEX | ROWCREATED 
- | ROWDELETED | ROWMODIFIED | ROWUNMODIFIED | RUN | SAVE | SAXCOMPLETE | SAXPARSERERROR 
- | SAXRUNNING | SAXUNINITIALIZED | SAXWRITEBEGIN | SAXWRITECOMPLETE | SAXWRITECONTENT 
- | SAXWRITEELEMENT | SAXWRITEERROR | SAXWRITEIDLE | SAXWRITETAG | SCHEMA | SCREEN 
- | SCREENIO | SCREENLINES | SCROLL | SDBNAME | SEARCH | SEARCHSELF | SEARCHTARGET 
- | SECURITYPOLICY | SEEK | SELECT | SELF | SESSION | SET | SETATTRCALLTYPE | SET_EFFECTIVE_TENANT | SETUSERID 
- | SHARED | SHARELOCK | SHOWSTATS | SKIP | SKIPDELETEDRECORD | SOME | SPACE | STATUS 
- | STOMPDETECTION | STOMPFREQUENCY | STREAM | STREAMHANDLE | STREAMIO | SYSTEMDIALOG 
- | TABLE | TABLEHANDLE | TABLENUMBER | TENANT_ID | TENANT_NAME | TENANT_NAME_TO_ID | TERMINAL | TEXT | THEN | THISOBJECT 
- | THISPROCEDURE | TIME | TITLE | TO | TOPONLY | TOROWID | TRANSACTION | TRIGGER 
- | TRIGGERS | TRIM | TRUE_KW | UNDERLINE | UNDO | UNFORMATTED | UNION | UNIQUE | UNIX 
- | UNLESSHIDDEN | UP | UPDATE | USEINDEX | USERID | USING | V6FRAME | VALUE 
- | VALUECHANGED | VALUES | VIEW | VIEWAS | WAITFOR | WHEN | WHERE | WHILE | WINDOW 
- | WINDOWDELAYEDMINIMIZE | WINDOWMAXIMIZED | WINDOWMINIMIZED | WINDOWNORMAL | WITH 
- | WORKTABLE | WRITE | XCODE | XREF | XOR | YES 
+   ACCUMULATE | ACTIVEFORM | ACTIVEWINDOW | ADD | ALIAS | ALL | ALTER | AMBIGUOUS | AND
+ | ANY | APPLY | ASCENDING | ASSIGN | AT | ATTRSPACE | AUDITCONTROL | AUDITPOLICY
+ | AUTHORIZATION | AUTORETURN | AVAILABLE | BACKGROUND | BEFOREHIDE | BEGINS | BELL
+ | BETWEEN | BIGENDIAN | BLANK | BREAK | BUFFERCOMPARE | BUFFERCOPY | BY | BYPOINTER
+ | BYVARIANTPOINTER | CALL | CANDO | CANFIND | CASE | CASESENSITIVE | CAST | CENTERED
+ | CHECK | CHR | CLEAR | CLIPBOARD | COLON | COLOR | COLUMNLABEL | COMPILER | COMSELF
+ | CONNECTED | CONTROL | COPYLOB | COUNTOF | CREATE | CURRENT | CURRENTCHANGED
+ | CURRENTLANGUAGE | CURRENTWINDOW | CURSOR | DATABASE | DATARELATION | DATASERVERS
+ | DATASET | DATASETHANDLE | DBCODEPAGE | DBCOLLATION | DBNAME | DBPARAM | DBRESTRICTIONS
+ | DBTASKID | DBTYPE | DBVERSION | DDE | DEBLANK | DEBUGGER | DEBUGLIST | DECIMALS
+ | DECLARE | DEFAULT | DEFAULTWINDOW | DEFINE | DELETE_KW | DELIMITER | DESCENDING
+ | DICTIONARY | DISABLE | DISABLEAUTOZAP | DISCONNECT | DISPLAY | DISTINCT | DO
+ | DOS | DOWN | DROP | DYNAMICFUNCTION | DYNAMICINVOKE | EACH | EDITING | ELSE | ENABLE
+ | ENCODE | END | ENTRY | ERRORSTATUS | ESCAPE | ETIME_KW | EXCEPT | EXCLUSIVELOCK
+ | EXISTS | EXPORT | FALSELEAKS | FALSE_KW | FETCH | FIELD | FIELDS | FILEINFORMATION
+ | FILL | FIND | FINDCASESENSITIVE | FINDGLOBAL | FINDNEXTOCCURRENCE | FINDPREVOCCURRENCE
+ | FINDSELECT | FINDWRAPAROUND | FIRST | FIRSTOF | FOCUS | FONT | FOR | FORMAT | FRAME
+ | FRAMECOL | FRAMEDB | FRAMEDOWN | FRAMEFIELD | FRAMEFILE | FRAMEINDEX | FRAMELINE
+ | FRAMENAME | FRAMEROW | FRAMEVALUE | FROM | FUNCTIONCALLTYPE | GETATTRCALLTYPE
+ | GETBUFFERHANDLE | GETCODEPAGE | GETCODEPAGES | GETCOLLATIONS
+ | GET_EFFECTIVE_TENANT_ID | GET_EFFECTIVE_TENANT_NAME | GETKEYVALUE | GLOBAL | GOON
+ | GOPENDING | GRANT | GRAPHICEDGE | GROUP | HAVING | HEADER | HELP | HIDE
+ | HOSTBYTEORDER | IF | IMPORT | INDEX | INDICATOR | INPUT | INPUTOUTPUT | INSERT
+ | INTO | IN_KW | IS | ISATTRSPACE | ISLEADBYTE | JOIN | KBLABEL | KEYS | KEYWORD
+ | LABEL | LAST | LASTEVENT | LASTKEY | LASTOF | LDBNAME | LEAKDETECTION | LEAVE
+ | LIBRARY | LIKE | LIKESEQUENTIAL | LINECOUNTER | LISTING | LITTLEENDIAN | LOCKED
+ | LOGMANAGER | LOOKUP | MAP | MEMBER | MESSAGE | MESSAGELINES | NEW | NEXT | NEXTPROMPT
+ | NO | NOATTRLIST | NOATTRSPACE | NOERROR_KW | NOFILL | NOFOCUS | NOHELP | NOHIDE
+ | NOLABELS | NOLOBS | NOLOCK | NOMAP | NOMESSAGE | NOPAUSE | NOPREFETCH | NORETURNVALUE
+ | NOT | NOUNDO | NOVALIDATE | NOW | NOWAIT | NULL_KW | NUMALIASES | NUMDBS | NUMENTRIES
+ | OF | OFF | OLD | ON | OPEN | OPSYS | OPTION | OR | OSAPPEND | OSCOMMAND | OSCOPY
+ | OSCREATEDIR | OSDELETE | OSDIR | OSRENAME | OTHERWISE | OUTPUT | OVERLAY | PAGE
+ | PAGEBOTTOM | PAGENUMBER | PAGETOP | PARAMETER | PASSWORDFIELD | PAUSE | PDBNAME
+ | PERSISTENT | PREPROCESS | PRIVILEGES | PROCEDURECALLTYPE | PROCESS | PROCHANDLE
+ | PROCSTATUS | PROGRAMNAME | PROGRESS | PROMPTFOR | PROMSGS | PROPATH | PROVERSION
+ | PUT | PUTBYTE | PUTKEYVALUE | QUERY | QUERYCLOSE | QUERYOFFEND | QUERYTUNING | QUIT
+ | RCODEINFORMATION | READAVAILABLE | READEXACTNUM | READKEY | RECID | RECTANGLE
+ | RELEASE | REPEAT | REPOSITION | REPOSITIONBACKWARD | REPOSITIONTOROW
+ | REPOSITIONTOROWID | RETAIN | RETRY | RETURN | REVERT | REVOKE | RINDEX | ROWCREATED
+ | ROWDELETED | ROWMODIFIED | ROWUNMODIFIED | RUN | SAVE | SAXCOMPLETE | SAXPARSERERROR
+ | SAXRUNNING | SAXUNINITIALIZED | SAXWRITEBEGIN | SAXWRITECOMPLETE | SAXWRITECONTENT
+ | SAXWRITEELEMENT | SAXWRITEERROR | SAXWRITEIDLE | SAXWRITETAG | SCHEMA | SCREEN
+ | SCREENIO | SCREENLINES | SCROLL | SDBNAME | SEARCH | SEARCHSELF | SEARCHTARGET
+ | SECURITYPOLICY | SEEK | SELECT | SELF | SESSION | SET | SETATTRCALLTYPE | SET_EFFECTIVE_TENANT | SETUSERID
+ | SHARED | SHARELOCK | SHOWSTATS | SKIP | SKIPDELETEDRECORD | SOME | SPACE | STATUS
+ | STOMPDETECTION | STOMPFREQUENCY | STREAM | STREAMHANDLE | STREAMIO | SYSTEMDIALOG
+ | TABLE | TABLEHANDLE | TABLENUMBER | TENANT_ID | TENANT_NAME | TENANT_NAME_TO_ID | TERMINAL | TEXT | THEN | THISOBJECT
+ | THISPROCEDURE | TIME | TITLE | TO | TOPONLY | TOROWID | TRANSACTION | TRIGGER
+ | TRIGGERS | TRIM | TRUE_KW | UNDERLINE | UNDO | UNFORMATTED | UNION | UNIQUE | UNIX
+ | UNLESSHIDDEN | UP | UPDATE | USEINDEX | USERID | USING | V6FRAME | VALUE
+ | VALUECHANGED | VALUES | VIEW | VIEWAS | WAITFOR | WHEN | WHERE | WHILE | WINDOW
+ | WINDOWDELAYEDMINIMIZE | WINDOWMAXIMIZED | WINDOWMINIMIZED | WINDOWNORMAL | WITH
+ | WORKTABLE | WRITE | XCODE | XREF | XOR | YES
 ;
 
 
@@ -4521,7 +4522,7 @@ createindexstate
 	;
 
 createtablestate
-	: 	CREATE^ TABLE identifier 
+	: 	CREATE^ TABLE identifier
 	 	LEFTPAREN
 		(	sql_col_def
 		|	createtable_unique
@@ -4540,7 +4541,7 @@ createtable_unique
 	;
 
 createviewstate
-	:	CREATE^ VIEW identifier    
+	:	CREATE^ VIEW identifier
 		(field_list)?
 		AS selectstatea
 	 	state_end
@@ -4592,8 +4593,8 @@ dropviewstate
 	;
 
 fetchstate
-	:	FETCH^ cursorname INTO 
-		field (fetch_indicator)? (COMMA field (fetch_indicator)? )* 
+	:	FETCH^ cursorname INTO
+		field (fetch_indicator)? (COMMA field (fetch_indicator)? )*
 		state_end
 		{sthd(##,0);}
 	;
@@ -4654,7 +4655,7 @@ selectstate
 	: 	selectstatea state_end
 	;
 
-// "selectstatea" is referenced in the grammar for "insertintostate", "createviewstate", "declarecursorstate", 
+// "selectstatea" is referenced in the grammar for "insertintostate", "createviewstate", "declarecursorstate",
 // and "unionstatea".
 selectstatea
 	:	SELECT^ (ALL | DISTINCT)?
@@ -4702,8 +4703,8 @@ select_join
 		ON sqlexpression
 	;
 select_sqltableref
-	:	((record)=>record|identifier) 
-		// This is to allow for an optional correlation name (alias for a table name). 
+	:	((record)=>record|identifier)
+		// This is to allow for an optional correlation name (alias for a table name).
 		// Although Progress allows correlation name to be INNER, LEFT, RIGHT, OUTER, JOIN, we don't.
  		({LA(1)!=INNER && LA(1)!=LEFT && LA(1)!=RIGHT && LA(1)!=OUTER && LA(1)!=JOIN}? identifier)?
 	;
@@ -4778,7 +4779,7 @@ sql_not_null
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-// sqlexpression 
+// sqlexpression
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 sqlexpression
