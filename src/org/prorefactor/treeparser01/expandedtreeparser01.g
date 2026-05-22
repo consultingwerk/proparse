@@ -4,7 +4,7 @@ header {
   import org.prorefactor.core.IJPNode;
   import org.prorefactor.treeparser.CQ;
   import org.prorefactor.treeparser.IJPTreeParser;
-  
+
   import java.util.ArrayList;
 }
 
@@ -38,7 +38,7 @@ options {
     return _retTree;
   }
 
-  // Func for grabbing the "state2" attribute from the node at LT(1) 
+  // Func for grabbing the "state2" attribute from the node at LT(1)
   private boolean state2(AST node, int match) {
     return ((IJPNode)node).getState2() == match;
   }
@@ -51,7 +51,7 @@ options {
   public TreeParser01(TP01Action actionObject) {
     action = actionObject;
   }
-  
+
   /** By default, the action object is a new TP01Support. */
   TP01Action action = null; // See initialization block, below.
 
@@ -75,7 +75,7 @@ options {
    * in the tree parser grammar for visibility sake, rather than hide
    * it in the support class. If we move grammar and actions around
    * within this .g, the effect on the stack should be highly visible.
-   */ 
+   */
   private ArrayList stack = new ArrayList();
   private void push(Object o) { stack.add(o); }
   private Object pop() { return stack.remove(stack.size()-1); }
@@ -95,12 +95,12 @@ block_for :#( FOR rn1:tbl[CQ.BUFFERSYMBOL] {action.strongScope(#rn1);}
   ;
 
 block_opt :#(Block_iterator fld[CQ.UPDATING] EQUAL expression TO expression (BY constant)? )
-  | querytuningphrase 
+  | querytuningphrase
   | #(WHILE expression )
-  | TRANSACTION 
+  | TRANSACTION
   | #(STOPAFTER expression )
-  | on___phrase 
-  | framephrase 
+  | on___phrase
+  | framephrase
   | BREAK
   | #(BY expression (DESCENDING)? )
   | collatephrase
@@ -147,7 +147,7 @@ functioncall :#(ACCUMULATE accum_what (#(BY expression (DESCENDING)?))? expressi
   | #(GETCODEPAGE funargs )
   | #(GUID LEFTPAREN (expression)? RIGHTPAREN )
   | #(IF expression THEN expression ELSE expression )
-  | ldbnamefunc 
+  | ldbnamefunc
   | lengthfunc // is also a pseudfn.
   | #(LINECOUNTER (LEFTPAREN ID RIGHTPAREN)? )
   | #(MTIME (funargs)? )
@@ -164,14 +164,14 @@ functioncall :#(ACCUMULATE accum_what (#(BY expression (DESCENDING)?))? expressi
   | #(TENANT_NAME LEFTPAREN (expression)? RIGHTPAREN )
   | #(GET_EFFECTIVE_TENANT_ID LEFTPAREN (expression)? RIGHTPAREN )
   | #(GET_EFFECTIVE_TENANT_NAME LEFTPAREN (expression)? RIGHTPAREN )
-  | #(IS_DB_MULTI_TENANT LEFTPAREN (expression)? RIGHTPAREN ) 
+  | #(IS_DB_MULTI_TENANT LEFTPAREN (expression)? RIGHTPAREN )
   | #(SET_EFFECTIVE_TENANT LEFTPAREN expression (COMMA expression)? RIGHTPAREN )
   | #(TIMEZONE (funargs)? )
   | #(TYPEOF LEFTPAREN expression COMMA TYPE_NAME RIGHTPAREN )
   | #(GETCLASS LEFTPAREN TYPE_NAME RIGHTPAREN )
   | #(USERID (funargs)? )
   | #(USER (funargs)? )
-  | sqlaggregatefunc  
+  | sqlaggregatefunc
   | argfunc
   | noargfunc
   | recordfunc
@@ -246,7 +246,7 @@ widattr :#( Widget_ref
         ( {action.callBegin(#aname);}
           method_param_list
           {action.callEnd();}
-        )? 
+        )?
       )+
       (#(IN_KW (MENU|FRAME|BROWSE|SUBMENU|BUFFER) ID ))? (AS .)?
     )
@@ -323,7 +323,7 @@ assignment_list :tbl[CQ.UPDATING] (#(EXCEPT (fld1[CQ.SYMBOL])*))?
     )*
   ;
 
-assign_equal 
+assign_equal
 	:	#(EQUAL ( pseudfn | fld[CQ.UPDATING] ) expression )
     |	#(PLUS_EQUAL ( pseudfn | fld[CQ.UPDATING] ) expression )
     |	#(MINUS_EQUAL ( pseudfn | fld[CQ.UPDATING] ) expression )
@@ -366,7 +366,7 @@ buffercopystate :#( BUFFERCOPY tbl[CQ.REF]
       ( #(ASSIGN assignment_list ) )?
       (NOLOBS)?
       (NOERROR_KW)?
-      state_end 
+      state_end
     )
   ;
 
@@ -384,11 +384,11 @@ canfindfunc :#( cf:CANFIND LEFTPAREN (findwhich)?
 
 choosestate :#( head:CHOOSE (ROW|FIELD)  { action.frameInitializingStatement(#head); }
       ( #(fi:Form_item fld[CQ.UPDATING] {action.formItem(#fi);} (#(HELP constant))? ) )+
-      ( AUTORETURN 
-      | #(COLOR anyorvalue) 
+      ( AUTORETURN
+      | #(COLOR anyorvalue)
       | goonphrase
       | #(KEYS fld[CQ.UPDATING] )
-      | NOERROR_KW 
+      | NOERROR_KW
       | #(PAUSE expression)
       )*
       (framephrase)?
@@ -472,7 +472,7 @@ columnformat :#(  Format_phrase
       | #(WIDTH NUMBER )
       | #(WIDTHPIXELS NUMBER )
       | #(WIDTHCHARS NUMBER )
-      )+ 
+      )+
     )
   ;
 
@@ -634,7 +634,7 @@ data_relation :#( DATARELATION (ID)?
       )*
     )
   ;
-  
+
 field_mapping_phrase :#(RELATIONFIELDS LEFTPAREN fld2[CQ.SYMBOL] COMMA fld1[CQ.SYMBOL]
     ( COMMA fld2[CQ.SYMBOL] COMMA fld1[CQ.SYMBOL] )* RIGHTPAREN )
   ;
@@ -682,7 +682,7 @@ defineframestate :#(  def:DEFINE (def_shared)?
 defineimagestate :#(  def:DEFINE (def_shared)? def_modifiers IMAGE
       id:ID { push(action.defineSymbol(IMAGE, #def, #id)); }
       ( #(LIKE fld[CQ.SYMBOL] (VALIDATE)?)
-      | imagephrase_opt 
+      | imagephrase_opt
       | sizephrase
       | color_expr
       | CONVERT3DCOLORS
@@ -722,7 +722,7 @@ menu_list_item :( #(  MENUITEM
         | READONLY
         | TOGGLEBOX
         )*
-        (triggerphrase)? 
+        (triggerphrase)?
         { action.addToSymbolScope(pop()); }
       )
     | #(  SUBMENU
@@ -895,21 +895,21 @@ definevariablestate :#( def:DEFINE (def_shared)? def_modifiers VARIABLE
   ;
 
 varstate
-	:	#(var:VARIABLE (varStateAccessMode)? (varStateOptions)? vardatatype 
-		(varStatementSub2)? 
-		id:ID { 
-			push(action.defineVariable(#var, #id)); 
-			action.addToSymbolScope(pop()); 
+	:	#(var:VARIABLE (varStateAccessMode)? (varStateOptions)? vardatatype
+		(varStatementSub2)?
+		id:ID {
+			push(action.defineVariable(#var, #id));
+			action.addToSymbolScope(pop());
 		} (varStatementEqualSub)?
-		 
-		(COMMA id2:ID { 
-			push(action.defineVariable(#var, #id2)); 
-			action.addToSymbolScope(pop()); 
-		} 
-		(varStatementEqualSub)?)* 
-		state_end )		
+
+		(COMMA id2:ID {
+			push(action.defineVariable(#var, #id2));
+			action.addToSymbolScope(pop());
+		}
+		(varStatementEqualSub)?)*
+		state_end )
 	;
-	
+
 varStateAccessMode
 	:	PRIVATE
 	|	PUBLIC
@@ -923,7 +923,7 @@ varStateOptions
 	|	SERIALIZABLE
 	|	NON_SERIALIZABLE
 	;
-	
+
 varStatementEqualSub
 	:	#(EQUAL varStatementInitialValue)
   	;
@@ -933,27 +933,27 @@ varStatementSub2
   	;
 
 varStatementInitialValue
-	:   varStatementInitialValueArray 
+	:   varStatementInitialValueArray
 	|	varStatementInitialValueSub
   	;
 
 varStatementInitialValueArray
 	:    LEFTBRACE varStatementInitialValueSub ( COMMA varStatementInitialValueSub )* RIGHTBRACE
   	;
-  	
+
 varStatementInitialValueSub:
     TODAY | NOW | TRUE | FALSE | YES | NO | UNKNOWNVALUE | QSTRING | LEXDATE | NUMBER | NULL | expression
   ;
-  
+
 vardatatype
-	:	CLASS TYPE_NAME 
-	| datatype_var 
+	:	CLASS TYPE_NAME
+	| datatype_var
   ;
 
 deletestate :#(DELETE_KW tbl[CQ.UPDATING] (#(VALIDATE funargs))? (NOERROR_KW)? state_end )
   ;
 
-destructorstate :#( d:DESTRUCTOR 
+destructorstate :#( d:DESTRUCTOR
       {action.structorBegin(#d);}
       (PUBLIC)? TYPE_NAME LEFTPAREN RIGHTPAREN block_colon
       code_block #(END (DESTRUCTOR|METHOD)? ) state_end
@@ -1087,8 +1087,8 @@ findstate :#( FIND (findwhich)?
 fixcodepage_pseudfn :#(FIXCODEPAGE LEFTPAREN fld[CQ.SYMBOL] RIGHTPAREN )
   ;
 
-forstate :#(  f:FOR 
-      { action.blockBegin(#f); 
+forstate :#(  f:FOR
+      { action.blockBegin(#f);
         action.frameBlockCheck(#f);
       }
       for_record_spec[CQ.INITWEAK] (block_opt)* block_colon {action.frameStatementEnd();}
@@ -1146,23 +1146,23 @@ formatphrase :#(  Format_phrase
       | AUTORETURN
       | color_expr
       | #(CONTEXTHELPID expression)
-      | BLANK 
+      | BLANK
       | #(COLON expression )
       | #(TO expression)
-      | DEBLANK 
-      | DISABLEAUTOZAP 
-      | #(FONT expression ) 
+      | DEBLANK
+      | DISABLEAUTOZAP
+      | #(FONT expression )
       | #(FORMAT expression)
       | #(HELP constant)
       | label_constant
       | #(LEXAT af:fld[CQ.SYMBOL] {action.lexat(#af);} (formatphrase)? )
       | #(LIKE fld[CQ.SYMBOL] )
       | NOLABELS
-      | NOTABSTOP 
+      | NOTABSTOP
       | PASSWORDFIELD
       | #(VALIDATE funargs)
       | #(WHEN expression)
-      | viewasphrase 
+      | viewasphrase
       )+
     )
   ;
@@ -1174,7 +1174,7 @@ framephrase :#( WITH
       ( #(ACCUMULATE (expression)? )
       | ATTRSPACE | NOATTRSPACE
       | #(CANCELBUTTON fld[CQ.SYMBOL] )
-      | CENTERED 
+      | CENTERED
       | #(COLUMN expression )
       | CONTEXTHELP | CONTEXTHELPFILE expression
       | #(DEFAULTBUTTON fld[CQ.SYMBOL] )
@@ -1193,13 +1193,13 @@ framephrase :#( WITH
       | #(ROWHEIGHTCHARS expression )
       | #(ROWHEIGHTPIXELS expression )
       | EXPANDABLE | DROPTARGET | NOAUTOVALIDATE | NOCOLUMNSCROLLING
-      | KEEPTABORDER | NOBOX | NOEMPTYSPACE | NOHIDE | NOLABELS | USEDICTEXPS | NOVALIDATE 
+      | KEEPTABORDER | NOBOX | NOEMPTYSPACE | NOHIDE | NOLABELS | USEDICTEXPS | NOVALIDATE
       | NOHELP | NOUNDERLINE | OVERLAY | PAGEBOTTOM | PAGETOP | NOTABSTOP
       | #(RETAIN expression  )
       | #(ROW expression )
       | SCREENIO | STREAMIO
       | #(SCROLL expression )
-      | SCROLLABLE | SIDELABELS 
+      | SCROLLABLE | SIDELABELS
       | stream_name_or_handle | THREED
       | tooltip_expr
       | TOPONLY | USETEXT
@@ -1213,7 +1213,7 @@ framephrase :#( WITH
         )
       | #(WIDTH expression )
       | #(IN_KW WINDOW expression)
-      | colorspecification | atphrase | sizephrase | titlephrase 
+      | colorspecification | atphrase | sizephrase | titlephrase
       | #(With_columns expression COLUMNS )
       | #(With_down expression DOWN )
       | DOWN
@@ -1281,24 +1281,24 @@ function_param_arg :TABLE (FOR)? tb1:tbl[CQ.TEMPTABLESYMBOL] (APPEND)? (BIND {ac
   | { action.paramNoName(_t); }
     (CLASS TYPE_NAME | datatype_var) (extentphrase_def_symbol)?
   | // ID AS is optional - you are allowed to list just the datatype.
-    id:ID 
-    ((as:AS 
+    id:ID
+    ((as:AS
     {
     	action.addToSymbolScope(action.defineVariable(#id, #id));
     	action.defAs(#as);
         action.paramSymbol(#id);
     }
-    (CLASS TYPE_NAME | datatype_var) (extentphrase_def_symbol)?) 
-    
+    (CLASS TYPE_NAME | datatype_var) (extentphrase_def_symbol)?)
+
     |
-    #(li:LIKE fld[CQ.SYMBOL]) 
+    #(li:LIKE fld[CQ.SYMBOL])
     {
         action.addToSymbolScope(action.defineVariable(#id, #id));
         action.defLike(#li);
         action.paramSymbol(#id);
     }
     )
-    
+
   ;
 
 getkeyvaluestate :#(GETKEYVALUE SECTION expression KEY (DEFAULT|expression) VALUE fld[CQ.UPDATING] state_end )
@@ -1367,9 +1367,7 @@ nextpromptstate :#(NEXTPROMPT fld[CQ.SYMBOL] (framephrase)? state_end )
 onstate :#( onNode:ON
       {action.scopeAdd(#onNode);}
       ( (ASSIGN|CREATE|DELETE_KW|FIND|WRITE)=>
-        ( (CREATE|DELETE_KW|FIND) OF THISPROCEDURE (label_constant)?
-          /* THIS-PROCEDURE is a system handle for procedure-level events - no buffer needed */
-        | (CREATE|DELETE_KW|FIND) OF t1:tbl[CQ.SYMBOL] (label_constant)?
+        ( (CREATE|DELETE_KW|FIND) OF t1:tbl[CQ.SYMBOL] (label_constant)?
           {action.defineBufferForTrigger(#t1);}
         | WRITE OF rec:tbl[CQ.SYMBOL] (label_constant)?
           ( (NEW (BUFFER)? id1:ID) (label_constant)?
@@ -1378,7 +1376,7 @@ onstate :#( onNode:ON
           {if (#id1 == null) action.defineBufferForTrigger(#rec);}
           ( (OLD (BUFFER)? id2:ID) (label_constant)?
             {action.defineBuffer(#id2, #id2, #rec, true);}
-          )? 
+          )?
         | ASSIGN OF fld:fld[CQ.INIT]
           (#(TABLE LABEL constant))?
           ( OLD (VALUE)?
@@ -1498,12 +1496,12 @@ repeatstate :#( r:REPEAT
     )
   ;
 
-runstate :#(  r:RUN filenameorvalue { action.runBegin(#r); } 
+runstate :#(  r:RUN filenameorvalue { action.runBegin(#r); }
       (LEFTANGLE LEFTANGLE filenameorvalue RIGHTANGLE RIGHTANGLE)?
       ( #(PERSISTENT ( #(SET (hnd:fld[CQ.UPDATING] { action.runPersistentSet(#hnd); } )? ) )? )
       | #(SET (fld[CQ.UPDATING])? )
       | #(ON (SERVER)? expression (TRANSACTION (DISTINCT)?)? )
-      | #(IN_KW hexp:expression) { action.runInHandle(#hexp); } 
+      | #(IN_KW hexp:expression) { action.runInHandle(#hexp); }
       | #(  ASYNCHRONOUS ( #(SET (fld[CQ.UPDATING])? ) )?
           (#(EVENTPROCEDURE expression ) )?
           (#(IN_KW expression))?
@@ -1540,7 +1538,7 @@ setstate :#(  head:SET  { action.frameInitializingStatement(#head); }
       (form_item[CQ.UPDATING])*
       (goonphrase)?  (#(EXCEPT (fld1[CQ.SYMBOL])*))?  (#(IN_KW WINDOW expression))?
       (framephrase)?  { action.frameStatementEnd(); }
-      (editingphrase)? (NOERROR_KW)? state_end  
+      (editingphrase)? (NOERROR_KW)? state_end
     )
   ;
 
@@ -1604,7 +1602,7 @@ triggerphrase :#( TRIGGERS block_colon
             eventlist (ANYWHERE)?
             (PERSISTENT runstate | blockorstate)
             {action.scopeClose(#on);}
-          ) 
+          )
         )*
       )
       #(END (TRIGGERS)? )
@@ -1620,7 +1618,7 @@ triggerprocedurestate :#( TRIGGER PROCEDURE FOR
           {action.defineBuffer(#id4, #id4, #rec, true);}
         )?
         {if (#id4 == null) action.defineBufferForTrigger(#rec);}
-        ( OLD (BUFFER)? id3:ID (label_constant)? 
+        ( OLD (BUFFER)? id3:ID (label_constant)?
           {action.defineBuffer(#id3, #id3, #rec, true);}
         )?
       | ASSIGN
@@ -1630,8 +1628,8 @@ triggerprocedurestate :#( TRIGGER PROCEDURE FOR
             defineparam_var
             { action.addToSymbolScope(pop()); }
           )
-          
-        )? 
+
+        )?
         ( #(  OLD (VALUE)?
             id2:ID { push(action.defineVariable(#id2, #id2)); }
             defineparam_var
@@ -1660,7 +1658,7 @@ updatestatement :(#(UPDATE tbl[CQ.SYMBOL] SET))=> sqlupdatestate
   ;
 
 updatestate :#( head:UPDATE  { action.frameEnablingStatement(#head); }
-      (UNLESSHIDDEN)? 
+      (UNLESSHIDDEN)?
       (form_item[CQ.REFUP])*
       (goonphrase)?
       (#(EXCEPT (fld1[CQ.SYMBOL])*))?
@@ -1864,7 +1862,7 @@ statement :aatracestatement
   | {state2(_t, DATASET)}?      createdatasetstate
   | {state2(_t, DATASOURCE)}?   createdatasourcestate
   | {state2(_t, INDEX)}?      createindexstate    // SQL
-  | {state2(_t, QUERY)}?      createquerystate   
+  | {state2(_t, QUERY)}?      createquerystate
   | {state2(_t, SAXREADER)}?    createsaxreaderstate
   | {state2(_t, SAXWRITER)}?    createsaxwriterstate
   | {state2(_t, SERVER)}?     createserverstate
@@ -1885,7 +1883,7 @@ statement :aatracestatement
   | {state2(_t, INITIATE)}?   ddeinitiatestate
   | {state2(_t, REQUEST)}?    dderequeststate
   | {state2(_t, SEND)}?     ddesendstate
-  | {state2(_t, TERMINATE)}?    ddeterminatestate 
+  | {state2(_t, TERMINATE)}?    ddeterminatestate
   |           declarecursorstate
   | {state2(_t, BROWSE)}?     definebrowsestate
   | {state2(_t, BUFFER)}?     definebufferstate
@@ -1924,7 +1922,7 @@ statement :aatracestatement
   | {state2(_t, TABLE)}?      droptablestate      // SQL
   | {state2(_t, VIEW)}?     dropviewstate     // SQL
   |           dynamicnewstate
-  |           emptytemptablestate  
+  |           emptytemptablestate
   |           enablestate
   |           exportstate
   |           fetchstate
@@ -1934,11 +1932,11 @@ statement :aatracestatement
   |           formstate
   |           functionstate
   |           getstate
-  |           getkeyvaluestate  
+  |           getkeyvaluestate
   |           grantstate
   |           hidestate
   |           ifstate
-  |           importstate  
+  |           importstate
   | {state2(_t, CLEAR)}?      inputclearstate
   | {state2(_t, CLOSE)}?      inputclosestate
   | {state2(_t, FROM)}?     inputfromstate
@@ -1949,24 +1947,24 @@ statement :aatracestatement
   | {state2(_t, 0)}?      insertstate
   |           interfacestate
   |           leavestate
-  |           loadstate  
+  |           loadstate
   |           messagestate
   |           methodstate
   |           nextstate
   |           nextpromptstate
-  |           onstate  
+  |           onstate
   | {state2(_t, 0)}?      openstate     // SQL
   | {state2(_t, QUERY)}?      openquerystate
   |           osappendstate
   |           oscommandstate
   |           oscopystate
-  |           oscreatedirstate  
+  |           oscreatedirstate
   |           osdeletestate
   |           osrenamestate
   | {state2(_t, CLOSE)}?      outputclosestate
   | {state2(_t, THROUGH)}?    outputthroughstate
   | {state2(_t, TO)}?     outputtostate
-  |           pagestate  
+  |           pagestate
   |           pausestate
   |           procedurestate
   |           processeventsstate
@@ -1983,7 +1981,7 @@ statement :aatracestatement
   | {state2(_t, EXTERNAL)}?   releaseexternalstate
   | {state2(_t, OBJECT)}?     releaseobjectstate
   |           repeatstate
-  |           repositionstate  
+  |           repositionstate
   |           returnstate
   |           revokestate
   |           routinelevelstate
@@ -1993,11 +1991,11 @@ statement :aatracestatement
   | {state2(_t, SUPER)}?      runsuperstate
   |           savecachestate
   |           scrollstate
-  |           seekstate  
+  |           seekstate
   |           selectstate
   |           setstate
   |           showstatsstate
-  |           statusstate  
+  |           statusstate
   |           stopstate
   |           subscribestate
   | {state2(_t, COLOR)}?      systemdialogcolorstate
@@ -2009,11 +2007,11 @@ statement :aatracestatement
   |           thisobjectstate
   |           transactionmodeautomaticstate
   |           triggerprocedurestate
-  |           underlinestate  
+  |           underlinestate
   |           undostate
   |           unloadstate
   |           unsubscribestate
-  |           upstate  
+  |           upstate
   |           updatestatement
   |           usestate
   |           usingstate
@@ -2065,7 +2063,7 @@ pseudfn :#(EXTENT funargs )
   | PROGRESS | FRAMEINDEX | FRAMEDB | FRAMENAME | DATASERVERS
   | NUMDBS | NUMALIASES | ISATTRSPACE | PROCSTATUS
   | PROCHANDLE | CURSOR | OSERROR | RETURNVALUE | OSDRIVES
-  | PROVERSION | TRANSACTION | MACHINECLASS 
+  | PROVERSION | TRANSACTION | MACHINECLASS
   | AAPCONTROL | GETCODEPAGES | COMSELF
   ;
 
@@ -2353,7 +2351,7 @@ constant :TRUE_KW | FALSE_KW | YES | NO | UNKNOWNVALUE | QSTRING | LEXDATE | NUM
   ;
 
 // inherited from grammar JPTreeParser
-systemhandlename :AAMEMORY | ACTIVEFORM | ACTIVEWINDOW | AUDITCONTROL | AUDITPOLICY | CLIPBOARD | CODEBASELOCATOR | COLORTABLE | COMPILER 
+systemhandlename :AAMEMORY | ACTIVEFORM | ACTIVEWINDOW | AUDITCONTROL | AUDITPOLICY | CLIPBOARD | CODEBASELOCATOR | COLORTABLE | COMPILER
   | COMSELF | CURRENTWINDOW | DEBUGGER | DEFAULTWINDOW
   | ERRORSTATUS | FILEINFORMATION | FOCUS | FONTTABLE | LASTEVENT | LOGMANAGER
   | MOUSE | PROFILER | RCODEINFORMATION | SECURITYPOLICY | SELF | SESSION
@@ -2394,9 +2392,9 @@ analyzestate :#(  ANALYZE filenameorvalue filenameorvalue
 // inherited from grammar JPTreeParser
 applystate :#(APPLY expression (#(TO gwidget ))? state_end )
   ;
-  
+
 // inherited from grammar JPTreeParser
-assign_opt 
+assign_opt
 	:	#(ASSIGN ( #(EQUAL . expression ) )+ )
 	|	#(ASSIGN ( #(PLUS_EQUAL . expression ) )+ )
 	|	#(ASSIGN ( #(MINUS_EQUAL . expression ) )+ )
@@ -2548,7 +2546,7 @@ connectstate :#(CONNECT (NOERROR_KW|DDE|filenameorvalue)* state_end )
   ;
 
 // inherited from grammar JPTreeParser
-convertphrase :#( CONVERT 
+convertphrase :#( CONVERT
       ( #(SOURCE (BASE64 | CODEPAGE expression (BASE64)?) ) )?
       ( #(TARGET (BASE64 | CODEPAGE expression (BASE64)?) ) )?
     )
@@ -2582,7 +2580,7 @@ createclientprincipalstate :#(CREATE CLIENTPRINCIPAL create_whatever_args state_
   ;
 
 // inherited from grammar JPTreeParser
-createdatabasestate :#( CREATE DATABASE expression 
+createdatabasestate :#( CREATE DATABASE expression
       ( #(FROM expression (NEWINSTANCE)? ) )?
       (REPLACE)? (NOERROR_KW)? state_end
     )
@@ -2633,9 +2631,9 @@ currentvaluefunc :#(CURRENTVALUE LEFTPAREN ID (COMMA ID)? (COMMA expression)? RI
   ;
 
 // inherited from grammar JPTreeParser
-datatype 
-	:	CLASS TYPE_NAME 
-	| datatype_var 
+datatype
+	:	CLASS TYPE_NAME
+	| datatype_var
   ;
 
 // inherited from grammar JPTreeParser
@@ -2647,7 +2645,7 @@ datatype_com_native :SHORT | FLOAT | CURRENCY | UNSIGNEDBYTE | ERRORCODE | IUNKN
   ;
 
 // inherited from grammar JPTreeParser
-datatype_dll :CHARACTER | INT64 | datatype_dll_native  
+datatype_dll :CHARACTER | INT64 | datatype_dll_native
   ;
 
 // inherited from grammar JPTreeParser
@@ -2871,7 +2869,7 @@ io_phrase :(  #(OSDIR LEFTPAREN expression RIGHTPAREN (NOATTRLIST)? )
     | #(LOBDIR filenameorvalue )
     | NOCONVERT
     | ECHO | NOECHO
-    | KEEPMESSAGES 
+    | KEEPMESSAGES
     | LANDSCAPE
     | #(MAP anyorvalue )
     | NOMAP
@@ -2879,7 +2877,7 @@ io_phrase :(  #(OSDIR LEFTPAREN expression RIGHTPAREN (NOATTRLIST)? )
     | PAGED
     | #(PAGESIZE_KW anyorvalue )
     | PORTRAIT
-    | UNBUFFERED 
+    | UNBUFFERED
     )*
   ;
 
@@ -3006,7 +3004,7 @@ processeventsstate :#(PROCESS EVENTS state_end )
   ;
 
 // inherited from grammar JPTreeParser
-putstate :#(  PUT 
+putstate :#(  PUT
       (stream_name_or_handle)? (CONTROL|UNFORMATTED)?
       ( ( #(NULL_KW (LEFTPAREN)? ) )=> #(NULL_KW (funargs)? )
       | skipphrase
@@ -3066,7 +3064,7 @@ radiosetphrase :#(  RADIOSET
       ( #(HORIZONTAL (EXPAND)? )
       | VERTICAL
       | (sizephrase)
-      | #(RADIOBUTTONS 
+      | #(RADIOBUTTONS
           (QSTRING|UNQUOTEDSTRING) COMMA (constant|TODAY|NOW)
           (COMMA (QSTRING|UNQUOTEDSTRING) COMMA (constant|TODAY|NOW))*
         )
@@ -3226,7 +3224,7 @@ systemhelpstate :#( SYSTEMHELP expression
       ( #(WINDOWNAME expression) )?
       ( #(ALTERNATEKEY expression )
       | #(CONTEXT expression )
-      | CONTENTS 
+      | CONTENTS
       | #(SETCONTENTS expression )
       | FINDER
       | #(CONTEXTPOPUP expression )
@@ -3338,7 +3336,7 @@ closestate :#(CLOSE ID state_end )
   ;
 
 // inherited from grammar JPTreeParser
-createtablestate :#(  CREATE TABLE ID 
+createtablestate :#(  CREATE TABLE ID
       LEFTPAREN
       ( sql_col_def
       | #(UNIQUE LEFTPAREN ID (COMMA ID)* RIGHTPAREN)
