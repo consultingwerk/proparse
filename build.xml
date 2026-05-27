@@ -15,7 +15,7 @@
 
 		<tstamp/>
 		<buildnumber/>
-		
+
 		<path id="build-classpath">
 		   <fileset dir="lib">
 		      <include name="*.jar"/>
@@ -47,7 +47,7 @@
 
 		</jar>
 	</target>
-	
+
 
 	<target name="makeproparsezip">
 		<delete dir="prorefactor/projects/unittest/pubs" />
@@ -56,7 +56,7 @@
 			<zipfileset file="proparse.jar" prefix="proparse.java" />
 			<zipfileset file="build.number" prefix="proparse.java" />
 		</zip>
-	</target>	
+	</target>
 
 
 	<target name="make_dotnet">
@@ -70,7 +70,7 @@
 			<zipfileset file="ikvmbin/IKVM.Runtime.dll" prefix="proparse.assemblies" />
 			<zipfileset file="ikvmbin/IKVM.OpenJDK.Text.dll" prefix="proparse.assemblies" />
 		</zip>
-	</target>	
+	</target>
 
 
 </project>

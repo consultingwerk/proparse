@@ -3396,7 +3396,7 @@ onstate
 	:	ON^<AST=BlockNode>
         {sthd(##,0);}
 		(	// ON event OF database-object
-            (dbevent)=> dbevent
+            ((CREATE|DELETE_KW|FIND|WRITE) OF record | ASSIGN OF field)=> dbevent
 		|	// ON key-label keyfunction.
             (. . state_end)=> . . state_end
 		|	eventlist
