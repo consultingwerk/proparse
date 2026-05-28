@@ -5,7 +5,7 @@
   import org.prorefactor.core.IJPNode;
   import org.prorefactor.treeparser.CQ;
   import org.prorefactor.treeparser.IJPTreeParser;
-  
+
   import java.util.ArrayList;
 
 import antlr.TreeParser;
@@ -35,7 +35,7 @@ public class TreeParser01 extends antlr.TreeParser       implements TreeParser01
     return _retTree;
   }
 
-  // Func for grabbing the "state2" attribute from the node at LT(1) 
+  // Func for grabbing the "state2" attribute from the node at LT(1)
   private boolean state2(AST node, int match) {
     return ((IJPNode)node).getState2() == match;
   }
@@ -48,7 +48,7 @@ public class TreeParser01 extends antlr.TreeParser       implements TreeParser01
   public TreeParser01(TP01Action actionObject) {
     action = actionObject;
   }
-  
+
   /** By default, the action object is a new TP01Support. */
   TP01Action action = null; // See initialization block, below.
 
@@ -72,7 +72,7 @@ public class TreeParser01 extends antlr.TreeParser       implements TreeParser01
    * in the tree parser grammar for visibility sake, rather than hide
    * it in the support class. If we move grammar and actions around
    * within this .g, the effect on the stack should be highly visible.
-   */ 
+   */
   private ArrayList stack = new ArrayList();
   private void push(Object o) { stack.add(o); }
   private Object pop() { return stack.remove(stack.size()-1); }
@@ -22150,8 +22150,8 @@ inputState.guessing--;
 		_t = _t.getNextSibling();
 		if ( inputState.guessing==0 ) {
 			
-						push(action.defineVariable(var, id)); 
-						action.addToSymbolScope(pop()); 
+						push(action.defineVariable(var, id));
+						action.addToSymbolScope(pop());
 					
 		}
 		{
@@ -22188,8 +22188,8 @@ inputState.guessing--;
 				_t = _t.getNextSibling();
 				if ( inputState.guessing==0 ) {
 					
-								push(action.defineVariable(var, id2)); 
-								action.addToSymbolScope(pop()); 
+								push(action.defineVariable(var, id2));
+								action.addToSymbolScope(pop());
 							
 				}
 				{
@@ -24266,7 +24266,7 @@ inputState.guessing--;
 		match(_t,FOR);
 		_t = _t.getFirstChild();
 		if ( inputState.guessing==0 ) {
-			action.blockBegin(f); 
+			action.blockBegin(f);
 			action.frameBlockCheck(f);
 			
 		}
