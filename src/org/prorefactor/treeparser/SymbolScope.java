@@ -15,11 +15,13 @@ package org.prorefactor.treeparser;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import org.prorefactor.core.IConstants;
+import org.prorefactor.core.JPNode;
 import org.prorefactor.core.TokenTypes;
 import org.prorefactor.core.schema.Schema;
 import org.prorefactor.core.schema.Table;
@@ -298,10 +300,40 @@ public class SymbolScope implements Xferable {
 	
 
 	/** Get the Variables. (vars, params, etc, etc.) */
-	public Collection<Variable> getVariables() { return variableMap.values(); }
+	public Collection<Variable> getVariables() {
+		ArrayList<Variable> sortedVars = new ArrayList<Variable>(variableMap.values());
+		Collections.sort(sortedVars, new java.util.Comparator<Variable>() {
+			public int compare(Variable v1, Variable v2) {
+				int line1 = getVariableLine(v1);
+				int line2 = getVariableLine(v2);
+				int result = Integer.compare(line1, line2);
+				if (result == 0) {
+					result = v1.getName().compareToIgnoreCase(v2.getName());
+				}
+				return result;
+			}
+		});
+		return sortedVars;
+	}
 
-	
-	
+	private int getVariableLine(Variable var) {
+		JPNode node = this.getVariableNode(var);
+		return node != null ? node.getLine() : 0;
+	}
+
+    private JPNode getVariableNode (Variable var) {
+        JPNode node = var.getDefineNode();
+        if (node != null)
+            return node;
+        node = var.getIndirectDefineIdNode();
+        if (node != null)
+            return node;
+        node = var.getLikeNode();
+        if (node != null)
+            return node;
+        return null;
+    }
+
 	/** Answer whether the scope has a Routine named
 	 * by param.
 	 * @param name - the name of the routine.
