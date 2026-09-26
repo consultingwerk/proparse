@@ -100,7 +100,7 @@ The `win-x86` build is commented out in `build.xml`; enable it there if a
 Versioning
 ----------
 
-The assembly version is `5.0.0.<build.number>`. The major/minor part is set in
+The assembly version is `5.1.0.<build.number>`. The major/minor part is set in
 `proparse.csproj`, the last part comes from `build.number`, which Ant increments
 on every `makeproparsejar` run. Commit `build.number` together with a release
 build so the numbers stay in sync with what was shipped.

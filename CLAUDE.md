@@ -47,7 +47,7 @@ optional Groovy/Ant dependencies. A build is fine as long as Ant reports
 
 ### Versioning
 
-Assembly version is `5.0.0.<build.number>` (`proparse.csproj` +
+Assembly version is `5.1.0.<build.number>` (`proparse.csproj` +
 `build.number`). Ant bumps `build.number` on every `makeproparsejar` run.
 For a throwaway verification build, restore it with
 `git checkout -- build.number` afterwards. For a release build, commit it.
