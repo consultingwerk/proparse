@@ -1,0 +1,27 @@
+@lowercase.
+
+block-level on error undo, throw.
+
+/* strongly typed annotations in positions the OpenEdge 13.1 ESAP does NOT
+   support: in front of a statement inside a method body and inside a nested
+   block. The compiler rejects them; Proparse only checks the syntax (the
+   allowed targets are a semantic rule, SCL-5984 R2) and frames them like
+   every other usage, so a consumer sees the same Typed_annotation node
+   (SCL-5986). The class is not meant to compile. */
+class Consultingwerk.ProparseAblTests.SCL5986.Fixtures.AnnotatedBody:
+
+    method public void Run ():
+
+        define variable cValue as character no-undo.
+
+        [Trace (level = 2)].
+        assign cValue = "x":u.
+
+        do while cValue = "x":u:
+            [Exportable].
+            assign cValue = "y":u.
+        end.
+
+    end method.
+
+end class.

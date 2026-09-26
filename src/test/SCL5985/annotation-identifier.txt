@@ -1,0 +1,54 @@
+@lowercase.
+
+block-level on error undo, throw.
+
+using Progress.Lang.* from propath.
+
+/* "annotation" used as an identifier - a temp-table field, a variable, a
+   property, a parameter, a method name, a block label - and brackets used as
+   array subscripts, next to source-only @ annotations. All of this parsed
+   before OpenEdge 13.1 made ANNOTATION a keyword and has to keep parsing the
+   same way (SCL-5986, R4). The member access this-object:annotation is in
+   annotation-member.txt (see TypedAnnotationParityTest for why). The class
+   is not meant to compile. */
+
+@Test.
+class Consultingwerk.ProparseAblTests.SCL5986.Fixtures.AnnotationIdentifier:
+
+    define temp-table ttAnnotation no-undo
+        field annotation as character
+        field cValue     as character
+        index annotation is primary unique annotation.
+
+    define private variable annotation as character no-undo.
+    define private variable cValues    as character no-undo extent 3.
+
+    define public property Annotation as character no-undo
+    get.
+    set.
+
+    @Test.
+    method public character annotation (pcAnnotation as character):
+
+        assign annotation = pcAnnotation
+               cValues[1] = annotation
+               cValues[2] = cValues[1] + annotation.
+
+        create ttAnnotation.
+        assign ttAnnotation.annotation = annotation
+               ttAnnotation.cValue     = cValues[2].
+
+        find first ttAnnotation where ttAnnotation.annotation = annotation no-error.
+
+        annotation:
+        do while ttAnnotation.annotation = "x":u:
+            leave annotation.
+        end.
+
+        assign cValues[3] = annotation (annotation).
+
+        return annotation.
+
+    end method.
+
+end class.

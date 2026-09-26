@@ -1,0 +1,9 @@
+@lowercase.
+
+block-level on error undo, throw.
+
+/* a marker annotation type: no properties at all, closed by a bare END
+   (SCL-5986) */
+annotation Consultingwerk.ProparseAblTests.SCL5986.Fixtures.Exportable:
+
+end.

@@ -1,0 +1,8 @@
+/* an annotation usage without a name (SCL-5985): a parser error */
+CLASS Invalid:
+
+    [].
+    METHOD PUBLIC VOID Run ():
+    END METHOD.
+
+END CLASS.

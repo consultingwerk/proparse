@@ -347,6 +347,8 @@ public class NodeTypes implements ProParserTokenTypes, TokenTypesI, Xferable {
 		add(ANALYZE, 6, "analyze", TI.KEYWORD);
 		add(AND, 3, "and", TI.KEYWORD | TI.RESERVED);
 		add(ANNOTATION, 0, "", TI.NO_FLAGS);
+		// SCL-5985: OpenEdge 13.1 ANNOTATION statement keyword (unreserved, no abbreviation)
+		add(ANNOTATION_TYPE, 10, "annotation", TI.KEYWORD);
 		add(ANSIONLY, 9, "ansi-only", TI.KEYWORD);
 		add(ANY, 3, "any", TI.KEYWORD | TI.RESERVED);
 		add(ANYWHERE, 8, "anywhere", TI.KEYWORD);
@@ -1462,6 +1464,8 @@ public class NodeTypes implements ProParserTokenTypes, TokenTypesI, Xferable {
 		add(TRUNCATE, 5, "truncate", TI.KEYWORD | TI.MAY_BE_REGULAR_FUNC);
 		add(TTCODEPAGE, 10, "ttcodepage", TI.KEYWORD);
 		add(TYPE_NAME, 0, "", TI.NO_FLAGS);
+		// SCL-5985: synthetic statement head of an OpenEdge 13.1 strongly typed annotation usage [Name (...)].
+		add(Typed_annotation, 0, "", TI.NO_FLAGS);
 		add(TYPELESS_TOKEN, 0, "", TI.NO_FLAGS);
 		add(TYPEOF, 7, "type-of", TI.KEYWORD | TI.MAY_BE_REGULAR_FUNC);
 		add(UNARY_MINUS, 0, "", TI.NO_FLAGS);

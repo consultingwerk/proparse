@@ -1,0 +1,8 @@
+/* an annotation usage without the terminating period (SCL-5985): a parser error */
+CLASS Invalid:
+
+    [Exportable]
+    METHOD PUBLIC VOID Run ():
+    END METHOD.
+
+END CLASS.

@@ -67,6 +67,10 @@
 	<!-- Compiles src/ into bin/. Eclipse does the same through its Java builder;
 	     this target makes the build work from the command line without Eclipse. -->
 	<target name="compile" description="Compiles the Java sources and copies resources into bin/">
+		<!-- Always compile from scratch: token type numbers (ProParserTokenTypes, Last_Token_Number) are
+		     compile time constants that javac inlines, so an incremental build leaves stale classes behind
+		     whenever the token table changes. -->
+		<delete dir="${bin.dir}"/>
 		<mkdir dir="${bin.dir}"/>
 		<javac srcdir="${src.dir}" destdir="${bin.dir}" release="${java.release}" encoding="UTF-8" debug="true" includeantruntime="false" nowarn="true">
 			<classpath refid="build-classpath"/>

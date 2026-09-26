@@ -1,0 +1,26 @@
+@lowercase.
+
+block-level on error undo, throw.
+
+using Consultingwerk.Framework.* from propath.
+using Progress.Lang.*            from propath.
+
+/* the annotation type name of a strongly typed annotation is resolved by the
+   tree parser like every other TYPE_NAME (SCL-5986): FrameworkSettings is
+   imported by the USING statement and exists on the PROPATH, the second
+   usage writes the qualified name, the third names a type that is nowhere to
+   be found. Whether the classes are annotation types does not matter for the
+   parser - the compiler validates that. */
+[FrameworkSettings].
+[Consultingwerk.Framework.FrameworkSettings (WaitStateManager = "x")].
+[Exportable].
+class Consultingwerk.ProparseAblTests.SCL5986.Fixtures.ResolvedAnnotations:
+
+    [FrameworkSettings].
+    method public void Nothing ():
+
+        /* noop */
+
+    end method.
+
+end class.

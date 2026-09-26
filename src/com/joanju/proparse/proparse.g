@@ -127,6 +127,7 @@ blockorstate
 			options{greedy=true; generateAmbigWarnings=false;}
 		:	PERIOD
 		|	annotation
+		|	typed_annotation // SCL-5985: a '[' where a statement starts is an OpenEdge 13.1 annotation usage.
 		|	dot_comment // ".anything" is a dotcomment if it's where a statement would fit.
 		|	proparse_directive
 		|	(blocklabel LEXCOLON (proparse_directive)? (DO|FOR|REPEAT))=> labeled_block
@@ -247,6 +248,7 @@ statement
 	|	accumulatestate
  	|	altertablestate
  	|	analyzestate
+	|	annotationtypestate // SCL-5985: OpenEdge 13.1 ANNOTATION statement
 	|	applystate
 	|	assignstate
 	|	bellstate
@@ -1224,6 +1226,50 @@ anno_att_list
 anno_att
 	:	new_identifier EQUAL constant
 	;
+
+// SCL-5985: OpenEdge 13.1 strongly typed annotation usage:
+//     [annotation-name [ ( [ property-name = constant [, property-name = constant ] ... ] ) ]].
+// It is a statement of its own in front of the annotated CLASS / INTERFACE / ENUM / member statement.
+// A LEFTBRACE where a statement starts always opens a usage - an array subscript never starts a
+// statement. Only the syntax is checked; the allowed targets and the property names are the
+// compiler's business. Tree:
+//     Typed_annotation (statehead, synthetic)
+//         LEFTBRACE TYPE_NAME [LEFTPAREN (ID EQUAL constant (COMMA ID EQUAL constant)*)? RIGHTPAREN] RIGHTBRACE PERIOD
+typed_annotation
+	:	LEFTBRACE typed_annotation_name (typed_anno_att_list)? RIGHTBRACE state_end
+		{## = #([Typed_annotation], ##); sthd(##,0);}
+	;
+typed_anno_att_list
+	:	LEFTPAREN (anno_att (COMMA anno_att)*)? RIGHTPAREN
+	;
+typed_annotation_name
+	// Like type_name, but without the [] parts of .Net array types: the closing bracket of the
+	// usage follows the name without whitespace ("[Exportable].").
+{String theText = "";}
+	:	p1:non_punctuating
+		{theText += #p1.getText();}
+		(options{greedy=true;}: 	{!support.hasHiddenBefore(LT(1))}?
+			p2:non_punctuating! {theText += #p2.getText();}
+		)*
+		{	#p1.setType(TYPE_NAME);
+			#p1.setText(theText);
+			support.typenameLookup(#p1);
+		}
+	;
+
+// SCL-5985: OpenEdge 13.1 ANNOTATION statement - the definition of an annotation type in its own
+// .cls file. The shape of the CLASS statement without INHERITS / IMPLEMENTS; the body holds
+// DEFINE PROPERTY statements without accessors. Tree:
+//     ANNOTATION_TYPE (statehead) TYPE_NAME block_colon Code_block END [ANNOTATION_TYPE] PERIOD
+annotationtypestate
+	:	a:ANNOTATION_TYPE^ type_name2
+		{support.defAnnotationType(#a);}
+		block_colon
+		code_block
+		annotationtype_end state_end
+		{sthd(##,0);}
+	;
+annotationtype_end: END^ (ANNOTATION_TYPE)? ;
 
 applystate
 // apply is not necessarily an IO statement. See the language ref.
@@ -2323,7 +2369,10 @@ defineparam_as
 definepropertystate
 	:	PROPERTY n:new_identifier AS datatype
 		(options{greedy=true;}: extentphrase|initial_constant|NOUNDO|serialize_name)*
-		defineproperty_accessor (options{greedy=true;}: defineproperty_accessor)?
+		(	// SCL-5985: the properties of an OpenEdge 13.1 annotation type have no accessors.
+			{support.isAnnotationType()}? state_end
+		|	defineproperty_accessor (options{greedy=true;}: defineproperty_accessor)?
+		)
 		{support.defVar(#n.getText());}
 	;
 defineproperty_accessor
@@ -4304,7 +4353,7 @@ unreservedkeyword
 	:
 AACBIT | AACONTROL | AALIST | AAMEMORY | AAMSG | AAPCONTROL | AASERIAL | AATRACE |
 ABSOLUTE | ACCELERATOR | ADDINTERVAL | ADVISE | ALERTBOX | ALLOWREPLICATION | ALTERNATEKEY |
-ANALYZE | ANSIONLY | ANYWHERE | APPEND |
+ANALYZE | ANNOTATION_TYPE | ANSIONLY | ANYWHERE | APPEND |
 APPLICATION | ARRAYMESSAGE | AS | ASC | ASKOVERWRITE | ASYNCHRONOUS | ATTACHMENT |
 AUTOCOMPLETION | AUTOENDKEY | AUTOGO | AUTOMATIC |
 AVERAGE | AVG | BACKWARDS | BASE64 | BASEKEY | BGCOLOR | BIGINT | BINARY | BINDWHERE |

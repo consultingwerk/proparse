@@ -1,0 +1,8 @@
+/* an annotation usage whose bracket is never closed (SCL-5985): a parser error, not a swallowed statement */
+CLASS Invalid:
+
+    [Exportable (level = 1)
+    METHOD PUBLIC VOID Run ():
+    END METHOD.
+
+END CLASS.

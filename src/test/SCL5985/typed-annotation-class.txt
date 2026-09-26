@@ -1,0 +1,80 @@
+@lowercase.
+
+block-level on error undo, throw.
+
+using Progress.Lang.*       from propath.
+using service.*             from propath.
+
+/* every form and every position of an OpenEdge 13.1 strongly typed
+   annotation usage in a class (SCL-5986): in front of the CLASS statement,
+   a METHOD, a CONSTRUCTOR, a DEFINE PROPERTY, a DEFINE EVENT and a
+   class-level DEFINE VARIABLE - stacked, interleaved with comments and mixed
+   with source-only @ annotations */
+
+[Exportable].
+@Deprecated (since="13.1").
+[ResourceMapping (type = "REST", alias = "orders")].
+class Consultingwerk.ProparseAblTests.SCL5986.Fixtures.AnnotatedClass:
+
+    /* a class-level variable, marker annotation with empty parentheses */
+    [Exportable()].
+    define private variable cValues as character no-undo extent 3.
+
+    /* a property - the annotation type written with its qualified name,
+       property values of every constant kind: strings with tilde escapes
+       and a string attribute, integers (negative too), a decimal, the
+       logical constants, a date literal and the unknown value */
+    [service.ResourceMapping (
+        type      = "REST":u,
+        operation = "read",
+        URI       = "?filter=~{filter~}",
+        alias     = "",
+        mediaType = "application/json")].
+    [Limits (count = -1, ratio = 1.5, enabled = true, hidden = FALSE,
+             visible = yes, locked = no, validFrom = 01/02/2026,
+             changedAt = "2026-01-02T03:04:05.000+01:00", comment = ?)].
+    define public property OrderCount as integer no-undo
+    get.
+    set.
+
+    /* an event */
+    [Exportable].
+    define public event OrdersChanged signature void (sender as Progress.Lang.Object).
+
+    /* a constructor */
+    [Exportable].
+    constructor public AnnotatedClass ():
+        super ().
+    end constructor.
+
+    /* a method - the closing bracket on its own line, a comment between the
+       annotation and the method, property names that are keywords (type,
+       format, label) */
+    [ResourceMapping(
+        type = "REST",
+        operation = "read",
+        URI = "?filter=~{filter~}",
+        alias = "",
+        mediaType = "application/json")
+     ].
+    /* the source-only annotation the framework already understands */
+    @RestMethod (address="/Orders", requestMethod="get").
+    [Column (format = "x(8)", label = "Order")].
+    method public void ReadOrders (input filter as character,
+                                   output pcResult as character):
+
+        /* array subscripts are not annotations (SCL-5986, R4) */
+        assign cValues[1] = filter
+               pcResult   = cValues[1] + cValues[2].
+
+    end method.
+
+    /* an annotation type named like a keyword */
+    [Final].
+    method public void Nothing ():
+
+        /* noop */
+
+    end method.
+
+end class.

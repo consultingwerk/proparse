@@ -221,6 +221,16 @@ public class TP01Support extends TP01Action {
 		if (idNode.nextSibling().getType()==TokenTypes.INHERITS)
 			classStateInherits(classNode, idNode.nextSibling().firstChild());
 	}
+	/** SCL-5985: OpenEdge 13.1 ANNOTATION statement. The unit is class-like: the root scope is
+	 * named after the annotation type. Its implicit super type Progress.Lang.Annotation is a
+	 * built-in with no members and no source, so there is no super scope to load.
+	 */
+	@Override
+	protected void annotationTypeState(AST annotationAST) {
+		JPNode annotationNode = (JPNode) annotationAST;
+		JPNode idNode = annotationNode.firstChild();
+		rootScope.setClassName(idNode.getText());
+	}
 	private void classStateInherits(JPNode classNode, JPNode inheritsTypeNode) {
 		String className = inheritsTypeNode.attrGetS(IConstants.QUALIFIED_CLASS_STRING);
 		SymbolScopeSuper cachedCopy = SymbolScopeSuper.cache.get(className.toLowerCase());

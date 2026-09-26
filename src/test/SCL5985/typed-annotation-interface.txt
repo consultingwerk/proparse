@@ -1,0 +1,25 @@
+@lowercase.
+
+block-level on error undo, throw.
+
+using Progress.Lang.* from propath.
+
+/* strongly typed annotations in front of an INTERFACE statement and in front
+   of the method, property and event declarations of its body (SCL-5986) */
+[Exportable].
+[ResourceMapping (type = "REST")].
+interface Consultingwerk.ProparseAblTests.SCL5986.Fixtures.IAnnotated:
+
+    [Exportable].
+    define public property OrderCount as integer no-undo
+    get.
+
+    [Exportable].
+    define public event OrdersChanged signature void (sender as Progress.Lang.Object).
+
+    [ResourceMapping (operation = "read")].
+    method public void ReadOrders (output pcResult as character).
+
+    method public void Nothing ().
+
+end interface.

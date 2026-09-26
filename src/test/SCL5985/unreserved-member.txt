@@ -1,0 +1,23 @@
+@lowercase.
+
+block-level on error undo, throw.
+
+using Progress.Lang.* from propath.
+
+/* "label" - an unreserved keyword - as a property name and as a member name
+   behind a colon (SCL-5986, R4): the reference keeps the LABEL keyword type
+   behind the OBJCOLON. The same convention applies to the new ANNOTATION
+   keyword, see annotation-member.txt. The class is not meant to compile. */
+class Consultingwerk.ProparseAblTests.SCL5986.Fixtures.UnreservedMember:
+
+    define public property Label as character no-undo
+    get.
+    set.
+
+    method public void Run (poOther as UnreservedMember):
+
+        assign this-object:Label = poOther:Label.
+
+    end method.
+
+end class.

@@ -1,0 +1,24 @@
+@lowercase.
+
+block-level on error undo, throw.
+
+&scoped-define DefaultTimeout 30
+
+/* every primitive data type an annotation property may have, with and
+   without an INITIAL value, PUBLIC written and omitted, a preprocessor
+   reference in an initial value and a property named like a keyword
+   (SCL-5986) */
+annotation Consultingwerk.ProparseAblTests.SCL5986.Fixtures.Settings:
+
+    define public property Name        as character   initial "unnamed":u.
+    define public property Count       as integer     initial 42.
+    define public property Big         as int64       initial 9000000000.
+    define public property Ratio       as decimal     initial 0.5.
+    define public property ValidFrom   as date        initial 01/01/2026.
+    define public property CreatedAt   as datetime.
+    define public property ChangedAt   as datetime-tz.
+    define public property Enabled     as logical     initial true.
+    define        property Timeout     as integer     initial {&DefaultTimeout}.
+    define public property Format      as character.
+
+end annotation.

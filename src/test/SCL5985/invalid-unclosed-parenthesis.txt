@@ -1,0 +1,8 @@
+/* an annotation usage whose property list is never closed (SCL-5985): a parser error */
+CLASS Invalid:
+
+    [Exportable (level = 1].
+    METHOD PUBLIC VOID Run ():
+    END METHOD.
+
+END CLASS.

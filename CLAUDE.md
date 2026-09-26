@@ -92,7 +92,24 @@ For a throwaway verification build, restore it with
   grammar and regenerate with the `build.xml` next to it
   (`src/com/joanju/proparse/build.xml`, `src/org/prorefactor/treeparser01/build.xml`,
   ANTLR 2.7.7 from `lib/`). Only hand-edit the generated files if the change
-  is also applied to the grammar.
+  is also applied to the grammar. Without the Ant `antlr` task, run
+  `java -cp lib/antlr-2.7.7.jar antlr.Tool proparse.g` in
+  `src/com/joanju/proparse`, then copy the new `ProParserTokenTypes.txt` to
+  `src/org/prorefactor/treeparser01/` and run
+  `antlr.Tool -glib JPTreeParser.g expandedtreeparser01.g` there (delete the
+  `expandedexpandedtreeparser01.g` it leaves behind). `expandedtreeparser01.g`
+  is the tree grammar that is actually compiled; `JPTreeParser.g` is the
+  action-free specification, keep both in sync. `ProEval.java` is checked in
+  from an older ANTLR build; do not regenerate it unless `proeval.g` changes.
+- Token numbers (`*TokenTypes` interfaces, `Last_Token_Number`) are compile
+  time constants that javac inlines into every class using them. After a
+  token table change, always compile from a clean `bin/` (the Ant `compile`
+  target does that) or classes like `org.prorefactor.core.TokenTypes` keep
+  the old numbers.
+- New node types must match the Proparse ABL engine's table in the ABL
+  project (`Consultingwerk/Studio/ProparseApi/NodeTypesEnum.cls`,
+  `.../ProparseAbl/proparse-tokentypes.dat`); both engines are compared by
+  parity tests run from OpenEdge, not from this repo.
 - New keyword: `BaseTokenTypes.txt` (bump `Last_Token_Number`),
   `NodeTypes.java` static initializer, then the grammar rule
   (`systemhandlename`, `builtinfunc`, `argfunc`, `recordfunc`, `noargfunc`),
