@@ -121,6 +121,8 @@ For a throwaway verification build, restore it with
   key, e.g. `SCL-5228 : Fix ...`, and tests live in a matching
   `src/test/SCL5228` package.
 - Do not commit build outputs or `.bak` files; use git to restore files.
+- After opening a pull request, add a comment to the Jira ticket with the PR
+  link and a description of the changes (Jira comments are written as ADF).
 - Some JUnit tests depend on a local OpenEdge install via
   `src/test/propath*.txt` (include files like `adecomm/appserv.i`). Failures
   of the form "Could not find include file" on a machine without that layout
