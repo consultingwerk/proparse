@@ -428,6 +428,16 @@ classstate :#(  c:CLASS {action.classState(#c);}
     )
   ;
 
+// SCL-5985: OpenEdge 13.1 ANNOTATION statement (annotation type definition), the CLASS shape without INHERITS / IMPLEMENTS
+annotationtypestate :#(  a:ANNOTATION_TYPE {action.annotationTypeState(#a);}
+      TYPE_NAME
+      block_colon
+      code_block
+      #(END (ANNOTATION_TYPE)? )
+      state_end
+    )
+  ;
+
 clearstate :#(c:CLEAR (frame_ref)? (ALL)? (NOPAUSE)? state_end {action.clearState(#c);} )
   ;
 
@@ -799,7 +809,9 @@ definepropertystate :#( def:DEFINE def_modifiers PROPERTY
       id:ID {push(action.defineVariable(#def, #id));}
       as:AS datatype {action.defAs(#as);} (extentphrase_def_symbol|initial_constant|NOUNDO|#(SERIALIZENAME QSTRING))*
       {action.addToSymbolScope(pop());}
-      defineproperty_accessor (defineproperty_accessor)?
+      ( defineproperty_accessor (defineproperty_accessor)?
+      | state_end // SCL-5985: the properties of an OpenEdge 13.1 annotation type have no accessors
+      )
     )
   ;
 
@@ -1810,6 +1822,7 @@ blockorstate :( labeled_block
     | PERIOD
     | DOT_COMMENT
     | #(ANNOTATION (.)* )
+    | #(Typed_annotation (.)* ) // SCL-5985: OpenEdge 13.1 strongly typed annotation usage
     )
   ;
 
@@ -1831,6 +1844,7 @@ statement :aatracestatement
   |           accumulatestate
   |           altertablestate
   |           analyzestate
+  |           annotationtypestate // SCL-5985
   |           applystate
   |           assignstate
   |           bellstate

@@ -1,0 +1,15 @@
+/* service/ResourceMapping.cls - the annotation type definition of the
+   Progress document "OOABL Annotations 13.1 ESAP", with a USING statement,
+   a comment and a source-only @ annotation in front of it (SCL-5986) */
+
+USING Progress.Lang.* FROM PROPATH.
+
+@Deprecated (since="13.1").
+
+ANNOTATION service.ResourceMapping:
+    DEFINE PUBLIC PROPERTY type AS CHARACTER.
+    DEFINE PUBLIC PROPERTY operation AS CHARACTER.
+    DEFINE PUBLIC PROPERTY URI AS CHARACTER.
+    DEFINE PUBLIC PROPERTY alias AS CHARACTER.
+    DEFINE PUBLIC PROPERTY mediaType AS CHARACTER.
+END ANNOTATION.

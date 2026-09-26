@@ -1,0 +1,14 @@
+@lowercase.
+
+block-level on error undo, throw.
+
+/* a strongly typed annotation in front of an ENUM statement (SCL-5986) */
+[Exportable].
+@Serializable.
+enum Consultingwerk.ProparseAblTests.SCL5986.Fixtures.AnnotatedEnum:
+
+    define enum Red   = 1
+                Green = 2
+                Blue  = 3.
+
+end enum.

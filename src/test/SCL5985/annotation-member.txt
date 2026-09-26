@@ -1,0 +1,30 @@
+@lowercase.
+
+block-level on error undo, throw.
+
+using Progress.Lang.* from propath.
+
+/* "annotation" as a member name behind a colon, next to "label" - an
+   unreserved keyword of long standing - in the same position (SCL-5986, R4).
+   Proparse keeps the keyword type of an unreserved keyword behind an
+   OBJCOLON (only reserved keywords are re-typed to ID there), so both
+   members are keyword typed nodes with the name as their text. The class is
+   not meant to compile. */
+class Consultingwerk.ProparseAblTests.SCL5986.Fixtures.AnnotationMember:
+
+    define public property Annotation as character no-undo
+    get.
+    set.
+
+    define public property Label as character no-undo
+    get.
+    set.
+
+    method public void Run (poOther as AnnotationMember):
+
+        assign this-object:Annotation = poOther:Annotation
+               this-object:Label      = poOther:Label.
+
+    end method.
+
+end class.

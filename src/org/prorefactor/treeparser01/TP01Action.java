@@ -71,6 +71,9 @@ public class TP01Action {
 	
 	/** Called by the tree parser at the CLASS node. */
 	protected void classState(AST classAST) {}
+
+	/** SCL-5985: OpenEdge 13.1 ANNOTATION statement (annotation type definition). */
+	protected void annotationTypeState(AST annotationAST) {}
 	
 	
 	/** Called at the end of a CLEAR statement. */

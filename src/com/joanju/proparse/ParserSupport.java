@@ -29,6 +29,7 @@ public class ParserSupport {
 
 	private boolean currDefInheritable = false;
 	private boolean unitIsInterface = false;
+	private boolean unitIsAnnotationType = false;
 	private boolean inDynamicNew = false;
 
 	private ClassFinder classFinder = new ClassFinder();
@@ -363,6 +364,17 @@ public class ParserSupport {
 	void setTopNode(JPNode refTopNode) { topNode = refTopNode; }
 
 
+	/** SCL-5985: OpenEdge 13.1 ANNOTATION statement. The unit is a class-like type whose implicit
+	 * super type Progress.Lang.Annotation has no source on the PROPATH, so it is handled like a
+	 * class without INHERITS.
+	 */
+	void defAnnotationType(JPNode annotationNode) {
+		unitIsAnnotationType = true;
+		defClass(annotationNode);
+	}
+	boolean isAnnotationType() {
+		return unitIsAnnotationType;
+	}
 	void typenameLookup(JPNode typenameNode) {
 		typenameNode.attrSet(
 				JPNode.AK_QUALIFIEDCLASS

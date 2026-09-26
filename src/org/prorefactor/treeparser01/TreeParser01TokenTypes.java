@@ -5,7 +5,7 @@
   import org.prorefactor.core.IJPNode;
   import org.prorefactor.treeparser.CQ;
   import org.prorefactor.treeparser.IJPTreeParser;
-
+  
   import java.util.ArrayList;
 
 public interface TreeParser01TokenTypes {
@@ -1249,5 +1249,7 @@ public interface TreeParser01TokenTypes {
 	int CONDITIONALCOMPILATION = 1243;
 	int MAKROREFERENCE = 1244;
 	int XOR = 1245;
-	int Last_Token_Number = 1246;
+	int ANNOTATION_TYPE = 1247;
+	int Typed_annotation = 1248;
+	int Last_Token_Number = 1249;
 }

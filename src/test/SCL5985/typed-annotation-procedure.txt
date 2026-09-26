@@ -1,0 +1,24 @@
+@lowercase.
+
+block-level on error undo, throw.
+
+/* strongly typed annotations in a procedure file - in front of a main block
+   statement, an internal procedure and a statement inside it. Not supported
+   by the OpenEdge 13.1 ESAP (annotations are for OOABL classes only), so the
+   compiler rejects them; Proparse frames them syntactically like every other
+   usage (SCL-5986). The procedure is not meant to compile. */
+
+define variable cValue as character no-undo.
+
+[Exportable].
+assign cValue = "x":u.
+
+[Trace (level = 2, label = "main")].
+procedure DoSomething:
+
+    define input parameter pcValue as character no-undo.
+
+    [Exportable()].
+    assign cValue = pcValue.
+
+end procedure.
