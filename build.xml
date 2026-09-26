@@ -10,7 +10,20 @@
 	<property name="package.zip.win-x64" value="${output.dir}\proparse.win-x64.zip"/>
 	<property name="package.zip.win-x86" value="${output.dir}\proparse.win-x86.zip"/>
 	<property name="package.zip.netcore" value="${output.dir}\proparse.netcore-linux-x64.zip"/>
+	<property name="output.dir.netcore.win" value="${output.dir}\netcore-win-x64"/>
+	<property name="package.zip.netcore.win" value="${output.dir}\proparse.netcore-win-x64.zip"/>
+	<property name="package.zip.java" value="${output.dir}\proparse.java.zip"/>
 	<property name="ikvm.bin.dir" value="${basedir}\ikvmbin"/>
+	<property name="src.dir" value="${basedir}/src"/>
+	<property name="bin.dir" value="${basedir}/bin"/>
+	<!-- Java bytecode level. IKVM 8.x is based on OpenJDK 8, so keep this at 8 even when compiling with a newer JDK. -->
+	<property name="java.release" value="8"/>
+
+	<path id="build-classpath">
+		<fileset dir="lib">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
 
 	<macrodef name="msbuild">
 		<attribute name="version" default="${build.number}"/>
@@ -43,17 +56,32 @@
             <delete dir="${basedir}\obj"/>
 		</sequential>
 	</macrodef>
-	
-	<target name="makeproparsejar">
+
+	<target name="clean" description="Removes bin/, output/, obj/ and proparse.jar">
+		<delete dir="${bin.dir}"/>
+		<delete dir="${output.dir}"/>
+		<delete dir="${basedir}/obj"/>
+		<delete file="${basedir}/proparse.jar"/>
+	</target>
+
+	<!-- Compiles src/ into bin/. Eclipse does the same through its Java builder;
+	     this target makes the build work from the command line without Eclipse. -->
+	<target name="compile" description="Compiles the Java sources and copies resources into bin/">
+		<mkdir dir="${bin.dir}"/>
+		<javac srcdir="${src.dir}" destdir="${bin.dir}" release="${java.release}" encoding="UTF-8" debug="true" includeantruntime="false" nowarn="true">
+			<classpath refid="build-classpath"/>
+			<compilerarg value="-Xlint:none"/>
+		</javac>
+		<!-- token tables (*TokenTypes.txt), properties, icons and the test data used by the JUnit tests -->
+		<copy todir="${bin.dir}">
+			<fileset dir="${src.dir}" excludes="**/*.java,**/*.groovy"/>
+		</copy>
+	</target>
+
+	<target name="makeproparsejar" depends="compile" description="Creates proparse.jar from bin/ and increments build.number">
 
 		<tstamp/>
 		<buildnumber/>
-
-		<path id="build-classpath">
-		   <fileset dir="lib">
-		      <include name="*.jar"/>
-		   </fileset>
-		</path>
 
 		<manifestclasspath property="lib.list" jarfile="proparse.jar">
 		   <classpath refid="build-classpath" />
@@ -81,7 +109,18 @@
 		</jar>
 	</target>
 
-	<target name="make_dotnet_msbuild" depends="makeproparsejar">
+	<!-- Java package for JVM consumers: proparse.jar, its lib/ dependencies and build.number, zipped as proparse.java/... -->
+	<target name="make_java_package" depends="makeproparsejar" description="Creates output/proparse.java.zip with proparse.jar, lib/ and build.number">
+		<mkdir dir="${output.dir}"/>
+		<delete file="${package.zip.java}"/>
+		<zip destfile="${package.zip.java}">
+			<zipfileset file="${basedir}/proparse.jar" prefix="proparse.java"/>
+			<zipfileset file="${basedir}/build.number" prefix="proparse.java"/>
+			<zipfileset dir="${basedir}/lib" prefix="proparse.java/lib" includes="*.jar"/>
+		</zip>
+	</target>
+
+	<target name="make_dotnet_msbuild" depends="make_java_package" description="Builds proparse.net.dll for net472/win-x64 and net8.0/linux-x64 via IKVM">
 		<msbuild output="${output.dir.x64}" targetVersion="net472" runtime="win-x64"/>
 		<delete file="${package.zip.win-x64}"/>
 		<zip destfile="${package.zip.win-x64}">
@@ -98,6 +137,17 @@
 		<delete file="${package.zip.netcore}"/>
 		<zip destfile="${package.zip.netcore}">
 			<zipfileset dir="${output.dir.netcore}"/>
+		</zip>
+	</target>
+
+	<!-- .NET 8 assemblies for Windows. Not part of the default target: run
+	     "ant make_dotnet_netcore_win" after make_dotnet_msbuild; it reuses proparse.jar and build.number. -->
+	<target name="make_dotnet_netcore_win" description="Builds proparse.net.dll for net8.0/win-x64 via IKVM into output/netcore-win-x64">
+		<property file="${basedir}/build.number"/>
+		<msbuild output="${output.dir.netcore.win}" targetVersion="net8.0" runtime="win-x64" dotnetCommand="publish" selfContainedArg="" copyDependencies="true"/>
+		<delete file="${package.zip.netcore.win}"/>
+		<zip destfile="${package.zip.netcore.win}">
+			<zipfileset dir="${output.dir.netcore.win}"/>
 		</zip>
 	</target>
 
