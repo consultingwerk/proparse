@@ -1096,22 +1096,48 @@ type_name
 		{ support.typenameLookup(##); }
 	;
 type_name2
-{String theText = "";}
+// SCL-6029: the type-argument list of a bound generic type is part of the TYPE_NAME node, with any
+// number of arguments (Foo<A,B>, Foo<A, Bar<B, C>>). Outside the angle brackets the parts have to
+// be adjacent, as before. Inside them whitespace and commas are allowed, and whitespace is allowed
+// in front of the opening bracket, as the compiler accepts it. The text of the node is the type
+// name without whitespace: "Foo<A,B>". No action controls the matching here, so that the rule
+// behaves the same while a syntactic predicate (like the one in front of NEW) is guessing.
+{String theText = ""; String args = "";}
 	:	p1:type_name_part
 		{theText += #p1.getText();}
-		(options{greedy=true;}: 	{!support.hasHiddenBefore(LT(1))}?
+		(options{greedy=true;}:
+			{!support.hasHiddenBefore(LT(1))}?
 			p2:type_name_part! {theText += #p2.getText();}
+		|	args=type_name_args! {theText += args;}
 		)*
 		{	#p1.setType(TYPE_NAME);
 			#p1.setText(theText);
 		}
 	;
+type_name_args returns [String theText = "<"]
+// SCL-6029: "<A, B>" - the type arguments of a bound generic type, each one a type name itself.
+{String arg = "";}
+	:	LEFTANGLE
+		arg=type_name_arg {theText += arg;}
+		(COMMA arg=type_name_arg {theText += "," + arg;})*
+		RIGHTANGLE {theText += ">";}
+	;
+type_name_arg returns [String theText = ""]
+// SCL-6029: one type argument. Whitespace around the parts is allowed inside the brackets.
+{String args = "";}
+	:	p1:type_name_part {theText += #p1.getText();}
+		(options{greedy=true;}:
+			p2:type_name_part {theText += #p2.getText();}
+		|	args=type_name_args {theText += args;}
+		)*
+	;
 type_name_predicate
-	:	{!support.hasHiddenBefore(LT(2))}? type_name_part type_name_part
+	:	{!support.hasHiddenBefore(LT(2))}? type_name_part (type_name_part | LEFTANGLE)
 	;
 type_name_part
-	:	// A type name part can have <...> for .Net generics, and [] for .Net arrays.
-		non_punctuating | LEFTBRACE | RIGHTBRACE | LEFTANGLE | RIGHTANGLE
+	:	// A type name part can have [] for .Net arrays. The <...> of a bound generic type is matched
+		// by type_name_args (SCL-6029).
+		non_punctuating | LEFTBRACE | RIGHTBRACE
 	;
 
 constant
