@@ -134,6 +134,10 @@ blockorstate
 		|	(widattr EQUAL DYNAMICNEW)=> dynamicnewstate
 		|	(field EQUAL DYNAMICNEW)=> dynamicnewstate
 		|	(pseudfn EQUAL)=> assignstate3
+		|	(pseudfn PLUS_EQUAL)=> assignstate3plus // SCL-6077: e.g. DYNAMIC-PROPERTY (o, p) += x.
+		|	(pseudfn MINUS_EQUAL)=> assignstate3minus
+		|	(pseudfn DIVIDE_EQUAL)=> assignstate3divide
+		|	(pseudfn MULTIPLY_EQUAL)=> assignstate3multiply
 		|	(widattr EQUAL)=> assignstate4
 		|	(widattr PLUS_EQUAL)=> assignstate4plus
 		|	(widattr MINUS_EQUAL)=> assignstate4minus
@@ -335,7 +339,8 @@ pseudfn
 // Productions that are named *_pseudfn /must/ be l-values.
 // Widget attributes are ambiguous with pretty much anything, because
 // the first bit before the colon can be any expression.
-	:	(	EXTENT^
+	:	(	DYNAMICPROPERTY^ // SCL-6077: DYNAMIC-PROPERTY statement
+		|	EXTENT^
 		|	FIXCODEPAGE^
 		|	OVERLAY^
 		|	PUTBITS^
@@ -488,6 +493,7 @@ argfunc
 		|	DECRYPT^
 		|	DYNAMICCAST^
 		|	DYNAMICNEXTVALUE^
+		|	DYNAMICPROPERTY^ // SCL-6077: DYNAMIC-PROPERTY function
 		|	ENCODE^
 		|	ENCRYPT^
 		|	EXP^
@@ -1379,6 +1385,38 @@ assignstate2multiply
 	;
 assignstate3
 	:	pseudfn e:EQUAL^ expression
+		{support.attrOp(#e);}
+		{## = #([ASSIGN], ##);}
+		(NOERROR_KW)?
+		state_end
+		{sthd(##,0);}
+	;
+assignstate3plus
+	:	pseudfn e:PLUS_EQUAL^ expression
+		{support.attrOp(#e);}
+		{## = #([ASSIGN], ##);}
+		(NOERROR_KW)?
+		state_end
+		{sthd(##,0);}
+	;
+assignstate3minus
+	:	pseudfn e:MINUS_EQUAL^ expression
+		{support.attrOp(#e);}
+		{## = #([ASSIGN], ##);}
+		(NOERROR_KW)?
+		state_end
+		{sthd(##,0);}
+	;
+assignstate3divide
+	:	pseudfn e:DIVIDE_EQUAL^ expression
+		{support.attrOp(#e);}
+		{## = #([ASSIGN], ##);}
+		(NOERROR_KW)?
+		state_end
+		{sthd(##,0);}
+	;
+assignstate3multiply
+	:	pseudfn e:MULTIPLY_EQUAL^ expression
 		{support.attrOp(#e);}
 		{## = #([ASSIGN], ##);}
 		(NOERROR_KW)?

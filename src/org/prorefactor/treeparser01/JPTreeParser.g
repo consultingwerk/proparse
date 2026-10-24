@@ -340,7 +340,8 @@ statement
 pseudfn
 // See PSC's grammar for <pseudfn> and for <asignmt>.
 // These are functions that can (or, in some cases, must) be an l-value.
-	:	#(EXTENT funargs )
+	:	#(DYNAMICPROPERTY funargs ) // SCL-6077
+	|	#(EXTENT funargs )
 	|	#(FIXCODEPAGE funargs )
 	|	#(OVERLAY funargs )
 	|	#(PUTBITS funargs )
@@ -465,6 +466,7 @@ argfunc
 	|	#(DECRYPT funargs )
 	|	#(DYNAMICCAST funargs )
 	|	#(DYNAMICNEXTVALUE funargs )
+	|	#(DYNAMICPROPERTY funargs ) // SCL-6077
 	|	#(ENCODE funargs )
 	|	#(ENCRYPT funargs )
 	|	#(EXP funargs )
