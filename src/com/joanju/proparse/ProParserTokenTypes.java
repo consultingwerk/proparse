@@ -1251,5 +1251,6 @@ public interface ProParserTokenTypes {
 	int XOR = 1245;
 	int ANNOTATION_TYPE = 1247;
 	int Typed_annotation = 1248;
-	int Last_Token_Number = 1249;
+	int DYNAMICPROPERTY = 1249;
+	int Last_Token_Number = 1250;
 }

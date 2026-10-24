@@ -78,7 +78,8 @@ public class TestTypedAnnotations extends ProparseTestCase {
 	public void testTokenTable() {
 		Assert.assertEquals(1247, NodeTypes.ANNOTATION_TYPE);
 		Assert.assertEquals(1248, NodeTypes.Typed_annotation);
-		Assert.assertEquals(1249, NodeTypes.Last_Token_Number);
+		// Last_Token_Number moves on with every new node type (SCL-6077: DYNAMICPROPERTY 1249)
+		Assert.assertTrue(NodeTypes.Typed_annotation < NodeTypes.Last_Token_Number);
 		Assert.assertEquals("ANNOTATION_TYPE", NodeTypes.getTypeName(NodeTypes.ANNOTATION_TYPE));
 		Assert.assertEquals("Typed_annotation", NodeTypes.getTypeName(NodeTypes.Typed_annotation));
 		Assert.assertEquals(NodeTypes.ANNOTATION_TYPE, NodeTypes.getTypeNum("ANNOTATION_TYPE"));

@@ -620,6 +620,8 @@ public class NodeTypes implements ProParserTokenTypes, TokenTypesI, Xferable {
 		add(DYNAMICINVOKE, 14, "dynamic-invoke", TI.KEYWORD | TI.RESERVED | TI.MAY_BE_REGULAR_FUNC);
 		add(DYNAMICNEW, 11, "dynamic-new", TI.KEYWORD);
 		add(DYNAMICNEXTVALUE, 18, "dynamic-next-value", TI.KEYWORD | TI.MAY_BE_REGULAR_FUNC);
+		// SCL-6077: DYNAMIC-PROPERTY function and statement (reserved, no abbreviation)
+		add(DYNAMICPROPERTY, 16, "dynamic-property", TI.KEYWORD | TI.RESERVED | TI.MAY_BE_REGULAR_FUNC);
 		add(EACH, 4, "each", TI.KEYWORD | TI.RESERVED);
 		add(ECHO, 4, "echo", TI.KEYWORD);
 		add(EDGECHARS, 4, "edge-chars", TI.KEYWORD);

@@ -2036,7 +2036,8 @@ statement :aatracestatement
   ;
 
 // inherited from grammar JPTreeParser
-pseudfn :#(EXTENT funargs )
+pseudfn :#(DYNAMICPROPERTY funargs ) // SCL-6077
+  | #(EXTENT funargs )
   | #(FIXCODEPAGE funargs )
   | #(OVERLAY funargs )
   | #(PUTBITS funargs )
@@ -2117,6 +2118,7 @@ argfunc :#(AACBIT funargs )
   | #(DECRYPT funargs )
   | #(DYNAMICCAST funargs )
   | #(DYNAMICNEXTVALUE funargs )
+  | #(DYNAMICPROPERTY funargs ) // SCL-6077
   | #(ENCODE funargs )
   | #(ENCRYPT funargs )
   | #(EXP funargs )
