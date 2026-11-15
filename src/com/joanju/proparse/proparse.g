@@ -1145,6 +1145,31 @@ type_name_part
 		// by type_name_args (SCL-6029).
 		non_punctuating | LEFTBRACE | RIGHTBRACE
 	;
+type_name_noargs
+// SCL-6310: the name of a class or interface definition. Like type_name2, but a <...> that follows
+// is the type parameter list of a generic type definition, not part of the name.
+{String theText = "";}
+	:	p1:type_name_part
+		{theText += #p1.getText();}
+		(options{greedy=true;}:
+			{!support.hasHiddenBefore(LT(1))}?
+			p2:type_name_part! {theText += #p2.getText();}
+		)*
+		{	#p1.setType(TYPE_NAME);
+			#p1.setText(theText);
+		}
+	;
+type_parameter_list
+// SCL-6310: the type parameters of a generic class or interface definition
+// (CLASS Foo<K AS Progress.Lang.Object, V AS Bar<Baz>>:). OpenEdge 13 requires the AS constraint.
+// Tree: Type_parameter_list > LEFTANGLE, Type_parameter (> ID, AS, TYPE_NAME), COMMA, ..., RIGHTANGLE
+	:	LEFTANGLE type_parameter (COMMA type_parameter)* RIGHTANGLE
+		{## = #([Type_parameter_list], ##);}
+	;
+type_parameter
+	:	new_identifier AS type_name
+		{## = #([Type_parameter], ##);}
+	;
 
 constant
 	// These are necessarily reserved keywords.
@@ -1657,7 +1682,7 @@ enum_member
 enum_end: END^ (ENUM)? ;
 
 classstate
-	:	c:CLASS^ type_name2
+	:	c:CLASS^ type_name_noargs (type_parameter_list)?
 		(class_inherits | class_implements | USEWIDGETPOOL | ABSTRACT | FINAL | SERIALIZABLE)*
 		{	// Header parsing done, call defClass which adds the name and processes inheritance.
 			support.defClass(#c);
@@ -3297,7 +3322,7 @@ insertstate
 	;
 
 interfacestate
-	:	INTERFACE^ type_name2 (interface_inherits)? block_colon
+	:	INTERFACE^ type_name_noargs (type_parameter_list)? (interface_inherits)? block_colon
 		{support.interfaceNode(##);}
 		code_block
 		interface_end state_end

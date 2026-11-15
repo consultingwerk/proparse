@@ -92,7 +92,8 @@ public class TestDynamicProperty extends ProparseTestCase {
 
 	public void testTokenTable() {
 		Assert.assertEquals(1249, NodeTypes.DYNAMICPROPERTY);
-		Assert.assertEquals(1250, NodeTypes.Last_Token_Number);
+		// SCL-6310 added Type_parameter_list (1250) and Type_parameter (1251).
+		Assert.assertEquals(1252, NodeTypes.Last_Token_Number);
 		Assert.assertEquals("DYNAMICPROPERTY", NodeTypes.getTypeName(NodeTypes.DYNAMICPROPERTY));
 		Assert.assertEquals(NodeTypes.DYNAMICPROPERTY, NodeTypes.getTypeNum("DYNAMICPROPERTY"));
 		Assert.assertEquals("DYNAMIC-PROPERTY", NodeTypes.getFullText(NodeTypes.DYNAMICPROPERTY));
