@@ -133,6 +133,9 @@ public class ParserSupport {
 
 			// Does this class have a super class?
 			JPNode nextNode = idNode.nextSibling();
+			// SCL-6310: skip the type parameter list of a generic class definition.
+			if ((nextNode!=null) && nextNode.getType()==NodeTypes.Type_parameter_list)
+				nextNode = nextNode.nextSibling();
 			if ((nextNode!=null) && nextNode.getType()==NodeTypes.INHERITS) {
 				String inheritName = nextNode.firstChild().attrGetS(JPNode.AK_QUALIFIEDCLASS);
 				SymbolScope scope = environment.lookupSuper(inheritName);

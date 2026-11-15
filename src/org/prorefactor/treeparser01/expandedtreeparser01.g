@@ -413,7 +413,7 @@ enum_member
   ;
 
 classstate :#(  c:CLASS {action.classState(#c);}
-      TYPE_NAME
+      TYPE_NAME (type_parameter_list)?
       ( #(INHERITS TYPE_NAME)
       | #(IMPLEMENTS TYPE_NAME (COMMA TYPE_NAME)* )
       | USEWIDGETPOOL
@@ -2866,11 +2866,17 @@ inputoutputthroughstate :#(INPUTOUTPUT (stream_name_or_handle)? THROUGH io_phras
   ;
 
 // inherited from grammar JPTreeParser
-interfacestate :#(INTERFACE TYPE_NAME (interface_inherits)? block_colon code_block #(END (INTERFACE)?) state_end )
+interfacestate :#(INTERFACE TYPE_NAME (type_parameter_list)? (interface_inherits)? block_colon code_block #(END (INTERFACE)?) state_end )
   ;
 
 // inherited from grammar JPTreeParser
 interface_inherits :#(INHERITS TYPE_NAME (COMMA TYPE_NAME)*);
+
+// inherited from grammar JPTreeParser
+type_parameter_list :#(Type_parameter_list LEFTANGLE type_parameter (COMMA type_parameter)* RIGHTANGLE );
+
+// inherited from grammar JPTreeParser
+type_parameter :#(Type_parameter ID AS TYPE_NAME );
 
 // inherited from grammar JPTreeParser
 io_phrase :(  #(OSDIR LEFTPAREN expression RIGHTPAREN (NOATTRLIST)? )

@@ -1252,5 +1252,7 @@ public interface ProParserTokenTypes {
 	int ANNOTATION_TYPE = 1247;
 	int Typed_annotation = 1248;
 	int DYNAMICPROPERTY = 1249;
-	int Last_Token_Number = 1250;
+	int Type_parameter_list = 1250;
+	int Type_parameter = 1251;
+	int Last_Token_Number = 1252;
 }

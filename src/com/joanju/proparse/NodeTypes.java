@@ -1466,6 +1466,9 @@ public class NodeTypes implements ProParserTokenTypes, TokenTypesI, Xferable {
 		add(TRUNCATE, 5, "truncate", TI.KEYWORD | TI.MAY_BE_REGULAR_FUNC);
 		add(TTCODEPAGE, 10, "ttcodepage", TI.KEYWORD);
 		add(TYPE_NAME, 0, "", TI.NO_FLAGS);
+		// SCL-6310: synthetic nodes of the type parameter list of a generic class / interface definition.
+		add(Type_parameter, 0, "", TI.NO_FLAGS);
+		add(Type_parameter_list, 0, "", TI.NO_FLAGS);
 		// SCL-5985: synthetic statement head of an OpenEdge 13.1 strongly typed annotation usage [Name (...)].
 		add(Typed_annotation, 0, "", TI.NO_FLAGS);
 		add(TYPELESS_TOKEN, 0, "", TI.NO_FLAGS);

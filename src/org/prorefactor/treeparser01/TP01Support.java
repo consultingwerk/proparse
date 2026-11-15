@@ -218,8 +218,12 @@ public class TP01Support extends TP01Action {
 		JPNode classNode = (JPNode) classAST;
 		JPNode idNode = classNode.firstChild();
 		rootScope.setClassName(idNode.getText());
-		if (idNode.nextSibling().getType()==TokenTypes.INHERITS)
-			classStateInherits(classNode, idNode.nextSibling().firstChild());
+		JPNode nextNode = idNode.nextSibling();
+		// SCL-6310: skip the type parameter list of a generic class definition.
+		if (nextNode.getType()==TokenTypes.Type_parameter_list)
+			nextNode = nextNode.nextSibling();
+		if (nextNode.getType()==TokenTypes.INHERITS)
+			classStateInherits(classNode, nextNode.firstChild());
 	}
 	/** SCL-5985: OpenEdge 13.1 ANNOTATION statement. The unit is class-like: the root scope is
 	 * named after the annotation type. Its implicit super type Progress.Lang.Annotation is a

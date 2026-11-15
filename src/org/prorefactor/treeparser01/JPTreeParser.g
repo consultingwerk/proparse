@@ -982,7 +982,7 @@ choosestate
 	;
 
 classstate
-	:	#(	CLASS TYPE_NAME
+	:	#(	CLASS TYPE_NAME (type_parameter_list)?
 			(	#(INHERITS TYPE_NAME)
 			|	#(IMPLEMENTS TYPE_NAME (COMMA TYPE_NAME)* )
 			|	USEWIDGETPOOL
@@ -2063,7 +2063,15 @@ insertstate
 	;
 	
 interfacestate
-	:	#(INTERFACE TYPE_NAME (interface_inherits)? block_colon code_block #(END (INTERFACE)?) state_end )
+	:	#(INTERFACE TYPE_NAME (type_parameter_list)? (interface_inherits)? block_colon code_block #(END (INTERFACE)?) state_end )
+	;
+
+// SCL-6310: type parameters of a generic class or interface definition
+type_parameter_list
+	:	#(Type_parameter_list LEFTANGLE type_parameter (COMMA type_parameter)* RIGHTANGLE )
+	;
+type_parameter
+	:	#(Type_parameter ID AS TYPE_NAME )
 	;
 	
 interface_inherits: #(INHERITS TYPE_NAME (COMMA TYPE_NAME)*);
