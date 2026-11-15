@@ -9,6 +9,7 @@ package com.joanju.proparse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Stack;
+import java.util.regex.Pattern;
 
 public class Lexer implements ProParserTokenTypes {
 
@@ -655,7 +656,7 @@ public class Lexer implements ProParserTokenTypes {
 				break for_loop;
 			}
 		}
-		return makeToken(ttype);
+		return makeToken(numberType(ttype));
 	}
 
 
@@ -733,7 +734,7 @@ public class Lexer implements ProParserTokenTypes {
 		if (currText.length() == 1)
 			return makeToken(inputType);
 		else
-			return makeToken(ttype);
+			return makeToken(numberType(ttype));
 	}
 
 
@@ -806,7 +807,31 @@ public class Lexer implements ProParserTokenTypes {
 				break for_loop;
 			}
 		}
-		return makeToken(ttype);
+		return makeToken(numberType(ttype));
+	}
+
+
+	/**
+	 * SCL-6305: OpenEdge 13.0 numeric literal in scientific notation, m {E|e} [+|-] n, where m is a
+	 * decimal number (optionally signed, digits before and/or after the decimal point) and n an
+	 * exponent of one or two digits, e.g. 1.5e3, 1E6, 1.23e-4, 6.02214076e+23, .5e2, -2e3.
+	 */
+	private static final Pattern SCIENTIFIC_NUMBER = Pattern.compile(
+			"[+-]?(?:[0-9]+(?:[.][0-9]*)?|[.][0-9]+)[eE][+-]?[0-9]{1,2}");
+
+	/**
+	 * SCL-6305: digitStart(), periodStart() and plusMinusStart() switch a token that starts like a
+	 * number to ID or FILENAME at the first letter. The characters of a scientific notation literal
+	 * (digits, '.', the exponent letter, the exponent sign) all belong to the same token in these
+	 * methods already, so the token boundaries are right and only the type has to be corrected:
+	 * when the complete token text is a scientific notation literal, the token is a NUMBER with
+	 * its original text. Anything else that merely starts with digits (1e3abc, 12abc, 1e123, file
+	 * names) keeps the type the scan determined.
+	 */
+	private int numberType(int ttype) {
+		if (ttype != NUMBER && SCIENTIFIC_NUMBER.matcher(currText).matches())
+			return NUMBER;
+		return ttype;
 	}
 
 
