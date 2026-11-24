@@ -652,6 +652,15 @@ public class Lexer implements ProParserTokenTypes {
 					break;
 				} else
 					break for_loop;
+			case ':':
+				// SCL-6392: the colons of an ISO 8601 date-time constant (2026-11-24T10:30:00+05:00)
+				// belong to the token. Any other colon ends it, as before.
+				if (ISO_DATETIME_COLON.matcher(currText).matches()) {
+					append();
+					getChar();
+					break;
+				} else
+					break for_loop;
 			default:
 				break for_loop;
 			}
@@ -831,8 +840,27 @@ public class Lexer implements ProParserTokenTypes {
 	private int numberType(int ttype) {
 		if (ttype != NUMBER && SCIENTIFIC_NUMBER.matcher(currText).matches())
 			return NUMBER;
+		if (ISO_DATETIME.matcher(currText).matches())
+			return LEXDATE;
 		return ttype;
 	}
+
+
+	/**
+	 * SCL-6392: ISO 8601 DATETIME / DATETIME-TZ constant as the ABL compiler accepts it, as INITIAL
+	 * value and in expressions: yyyy-mm-dd{T|t}hh:mm[:ss[.f...]][{+|-}hh[[:]mm]], e.g.
+	 * 2026-11-24T10:30:00.123 or 2026-11-24T10:30:00.123+05:00. The compiler rejects a date
+	 * without time, an hour without minutes, the time zone designator Z and a decimal comma.
+	 */
+	private static final Pattern ISO_DATETIME = Pattern.compile(
+			"[0-9]{4}-[0-9]{2}-[0-9]{2}[tT][0-9]{2}:[0-9]{2}(?::[0-9]{2}(?:[.][0-9]+)?)?(?:[+-][0-9]{2}(?::?[0-9]{2})?)?");
+
+	/**
+	 * SCL-6392: token text after which a colon in digitStart() belongs to an ISO 8601 date-time
+	 * constant - the colon before the minutes, before the seconds and inside the time zone offset.
+	 */
+	private static final Pattern ISO_DATETIME_COLON = Pattern.compile(
+			"[0-9]{4}-[0-9]{2}-[0-9]{2}[tT][0-9]{2}(?::[0-9]{2}|:[0-9]{2}(?::[0-9]{2}(?:[.][0-9]+)?)?[+-][0-9]{2})?");
 
 
 	ProToken id(int inputTokenType) throws IOException {
