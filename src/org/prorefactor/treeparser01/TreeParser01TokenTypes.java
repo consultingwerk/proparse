@@ -1254,5 +1254,15 @@ public interface TreeParser01TokenTypes {
 	int DYNAMICPROPERTY = 1249;
 	int Type_parameter_list = 1250;
 	int Type_parameter = 1251;
-	int Last_Token_Number = 1252;
+	int BITAND = 1252;
+	int BITLSHR = 1253;
+	int BITNAND = 1254;
+	int BITNOR = 1255;
+	int BITNOT = 1256;
+	int BITOR = 1257;
+	int BITSHL = 1258;
+	int BITSHR = 1259;
+	int BITXNOR = 1260;
+	int BITXOR = 1261;
+	int Last_Token_Number = 1262;
 }

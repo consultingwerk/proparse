@@ -93,7 +93,8 @@ public class TestGenericTypeDefinitions extends ProparseTestCase {
 	public void testNodeTypeNumbers() {
 		Assert.assertEquals(1250, NodeTypes.Type_parameter_list);
 		Assert.assertEquals(1251, NodeTypes.Type_parameter);
-		Assert.assertEquals(1252, NodeTypes.Last_Token_Number);
+		// Last_Token_Number moves on with every new node type (SCL-6387: BITAND ... BITXOR 1252 - 1261)
+		Assert.assertTrue(NodeTypes.Type_parameter < NodeTypes.Last_Token_Number);
 		Assert.assertEquals("Type_parameter_list", NodeTypes.getTypeName(NodeTypes.Type_parameter_list));
 		Assert.assertEquals("Type_parameter", NodeTypes.getTypeName(NodeTypes.Type_parameter));
 		Assert.assertFalse(NodeTypes.isKeywordType(NodeTypes.Type_parameter_list));

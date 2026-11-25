@@ -774,11 +774,27 @@ andExpression
 	:	notExpression (options{greedy=true;}: AND^ notExpression {support.attrOp(##);} )*
 	;
 notExpression
-	:	NOT^ relationalExpression
-	|	relationalExpression
+	:	NOT^ bitOrExpression
+	|	bitOrExpression
+	;
+// SCL-6387: bitwise operators of the ABL Agent. Precedence (highest first, as measured on the
+// ABL Agent, C-like): BIT-NOT (unaryExpression), * / MODULO, + -, BIT-SHL / BIT-SHR / BIT-LSHR,
+// comparisons, BIT-AND / BIT-NAND, BIT-XOR / BIT-XNOR, BIT-OR / BIT-NOR. Every binary level is
+// left associative. The keywords are unreserved, so they are also valid as identifiers (operands).
+bitOrExpression
+	:	bitXorExpression
+		(options{greedy=true;}: (BITOR^ | BITNOR^) bitXorExpression {support.attrOp(##);} )*
+	;
+bitXorExpression
+	:	bitAndExpression
+		(options{greedy=true;}: (BITXOR^ | BITXNOR^) bitAndExpression {support.attrOp(##);} )*
+	;
+bitAndExpression
+	:	relationalExpression
+		(options{greedy=true;}: (BITAND^ | BITNAND^) relationalExpression {support.attrOp(##);} )*
 	;
 relationalExpression
-	:	additiveExpression
+	:	shiftExpression
 		(options{greedy=true;}: 	(	MATCHES^
 			|	BEGINS^
 			|	CONTAINS^
@@ -789,9 +805,13 @@ relationalExpression
 			|	lt:LEFTANGLE^ {#lt.setType(LTHAN);} | LTHAN^
 			|	le:LTOREQUAL^ {#le.setType(LE);} | LE^
 			)
-			additiveExpression
+			shiftExpression
 			{support.attrOp(##);}
 		)*
+	;
+shiftExpression
+	:	additiveExpression
+		(options{greedy=true;}: (BITSHL^ | BITSHR^ | BITLSHR^) additiveExpression {support.attrOp(##);} )*
 	;
 additiveExpression
 	:	multiplicativeExpression
@@ -811,7 +831,11 @@ multiplicativeExpression
 		)*
 	;
 unaryExpression
-	:	MINUS^ {#MINUS.setType(UNARY_MINUS);} exprt
+options{generateAmbigWarnings=false;}
+	:	// SCL-6387: in an expression BIT-NOT is always the operator, even when a variable of that
+		// name exists (ABL Agent), so this alternative has to win over exprt (unreservedkeyword).
+		BITNOT^ unaryExpression
+	|	MINUS^ {#MINUS.setType(UNARY_MINUS);} exprt
 	|	PLUS^  {#PLUS.setType(UNARY_PLUS);} exprt
 	|	exprt
 	;
@@ -4559,7 +4583,10 @@ GETCLASS | SERIALIZABLE | TABLESCAN | MESSAGEDIGEST | ENUM | FLAGS | NON_SERIALI
 PACKAGEPROTECTED | PACKAGEPRIVATE |
 
 // 12.3
-EVENT_HANDLER | EVENT_HANDLER_CONTEXT
+EVENT_HANDLER | EVENT_HANDLER_CONTEXT |
+
+// ABL Agent bitwise operators (SCL-6387)
+BITAND | BITLSHR | BITNAND | BITNOR | BITNOT | BITOR | BITSHL | BITSHR | BITXNOR | BITXOR
 
 ;
 
