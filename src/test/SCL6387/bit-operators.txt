@@ -1,0 +1,52 @@
+/* SCL-6387 / SCL-6388: bitwise operators of the ABL Agent (BIT-AND, BIT-OR, BIT-XOR,
+   BIT-NOT, BIT-NAND, BIT-NOR, BIT-XNOR, BIT-SHL, BIT-SHR, BIT-LSHR).
+   Only the ABL Agent compiles this source (verified with ablagent run, the results are noted
+   behind each statement). OpenEdge does not know the operators, which is why this fixture is
+   a .txt file and not a .p file. */
+
+define variable iA      as integer no-undo initial 6 .
+define variable iB      as integer no-undo initial 3 .
+define variable iR      as int64   no-undo .
+define variable lR      as logical no-undo .
+define variable bit-or  as integer no-undo initial 1 .
+define variable bit-not as integer no-undo .
+
+/* every operator */
+iR = iA bit-and iB .                      /* 2 */
+iR = iA bit-or iB .                       /* 7 */
+iR = iA bit-xor iB .                      /* 5 */
+iR = iA bit-nand iB .                     /* -3 */
+iR = iA bit-nor iB .                      /* -8 */
+iR = iA bit-xnor iB .                     /* -6 */
+iR = iA bit-shl iB .                      /* 48 */
+iR = iA bit-shr iB .                      /* 0 */
+iR = iA bit-lshr iB .                     /* 0 */
+iR = bit-not iA .                         /* -7 */
+
+/* BIT-NOT with parentheses, nested, below an additive operator */
+iR = bit-not (iA) .                       /* -7 */
+iR = bit-not bit-not iA .                 /* 6 */
+iR = bit-not iA + 1 .                     /* -6 */
+
+/* precedence levels */
+iR = 2 * iA bit-or 1 .                    /* 13 */
+iR = iA bit-and iB + 1 .                  /* 4 */
+iR = 1 bit-shl iB + 1 .                   /* 16 */
+lR = 1 bit-shl 2 = 4 .                    /* yes */
+iR = 4 bit-xor 4 bit-and 0 .              /* 4 */
+iR = 4 bit-or 4 bit-xor 4 .               /* 4 */
+lR = (iA bit-or iB) = 7 .                 /* yes */
+lR = bit-not 1 = -2 .                     /* yes */
+iR = - iA bit-and 3 .                     /* 2 */
+iR = iA bit-and iB bit-xor iA bit-or iB . /* 7 */
+
+/* left associativity */
+iR = 9 bit-shr 1 bit-shl 1 .              /* 8 */
+iR = 4 bit-nand 4 bit-and 0 .             /* 0 */
+iR = 4 bit-or 0 bit-nor 4 .               /* -5 */
+
+/* unreserved keywords used as variable names */
+iR = bit-or bit-or bit-or .               /* 1 */
+bit-not = 5 .
+
+message iR lR .

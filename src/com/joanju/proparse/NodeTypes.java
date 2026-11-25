@@ -404,6 +404,17 @@ public class NodeTypes implements ProParserTokenTypes, TokenTypesI, Xferable {
 		add(BINARY, 6, "binary", TI.KEYWORD);
 		add(BIND, 4, "bind", TI.KEYWORD);
 		add(BINDWHERE, 10, "bind-where", TI.KEYWORD);
+		// SCL-6387: bitwise operators of the ABL Agent (unreserved, no abbreviation)
+		add(BITAND, 7, "bit-and", TI.KEYWORD);
+		add(BITLSHR, 8, "bit-lshr", TI.KEYWORD);
+		add(BITNAND, 8, "bit-nand", TI.KEYWORD);
+		add(BITNOR, 7, "bit-nor", TI.KEYWORD);
+		add(BITNOT, 7, "bit-not", TI.KEYWORD);
+		add(BITOR, 6, "bit-or", TI.KEYWORD);
+		add(BITSHL, 7, "bit-shl", TI.KEYWORD);
+		add(BITSHR, 7, "bit-shr", TI.KEYWORD);
+		add(BITXNOR, 8, "bit-xnor", TI.KEYWORD);
+		add(BITXOR, 7, "bit-xor", TI.KEYWORD);
 		add(BLANK, 5, "blank", TI.KEYWORD | TI.RESERVED);
 		add(BLOB, 4, "blob", TI.KEYWORD);
 		add(BLOCK_LABEL, 0, "", TI.NO_FLAGS);
